@@ -7,18 +7,18 @@ import java.io.Serializable;
  */
 public class PlatformRest implements Serializable {
 
-    private Long restId;
+    private Long platformRestId;
     private String name;
     private String javaClass;
     private Integer version;
     private String description;
 
-    public Long getRestId() {
-        return restId;
+    public Long getPlatformRestId() {
+        return platformRestId;
     }
 
-    public void setRestId(Long restId) {
-        this.restId = restId;
+    public void setPlatformRestId(Long platformRestId) {
+        this.platformRestId = platformRestId;
     }
 
     public String getName() {
@@ -53,27 +53,4 @@ public class PlatformRest implements Serializable {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PlatformRest rest = (PlatformRest) o;
-
-        if (restId != null ? !restId.equals(rest.restId) : rest.restId != null) return false;
-        if (name != null ? !name.equals(rest.name) : rest.name != null) return false;
-        if (javaClass != null ? !javaClass.equals(rest.javaClass) : rest.javaClass != null) return false;
-        if (version != null ? !version.equals(rest.version) : rest.version != null) return false;
-        return description != null ? description.equals(rest.description) : rest.description == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = restId != null ? restId.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (javaClass != null ? javaClass.hashCode() : 0);
-        result = 31 * result + (version != null ? version.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        return result;
-    }
 }

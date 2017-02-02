@@ -7,51 +7,31 @@ import java.io.Serializable;
  */
 public class PlatformRestRole implements Serializable {
 
-    private Long restRoleId;
-    private Long restId;
-    private Long roleId;
+    private Long platformRestRoleId;
+    private Long platformRestId;
+    private Long platformRoleId;
 
-    public Long getRestRoleId() {
-        return restRoleId;
+    public Long getPlatformRestRoleId() {
+        return platformRestRoleId;
     }
 
-    public void setRestRoleId(Long restRoleId) {
-        this.restRoleId = restRoleId;
+    public void setPlatformRestRoleId(Long platformRestRoleId) {
+        this.platformRestRoleId = platformRestRoleId;
     }
 
-    public Long getRestId() {
-        return restId;
+    public Long getPlatformRestId() {
+        return platformRestId;
     }
 
-    public void setRestId(Long restId) {
-        this.restId = restId;
+    public void setPlatformRestId(Long platformRestId) {
+        this.platformRestId = platformRestId;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public Long getPlatformRoleId() {
+        return platformRoleId;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PlatformRestRole restRole = (PlatformRestRole) o;
-
-        if (restRoleId != null ? !restRoleId.equals(restRole.restRoleId) : restRole.restRoleId != null) return false;
-        if (restId != null ? !restId.equals(restRole.restId) : restRole.restId != null) return false;
-        return roleId != null ? roleId.equals(restRole.roleId) : restRole.roleId == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = restRoleId != null ? restRoleId.hashCode() : 0;
-        result = 31 * result + (restId != null ? restId.hashCode() : 0);
-        result = 31 * result + (roleId != null ? roleId.hashCode() : 0);
-        return result;
+    public void setPlatformRoleId(Long platformRoleId) {
+        this.platformRoleId = platformRoleId;
     }
 }

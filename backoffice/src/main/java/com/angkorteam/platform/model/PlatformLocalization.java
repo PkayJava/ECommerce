@@ -7,18 +7,18 @@ import java.io.Serializable;
  */
 public class PlatformLocalization implements Serializable {
 
-    private Long localizationId;
+    private Long platformLocalizationId;
     private String key;
     private String language;
     private String label;
     private Integer version;
 
-    public Long getLocalizationId() {
-        return localizationId;
+    public Long getPlatformLocalizationId() {
+        return platformLocalizationId;
     }
 
-    public void setLocalizationId(Long localizationId) {
-        this.localizationId = localizationId;
+    public void setPlatformLocalizationId(Long platformLocalizationId) {
+        this.platformLocalizationId = platformLocalizationId;
     }
 
     public String getKey() {
@@ -53,28 +53,4 @@ public class PlatformLocalization implements Serializable {
         this.version = version;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PlatformLocalization that = (PlatformLocalization) o;
-
-        if (localizationId != null ? !localizationId.equals(that.localizationId) : that.localizationId != null)
-            return false;
-        if (key != null ? !key.equals(that.key) : that.key != null) return false;
-        if (language != null ? !language.equals(that.language) : that.language != null) return false;
-        if (label != null ? !label.equals(that.label) : that.label != null) return false;
-        return version != null ? version.equals(that.version) : that.version == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = localizationId != null ? localizationId.hashCode() : 0;
-        result = 31 * result + (key != null ? key.hashCode() : 0);
-        result = 31 * result + (language != null ? language.hashCode() : 0);
-        result = 31 * result + (label != null ? label.hashCode() : 0);
-        result = 31 * result + (version != null ? version.hashCode() : 0);
-        return result;
-    }
 }

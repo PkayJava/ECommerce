@@ -7,11 +7,11 @@ import java.io.Serializable;
  */
 public class PlatformUser implements Serializable {
 
-    private Long userId;
+    private Long platformUserId;
     private String login;
     private String password;
     private String fullName;
-    private Long roleId;
+    private Long platformRoleId;
     private Boolean system;
     private String status;
     private Integer version;
@@ -24,13 +24,6 @@ public class PlatformUser implements Serializable {
     private String gender;
     private String country;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public String getLogin() {
         return login;
@@ -54,14 +47,6 @@ public class PlatformUser implements Serializable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
     }
 
     public Boolean getSystem() {
@@ -152,49 +137,19 @@ public class PlatformUser implements Serializable {
         this.country = country;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PlatformUser user = (PlatformUser) o;
-
-        if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
-        if (login != null ? !login.equals(user.login) : user.login != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (fullName != null ? !fullName.equals(user.fullName) : user.fullName != null) return false;
-        if (roleId != null ? !roleId.equals(user.roleId) : user.roleId != null) return false;
-        if (system != null ? !system.equals(user.system) : user.system != null) return false;
-        if (status != null ? !status.equals(user.status) : user.status != null) return false;
-        if (version != null ? !version.equals(user.version) : user.version != null) return false;
-        if (accessToken != null ? !accessToken.equals(user.accessToken) : user.accessToken != null) return false;
-        if (street != null ? !street.equals(user.street) : user.street != null) return false;
-        if (city != null ? !city.equals(user.city) : user.city != null) return false;
-        if (houseNumber != null ? !houseNumber.equals(user.houseNumber) : user.houseNumber != null) return false;
-        if (zip != null ? !zip.equals(user.zip) : user.zip != null) return false;
-        if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
-        if (gender != null ? !gender.equals(user.gender) : user.gender != null) return false;
-        return country != null ? country.equals(user.country) : user.country == null;
+    public Long getPlatformUserId() {
+        return platformUserId;
     }
 
-    @Override
-    public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
-        result = 31 * result + (roleId != null ? roleId.hashCode() : 0);
-        result = 31 * result + (system != null ? system.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (version != null ? version.hashCode() : 0);
-        result = 31 * result + (accessToken != null ? accessToken.hashCode() : 0);
-        result = 31 * result + (street != null ? street.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (houseNumber != null ? houseNumber.hashCode() : 0);
-        result = 31 * result + (zip != null ? zip.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (country != null ? country.hashCode() : 0);
-        return result;
+    public void setPlatformUserId(Long platformUserId) {
+        this.platformUserId = platformUserId;
+    }
+
+    public Long getPlatformRoleId() {
+        return platformRoleId;
+    }
+
+    public void setPlatformRoleId(Long platformRoleId) {
+        this.platformRoleId = platformRoleId;
     }
 }

@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 public class PlatformPage implements Serializable {
 
-    private Long pageId;
-    private Long layoutId;
+    private Long platformPageId;
+    private Long platformLayoutId;
     private String javaClass;
     private String path;
     private String htmlTitle;
@@ -16,20 +16,12 @@ public class PlatformPage implements Serializable {
     private String pageDescription;
     private Integer version;
 
-    public Long getPageId() {
-        return pageId;
+    public Long getPlatformLayoutId() {
+        return platformLayoutId;
     }
 
-    public void setPageId(Long pageId) {
-        this.pageId = pageId;
-    }
-
-    public Long getLayoutId() {
-        return layoutId;
-    }
-
-    public void setLayoutId(Long layoutId) {
-        this.layoutId = layoutId;
+    public void setPlatformLayoutId(Long platformLayoutId) {
+        this.platformLayoutId = platformLayoutId;
     }
 
     public String getJavaClass() {
@@ -80,34 +72,11 @@ public class PlatformPage implements Serializable {
         this.version = version;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PlatformPage page = (PlatformPage) o;
-
-        if (pageId != null ? !pageId.equals(page.pageId) : page.pageId != null) return false;
-        if (layoutId != null ? !layoutId.equals(page.layoutId) : page.layoutId != null) return false;
-        if (javaClass != null ? !javaClass.equals(page.javaClass) : page.javaClass != null) return false;
-        if (path != null ? !path.equals(page.path) : page.path != null) return false;
-        if (htmlTitle != null ? !htmlTitle.equals(page.htmlTitle) : page.htmlTitle != null) return false;
-        if (pageTitle != null ? !pageTitle.equals(page.pageTitle) : page.pageTitle != null) return false;
-        if (pageDescription != null ? !pageDescription.equals(page.pageDescription) : page.pageDescription != null)
-            return false;
-        return version != null ? version.equals(page.version) : page.version == null;
+    public Long getPlatformPageId() {
+        return platformPageId;
     }
 
-    @Override
-    public int hashCode() {
-        int result = pageId != null ? pageId.hashCode() : 0;
-        result = 31 * result + (layoutId != null ? layoutId.hashCode() : 0);
-        result = 31 * result + (javaClass != null ? javaClass.hashCode() : 0);
-        result = 31 * result + (path != null ? path.hashCode() : 0);
-        result = 31 * result + (htmlTitle != null ? htmlTitle.hashCode() : 0);
-        result = 31 * result + (pageTitle != null ? pageTitle.hashCode() : 0);
-        result = 31 * result + (pageDescription != null ? pageDescription.hashCode() : 0);
-        result = 31 * result + (version != null ? version.hashCode() : 0);
-        return result;
+    public void setPlatformPageId(Long platformPageId) {
+        this.platformPageId = platformPageId;
     }
 }

@@ -72,7 +72,7 @@ public class Application extends AuthenticatedWebApplication {
     protected void initPageMount() {
         DataSource dataSource = Spring.getBean("delegate", DataSource.class);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        List<PlatformPage> pages = jdbcTemplate.queryForList("select * from page", PlatformPage.class);
+        List<PlatformPage> pages = jdbcTemplate.queryForList("select * from platform_page", PlatformPage.class);
         for (PlatformPage page : pages) {
             String path = page.getPath();
             String javaClass = page.getJavaClass();

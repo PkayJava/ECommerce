@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class PlatformFile implements Serializable {
 
-    private Long fileId;
+    private Long platformFileId;
     private String name;
     private String label;
     private String path;
@@ -16,12 +16,12 @@ public class PlatformFile implements Serializable {
     private Integer length;
     private Integer version;
 
-    public Long getFileId() {
-        return fileId;
+    public Long getPlatformFileId() {
+        return platformFileId;
     }
 
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
+    public void setPlatformFileId(Long platformFileId) {
+        this.platformFileId = platformFileId;
     }
 
     public String getName() {
@@ -80,33 +80,4 @@ public class PlatformFile implements Serializable {
         this.version = version;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PlatformFile file = (PlatformFile) o;
-
-        if (fileId != null ? !fileId.equals(file.fileId) : file.fileId != null) return false;
-        if (name != null ? !name.equals(file.name) : file.name != null) return false;
-        if (label != null ? !label.equals(file.label) : file.label != null) return false;
-        if (path != null ? !path.equals(file.path) : file.path != null) return false;
-        if (mime != null ? !mime.equals(file.mime) : file.mime != null) return false;
-        if (extension != null ? !extension.equals(file.extension) : file.extension != null) return false;
-        if (length != null ? !length.equals(file.length) : file.length != null) return false;
-        return version != null ? version.equals(file.version) : file.version == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = fileId != null ? fileId.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (label != null ? label.hashCode() : 0);
-        result = 31 * result + (path != null ? path.hashCode() : 0);
-        result = 31 * result + (mime != null ? mime.hashCode() : 0);
-        result = 31 * result + (extension != null ? extension.hashCode() : 0);
-        result = 31 * result + (length != null ? length.hashCode() : 0);
-        result = 31 * result + (version != null ? version.hashCode() : 0);
-        return result;
-    }
 }

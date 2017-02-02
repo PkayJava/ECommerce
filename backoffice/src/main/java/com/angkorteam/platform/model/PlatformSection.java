@@ -7,18 +7,10 @@ import java.io.Serializable;
  */
 public class PlatformSection implements Serializable {
 
-    private Long sectionId;
+    private Long platformSectionId;
     private String title;
     private Integer order;
     private Integer version;
-
-    public Long getSectionId() {
-        return sectionId;
-    }
-
-    public void setSectionId(Long sectionId) {
-        this.sectionId = sectionId;
-    }
 
     public String getTitle() {
         return title;
@@ -44,25 +36,11 @@ public class PlatformSection implements Serializable {
         this.version = version;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PlatformSection section = (PlatformSection) o;
-
-        if (sectionId != null ? !sectionId.equals(section.sectionId) : section.sectionId != null) return false;
-        if (title != null ? !title.equals(section.title) : section.title != null) return false;
-        if (order != null ? !order.equals(section.order) : section.order != null) return false;
-        return version != null ? version.equals(section.version) : section.version == null;
+    public Long getPlatformSectionId() {
+        return platformSectionId;
     }
 
-    @Override
-    public int hashCode() {
-        int result = sectionId != null ? sectionId.hashCode() : 0;
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (order != null ? order.hashCode() : 0);
-        result = 31 * result + (version != null ? version.hashCode() : 0);
-        return result;
+    public void setPlatformSectionId(Long platformSectionId) {
+        this.platformSectionId = platformSectionId;
     }
 }

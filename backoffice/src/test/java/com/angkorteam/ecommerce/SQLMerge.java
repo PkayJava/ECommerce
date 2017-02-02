@@ -19,7 +19,7 @@ public class SQLMerge {
             File patternFile = new File(db, pattern + ".sql");
             patternFile.delete();
             for (File sql : FileUtils.listFiles(file, new String[]{"sql"}, true)) {
-                if (FilenameUtils.getBaseName(sql.getName()).startsWith("mysql__platform")) {
+                if (FilenameUtils.getBaseName(sql.getName()).startsWith(pattern)) {
                     FileUtils.writeByteArrayToFile(patternFile, ("-- # " + FilenameUtils.getName(sql.getName()) + "\n").getBytes(), true);
                     FileUtils.writeByteArrayToFile(patternFile, "-- ################################################################\n".getBytes(), true);
                     FileUtils.writeByteArrayToFile(patternFile, FileUtils.readFileToByteArray(sql), true);

@@ -1,573 +1,625 @@
--- # mysql__platform_file_ddl.sql
+-- # mysql__ecommerce_banner_ddl.sql
 -- ################################################################
-CREATE TABLE `platform_file` (
+CREATE TABLE `ecommerce_banner` (
 
-  `platform_file_id` BIGINT(19)   NOT NULL,
-  `name`             VARCHAR(255),
-  `label`            VARCHAR(255),
-  `path`             VARCHAR(255) NOT NULL,
-  `mime`             VARCHAR(100),
-  `extension`        VARCHAR(10),
-  `length`           INT(11)      NOT NULL,
-  `system`           BIT(1)       NOT NULL DEFAULT 0,
-  `version`          INT(11)      NOT NULL DEFAULT 1,
+  `ecommerce_banner_id`        BIGINT(19)  NOT NULL,
+  `image_url_platform_file_id` BIGINT(19)  NOT NULL,
+  `ecommerce_product_id`       BIGINT(19),
+  `ecommerce_category_id`      BIGINT(19),
+  `name`                       VARCHAR(255),
+  `type`                       VARCHAR(10) NOT NULL,
+  `order`                      INT(11),
 
-  KEY (`system`),
   KEY (`name`),
-  KEY (`label`),
-  KEY (`path`),
-  KEY (`mime`),
-  KEY (`extension`),
-  KEY (`length`),
-  KEY (`version`),
-  PRIMARY KEY (`platform_file_id`)
+  KEY (`type`),
+  KEY (`ecommerce_product_id`),
+  KEY (`ecommerce_category_id`),
+  KEY (`image_url_platform_file_id`),
+  KEY (`order`),
+  PRIMARY KEY (`ecommerce_banner_id`)
 );
 
 
-
--- # mysql__platform_layout_ddl.sql
+-- # mysql__ecommerce_branch_ddl.sql
 -- ################################################################
-CREATE TABLE `platform_layout` (
+CREATE TABLE `ecommerce_branch` (
 
-  `platform_layout_id` BIGINT(19)   NOT NULL,
-  `name`               VARCHAR(100) NOT NULL,
-  `description`        VARCHAR(255) NOT NULL,
-  `java_class`         VARCHAR(255),
+  `ecommerce_branch_id` BIGINT(19)      NOT NULL,
+  `name`                VARCHAR(255)    NOT NULL,
+  `address`             VARCHAR(255),
+  `note`                VARCHAR(1000),
+  `longitude`           DECIMAL(15, 10) NOT NULL,
+  `latitude`            DECIMAL(15, 10) NOT NULL,
 
-  KEY (`description`),
+  KEY (`address`),
+  KEY (`longitude`),
+  KEY (`latitude`),
+  KEY (`note`),
   UNIQUE KEY (`name`),
-  UNIQUE KEY (`java_class`),
-  PRIMARY KEY (`platform_layout_id`)
+  PRIMARY KEY (`ecommerce_branch_id`)
 );
 
 
--- # mysql__platform_layout_insert.sql
+-- # mysql__ecommerce_branch_opening_ddl.sql
 -- ################################################################
-INSERT INTO `platform_layout` (`platform_layout_id`, `name`, `description`, `java_class`)
-VALUES
-  (1, 'MBaaS Layout', 'MBaaS Layout', 'com.angkorteam.platform.layout.MBaaSLayout');
+CREATE TABLE `ecommerce_branch_opening` (
 
+  `ecommerce_branch_opening_id` BIGINT(19) NOT NULL,
+  `ecommerce_branch_id`         BIGINT(19) NOT NULL,
+  `day`                         VARCHAR(255),
+  `opening`                     VARCHAR(255),
 
--- # mysql__platform_localization_ddl.sql
--- ################################################################
-CREATE TABLE `platform_localization` (
-
-  `platform_localization_id` BIGINT(19)   NOT NULL,
-  `key`             VARCHAR(100) NOT NULL,
-  `language`        VARCHAR(10)  NOT NULL,
-  `label`           VARCHAR(255) NOT NULL,
-  `version`         INT(11)      NOT NULL DEFAULT 1,
-
-  KEY (`version`),
-  KEY (`key`),
-  KEY (`language`),
-  KEY (`label`),
-  UNIQUE KEY (`key`, `language`),
-  PRIMARY KEY (`platform_localization_id`)
+  KEY (`ecommerce_branch_id`),
+  KEY (`day`),
+  KEY (`opening`),
+  PRIMARY KEY (`ecommerce_branch_opening_id`)
 );
 
 
--- # mysql__platform_localization_insert.sql
+-- # mysql__ecommerce_branch_transport_ddl.sql
 -- ################################################################
-INSERT INTO platform_localization (platform_localization_id, `key`, language, label, version)
-VALUES
-  (uuid_short(), 'null', '', 'Select One', 1),
-  (uuid_short(), 'label.login', '', 'Login', 1),
-  (uuid_short(), 'label.password', '', 'Password', 1),
-  (uuid_short(), 'button.login', '', 'Login', 1),
-  (uuid_short(), 'required', '', ' is required.', 1),
-  (uuid_short(), 'incorrect', '', ' is incorrect.', 1),
-  (uuid_short(), 'brand.text.mini', '', ' Shop', 1),
-  (uuid_short(), 'brand.text', '', ' ShopKH', 1),
-  (uuid_short(), 'nullValid', '', 'Select One', 1);
+CREATE TABLE `ecommerce_branch_transport` (
+
+  `ecommerce_branch_transport_id` BIGINT(19) NOT NULL,
+  `ecommerce_branch_id`           BIGINT(19) NOT NULL,
+  `icon_platform_file_id`         BIGINT(19),
+  `text`                          VARCHAR(1000),
+
+  KEY (`ecommerce_branch_id`),
+  KEY (`icon_platform_file_id`),
+  KEY (`text`),
+  PRIMARY KEY (`ecommerce_branch_transport_id`)
+);
 
 
--- # mysql__platform_menu_ddl.sql
+-- # mysql__ecommerce_brand_ddl.sql
 -- ################################################################
-CREATE TABLE `platform_menu` (
+CREATE TABLE `ecommerce_brand` (
 
-  `platform_menu_id`        BIGINT(19)   NOT NULL,
-  `title`                   VARCHAR(100) NOT NULL,
-  `path`                    VARCHAR(255) NOT NULL,
-  `icon`                    VARCHAR(100),
-  `platform_section_id`     BIGINT(19),
-  `parent_platform_menu_id` BIGINT(19),
-  `order`                   INT(11)      NOT NULL DEFAULT 0,
-  `version`                 INT(11)      NOT NULL DEFAULT 1,
+  `ecommerce_brand_id` BIGINT(19)   NOT NULL,
+  `name`               VARCHAR(255) NOT NULL,
+  `order`              INT(11),
 
-  KEY (`title`),
-  KEY (`path`),
-  KEY (`icon`),
   KEY (`order`),
-  KEY (`platform_section_id`),
-  KEY (`parent_platform_menu_id`),
-  PRIMARY KEY (`platform_menu_id`)
+  UNIQUE KEY (`name`),
+  PRIMARY KEY (`ecommerce_brand_id`)
 );
 
 
--- # mysql__platform_menu_insert.sql
+-- # mysql__ecommerce_cart_ddl.sql
 -- ################################################################
-INSERT INTO `platform_menu` (`platform_menu_id`, `platform_section_id`, `platform_parent_menu_id`, `title`, `path`, `icon`, `order`, `version`)
-VALUES
-  (1, 1, NULL, 'Content', 'Admin Console > Content', 'fa-align-justify', 1, 1),
-  (2, 1, NULL, 'Security', 'Admin Console > Security', 'fa-lock', 2, 1),
-  (3, 2, NULL, 'Catalog', 'User Console > Catalog', '', 1, 1),
-  (4, 2, NULL, 'Alert', 'User Console > Alert', '', 2, 1),
-  (5, 2, NULL, 'Market Place', 'User Console > Market Place', '', 3, 1),
-  (6, 2, NULL, 'Cart', 'User Console > Cart', '', 4, 1);
+CREATE TABLE `ecommerce_cart` (
 
+  `ecommerce_cart_id` BIGINT(19) NOT NULL,
+  `platform_user_id`  BIGINT(19) NOT NULL,
 
--- # mysql__platform_menu_item_ddl.sql
--- ################################################################
-CREATE TABLE `platform_menu_item` (
-
-  `platform_menu_item_id` BIGINT(19)   NOT NULL,
-  `platform_menu_id`      BIGINT(19),
-  `title`                 VARCHAR(100) NOT NULL,
-  `icon`                  VARCHAR(100),
-  `order`                 INT(11)      NOT NULL DEFAULT 0,
-  `platform_page_id`      BIGINT(19)   NOT NULL,
-  `platform_section_id`   BIGINT(19),
-  `version`               INT(11)      NOT NULL DEFAULT 1,
-
-  KEY (`title`),
-  KEY (`order`),
-  KEY (`icon`),
-  KEY (`platform_menu_id`),
-  KEY (`platform_section_id`),
-  KEY (`version`),
-  UNIQUE KEY (`platform_page_id`),
-  PRIMARY KEY (`platform_menu_item_id`)
+  KEY (`platform_user_id`),
+  PRIMARY KEY (`ecommerce_cart_id`)
 );
 
 
--- # mysql__platform_menu_item_insert.sql
+-- # mysql__ecommerce_cart_discount_item_ddl.sql
 -- ################################################################
-INSERT INTO `platform_menu_item` (`platform_menu_item_id`, `platform_section_id`, `platform_menu_id`, `title`, `icon`, `order`, `platform_page_id`)
-VALUES
-  (26, 2, NULL, 'Order', '', 4, 167),
-  (25, 2, NULL, 'Order', '', 4, 165),
-  (24, 2, NULL, 'Order', '', 4, 162),
-  (23, NULL, 5, 'Shop', '', 1, 161),
-  (22, NULL, 6, 'Shipping', '', 1, 158),
-  (21, NULL, 3, 'Product', '', 1, 145),
-  (20, NULL, 3, 'Discount', '', 1, 144),
-  (19, NULL, 3, 'Category', '', 1, 141),
-  (18, NULL, 3, 'Brand', '', 1, 138),
-  (17, NULL, 6, 'Payment', '', 1, 135),
-  (16, NULL, 3, 'Size', '', 1, 132),
-  (15, NULL, 5, 'Branch', '', 1, 124),
-  (14, NULL, 3, 'Article', '', 1, 121),
-  (13, NULL, 3, 'Banner', '', 1, 116),
-  (1, NULL, 1, 'Section', 'fa-leaf', 1, 8),
-  (2, NULL, 1, 'Menu', 'fa-list-ul', 2, 2),
-  (3, NULL, 1, 'Menu Item', 'fa-home', 3, 5),
-  (4, NULL, 1, 'Layout', 'fa-columns', 4, 11),
-  (5, NULL, 1, 'Page', 'fa-text-height', 5, 16),
-  (6, NULL, 2, 'Role', 'fa-key', 1, 19),
-  (8, NULL, 1, 'File', 'fa-floppy-o', 6, 22),
-  (9, NULL, 2, 'User', 'fa-users', 2, 23),
-  (10, 1, NULL, 'Service', 'fa-code', 4, 29),
-  (11, NULL, 1, 'Setting', 'fa-cogs', 7, 32),
-  (12, NULL, 3, 'Color', '', 1, 114);
+CREATE TABLE `ecommerce_cart_discount_item` (
 
+  `ecommerce_cart_discount_item_id` BIGINT(19) NOT NULL,
+  `ecommerce_cart_id`               BIGINT(19) NOT NULL,
+  `ecommerce_discount_id`           BIGINT(19) NOT NULL,
+  `quantity`                        INT(11)    NOT NULL,
 
--- # mysql__platform_page_ddl.sql
--- ################################################################
-CREATE TABLE `platform_page` (
-
-  `platform_page_id`   BIGINT(19)   NOT NULL,
-  `platform_layout_id` BIGINT(19)   NOT NULL,
-  `java_class`         VARCHAR(255) NOT NULL,
-  `path`               VARCHAR(255) NOT NULL,
-  `html_title`         VARCHAR(255) NOT NULL,
-  `page_title`         VARCHAR(255) NOT NULL,
-  `page_description`   VARCHAR(255) NOT NULL,
-  `version`            INT(11)      NOT NULL DEFAULT 1,
-
-  KEY (`platform_layout_id`),
-  KEY (`html_title`),
-  KEY (`page_title`),
-  KEY (`version`),
-  KEY (`page_description`),
-  UNIQUE KEY (`java_class`),
-  UNIQUE KEY (`path`),
-  PRIMARY KEY (`platform_page_id`)
+  KEY (`ecommerce_cart_id`),
+  KEY (`quantity`),
+  KEY (`ecommerce_discount_id`),
+  PRIMARY KEY (`ecommerce_cart_discount_item_id`)
 );
 
 
--- # mysql__platform_page_insert.sql
+-- # mysql__ecommerce_cart_product_item_ddl.sql
 -- ################################################################
-INSERT INTO `platform_page` (`platform_page_id`, `platform_layout_id`, `path`, `html_title`, `page_title`, `page_description`, `java_class`, `version`)
-VALUES
-  (168, 1, '/ecommerce/vendor/order/review', 'eCommerce Vendor Order Review', 'eCommerce Vendor Order Review', 'eCommerce Vendor Order Review', 'com.angkorteam.ecommerce.page.order.VendorOrderReviewPage', 1),
-  (167, 1, '/ecommerce/vendor/order/browse', 'eCommerce Vendor Order Browse', 'eCommerce Vendor Order Browse', 'eCommerce Vendor Order Browse', 'com.angkorteam.ecommerce.page.order.VendorOrderBrowsePage', 1),
-  (166, 1, '/ecommerce/customer/order/review', 'eCommerce Customer Order Review', 'eCommerce Customer Order Review', 'eCommerce Customer Order Review', 'com.angkorteam.ecommerce.page.order.CustomerOrderReviewPage', 1),
-  (165, 1, '/ecommerce/customer/order/browse', 'eCommerce Customer Order Browse', 'eCommerce Customer Order Browse', 'eCommerce Customer Order Browse', 'com.angkorteam.ecommerce.page.order.CustomerOrderBrowsePage', 1),
-  (164, 1, '/ecommerce/order/review', 'eCommerce Order Review', 'eCommerce Order Review', 'eCommerce Order Review', 'com.angkorteam.ecommerce.page.order.OrderReviewPage', 1),
-  (163, 1, '/ecommerce/order/detail', 'eCommerce Order Detail', 'eCommerce Order Detail', 'eCommerce Order Detail', 'com.angkorteam.ecommerce.page.order.OrderDetailPage', 1),
-  (162, 1, '/ecommerce/order/browse', 'eCommerce Order Browse', 'eCommerce Order Browse', 'eCommerce Order Browse', 'com.angkorteam.ecommerce.page.order.OrderBrowsePage', 1),
-  (159, 1, '/ecommerce/shop/modify', 'eCommerce Shop Modify', 'eCommerce Shop Modify', 'eCommerce Shop Modify', 'com.angkorteam.ecommerce.page.shop.ShopModifyPage', 1),
-  (160, 1, '/ecommerce/shop/create', 'eCommerce Shop Create', 'eCommerce Shop Create', 'eCommerce Shop Create', 'com.angkorteam.ecommerce.page.shop.ShopCreatePage', 1),
-  (161, 1, '/ecommerce/shop/browse', 'eCommerce Shop Browse', 'eCommerce Shop Browse', 'eCommerce Shop Browse', 'com.angkorteam.ecommerce.page.shop.ShopBrowsePage', 1),
-  (156, 1, '/ecommerce/shipping/modify', 'eCommerce Shipping Modify', 'eCommerce Shipping Modify', 'eCommerce Shipping Modify', 'com.angkorteam.ecommerce.page.shipping.ShippingModifyPage', 1),
-  (157, 1, '/ecommerce/shipping/create', 'eCommerce Shipping Create', 'eCommerce Shipping Create', 'eCommerce Shipping Create', 'com.angkorteam.ecommerce.page.shipping.ShippingCreatePage', 1),
-  (158, 1, '/ecommerce/shipping/browse', 'eCommerce Shipping Browse', 'eCommerce Shipping Browse', 'eCommerce Shipping Browse', 'com.angkorteam.ecommerce.page.shipping.ShippingBrowsePage', 1),
-  (154, 1, '/ecommerce/product/variant/gallery/create', 'eCommerce Product Variant Gallery Create', 'eCommerce Product Variant Gallery Create', 'eCommerce Product Variant Gallery Create', 'com.angkorteam.ecommerce.page.product.ProductVariantGalleryCreatePage', 1),
-  (155, 1, '/ecommerce/product/variant/gallery/browse', 'eCommerce Product Variant Gallery Browse', 'eCommerce Product Variant Gallery Browse', 'eCommerce Product Variant Gallery Browse', 'com.angkorteam.ecommerce.page.product.ProductVariantGalleryBrowsePage', 1),
-  (151, 1, '/ecommerce/product/variant/modify', 'eCommerce Product Variant Modify', 'eCommerce Product Variant Modify', 'eCommerce Product Variant Modify', 'com.angkorteam.ecommerce.page.product.ProductVariantModifyPage', 1),
-  (152, 1, '/ecommerce/product/variant/create', 'eCommerce Product Variant Create', 'eCommerce Product Variant Create', 'eCommerce Product Variant Create', 'com.angkorteam.ecommerce.page.product.ProductVariantCreatePage', 1),
-  (153, 1, '/ecommerce/product/variant/browse', 'eCommerce Product Variant Browse', 'eCommerce Product Variant Browse', 'eCommerce Product Variant Browse', 'com.angkorteam.ecommerce.page.product.ProductVariantBrowsePage', 1),
-  (149, 1, '/ecommerce/product/gallery/create', 'eCommerce Product Gallery Create', 'eCommerce Product Gallery Create', 'eCommerce Product Gallery Create', 'com.angkorteam.ecommerce.page.product.ProductGalleryCreatePage', 1),
-  (150, 1, '/ecommerce/product/gallery/browse', 'eCommerce Product Gallery Browse', 'eCommerce Product Gallery Browse', 'eCommerce Product Gallery Browse', 'com.angkorteam.ecommerce.page.product.ProductGalleryBrowsePage', 1),
-  (148, 1, '/ecommerce/product/review', 'eCommerce Product Review', 'eCommerce Product Review', 'eCommerce Product Review', 'com.angkorteam.ecommerce.page.product.ProductReviewPage', 1),
-  (147, 1, '/ecommerce/product/modify', 'eCommerce Product Modify', 'eCommerce Product Modify', 'eCommerce Product Modify', 'com.angkorteam.ecommerce.page.product.ProductModifyPage', 1),
-  (146, 1, '/ecommerce/product/create', 'eCommerce Product Create', 'eCommerce Product Create', 'eCommerce Product Create', 'com.angkorteam.ecommerce.page.product.ProductCreatePage', 1),
-  (145, 1, '/ecommerce/product/browse', 'eCommerce Product Browse', 'eCommerce Product Browse', 'eCommerce Product Browse', 'com.angkorteam.ecommerce.page.product.ProductBrowsePage', 1),
-  (142, 1, '/ecommerce/discount/modify', 'eCommerce Discount Modify', 'eCommerce Discount Modify', 'eCommerce Discount Modify', 'com.angkorteam.ecommerce.page.discount.DiscountModifyPage', 1),
-  (143, 1, '/ecommerce/discount/create', 'eCommerce Discount Create', 'eCommerce Discount Create', 'eCommerce Discount Create', 'com.angkorteam.ecommerce.page.discount.DiscountCreatePage', 1),
-  (144, 1, '/ecommerce/discount/browse', 'eCommerce Discount Browse', 'eCommerce Discount Browse', 'eCommerce Discount Browse', 'com.angkorteam.ecommerce.page.discount.DiscountBrowsePage', 1),
-  (139, 1, '/ecommerce/category/modify', 'eCommerce Category Modify', 'eCommerce Category Modify', 'eCommerce Category Modify', 'com.angkorteam.ecommerce.page.category.CategoryModifyPage', 1),
-  (140, 1, '/ecommerce/category/create', 'eCommerce Category Create', 'eCommerce Category Create', 'eCommerce Category Create', 'com.angkorteam.ecommerce.page.category.CategoryCreatePage', 1),
-  (141, 1, '/ecommerce/category/browse', 'eCommerce Category Browse', 'eCommerce Category Browse', 'eCommerce Category Browse', 'com.angkorteam.ecommerce.page.category.CategoryBrowsePage', 1),
-  (136, 1, '/ecommerce/brand/modify', 'eCommerce Brand Modify', 'eCommerce Brand Modify', 'eCommerce Brand Modify', 'com.angkorteam.ecommerce.page.brand.BrandModifyPage', 1),
-  (137, 1, '/ecommerce/brand/create', 'eCommerce Brand Create', 'eCommerce Brand Create', 'eCommerce Brand Create', 'com.angkorteam.ecommerce.page.brand.BrandCreatePage', 1),
-  (138, 1, '/ecommerce/brand/browse', 'eCommerce Brand Browse', 'eCommerce Brand Browse', 'eCommerce Brand Browse', 'com.angkorteam.ecommerce.page.brand.BrandBrowsePage', 1),
-  (133, 1, '/ecommerce/payment/modify', 'eCommerce Payment Modify', 'eCommerce Payment Modify', 'eCommerce Payment Modify', 'com.angkorteam.ecommerce.page.payment.PaymentModifyPage', 1),
-  (134, 1, '/ecommerce/payment/create', 'eCommerce Payment Create', 'eCommerce Payment Create', 'eCommerce Payment Create', 'com.angkorteam.ecommerce.page.payment.PaymentCreatePage', 1),
-  (135, 1, '/ecommerce/payment/browse', 'eCommerce Payment Browse', 'eCommerce Payment Browse', 'eCommerce Payment Browse', 'com.angkorteam.ecommerce.page.payment.PaymentBrowsePage', 1),
-  (131, 1, '/ecommerce/size/create', 'eCommerce Size Create', 'eCommerce Size Create', 'eCommerce Size Create', 'com.angkorteam.ecommerce.page.size.SizeCreatePage', 1),
-  (132, 1, '/ecommerce/size/browse', 'eCommerce Size Browse', 'eCommerce Size Browse', 'eCommerce Size Browse', 'com.angkorteam.ecommerce.page.size.SizeBrowsePage', 1),
-  (128, 1, '/ecommerce/branch/transport/modify', 'eCommerce Branch Transport Modify', 'eCommerce Branch Transport Modify', 'eCommerce Branch Transport Modify', 'com.angkorteam.ecommerce.page.branch.BranchTransportModifyPage', 1),
-  (129, 1, '/ecommerce/branch/transport/create', 'eCommerce Branch Transport Create', 'eCommerce Branch Transport Create', 'eCommerce Branch Transport Create', 'com.angkorteam.ecommerce.page.branch.BranchTransportCreatePage', 1),
-  (130, 1, '/ecommerce/branch/transport/browse', 'eCommerce Branch Transport Browse', 'eCommerce Branch Transport Browse', 'eCommerce Branch Transport Browse', 'com.angkorteam.ecommerce.page.branch.BranchTransportBrowsePage', 1),
-  (125, 1, '/ecommerce/branch/opening/modify', 'eCommerce Branch Opening Modify', 'eCommerce Branch Opening Modify', 'eCommerce Branch Opening Modify', 'com.angkorteam.ecommerce.page.branch.BranchOpeningModifyPage', 1),
-  (126, 1, '/ecommerce/branch/opening/create', 'eCommerce Branch Opening Create', 'eCommerce Branch Opening Create', 'eCommerce Branch Opening Create', 'com.angkorteam.ecommerce.page.branch.BranchOpeningCreatePage', 1),
-  (127, 1, '/ecommerce/branch/opening/browse', 'eCommerce Branch Opening Browse', 'eCommerce Branch Opening Browse', 'eCommerce Branch Opening Browse', 'com.angkorteam.ecommerce.page.branch.BranchOpeningBrowsePage', 1),
-  (122, 1, '/ecommerce/branch/modify', 'eCommerce Branch Modify', 'eCommerce Branch Modify', 'eCommerce Branch Modify', 'com.angkorteam.ecommerce.page.branch.BranchModifyPage', 1),
-  (123, 1, '/ecommerce/branch/create', 'eCommerce Branch Create', 'eCommerce Branch Create', 'eCommerce Branch Create', 'com.angkorteam.ecommerce.page.branch.BranchCreatePage', 1),
-  (124, 1, '/ecommerce/branch/browse', 'eCommerce Branch Browse', 'eCommerce Branch Browse', 'eCommerce Branch Browse', 'com.angkorteam.ecommerce.page.branch.BranchBrowsePage', 1),
-  (119, 1, '/ecommerce/article/modify', 'eCommerce Article Modify', 'eCommerce Article Modify', 'eCommerce Article Modify', 'com.angkorteam.ecommerce.page.article.ArticleModifyPage', 1),
-  (120, 1, '/ecommerce/article/create', 'eCommerce Article Create', 'eCommerce Article Create', 'eCommerce Article Create', 'com.angkorteam.ecommerce.page.article.ArticleCreatePage', 1),
-  (121, 1, '/ecommerce/article/browse', 'eCommerce Article Browse', 'eCommerce Article Browse', 'eCommerce Article Browse', 'com.angkorteam.ecommerce.page.article.ArticleBrowsePage', 1),
-  (116, 1, '/ecommerce/banner/browse', 'eCommerce Banner Browse', 'eCommerce Banner Browse', 'eCommerce Banner Browse', 'com.angkorteam.ecommerce.page.banner.BannerBrowsePage', 1),
-  (117, 1, '/ecommerce/banner/create', 'eCommerce Banner Create', 'eCommerce Banner Create', 'eCommerce Banner Create', 'com.angkorteam.ecommerce.page.banner.BannerCreatePage', 1),
-  (118, 1, '/ecommerce/banner/modify', 'eCommerce Banner Modify', 'eCommerce Banner Modify', 'eCommerce Banner Modify', 'com.angkorteam.ecommerce.page.banner.BannerModifyPage', 1),
-  (1, 1, '/platform/dashboard', 'Platform Dashboard', 'Platform Dashboard', 'Platform Dashboard', 'com.angkorteam.platform.page.DashboardPage', 1),
-  (2, 1, '/platform/menu/browse', 'Platform Menu Browse', 'Platform Menu Browse', 'Platform Menu Browse', 'com.angkorteam.platform.page.menu.MenuBrowsePage', 1),
-  (5, 1, '/platform/menu/item/browse', 'Platform Menu Item Browse', 'Platform Menu Item Browse', 'Platform Menu Item Browse', 'com.angkorteam.platform.page.menuitem.MenuItemBrowsePage', 1),
-  (8, 1, '/platform/section/browse', 'Platform Section Browse', 'Platform Section Browse', 'Platform Section Browse', 'com.angkorteam.platform.page.section.SectionBrowsePage', 1),
-  (11, 1, '/platform/layout/browse', 'Platform Layout Browse', 'Platform Layout Browse', 'Platform Layout Browse', 'com.angkorteam.platform.page.layout.LayoutBrowsePage', 1),
-  (16, 1, '/platform/page/browse', 'Platform Page Browse', 'Platform Page Browse', 'Platform Page Browse', 'com.angkorteam.platform.page.page.PageBrowsePage', 1),
-  (19, 1, '/platform/role/browse', 'Platform Role Browse', 'Platform Role Browse', 'Platform Role Browse', 'com.angkorteam.platform.page.role.RoleBrowsePage', 1),
-  (22, 1, '/platform/file/browse', 'Platform File Browse', 'Platform File Browse', 'Platform File Browse', 'com.angkorteam.platform.page.file.FileBrowsePage', 1),
-  (27, 1, '/platform/login', 'Platform Login', 'Platform Login', 'Platform Login', 'com.angkorteam.platform.page.LoginPage', 1),
-  (28, 1, '/platform/logout', 'Platform Logout', 'Platform Logout', 'Platform Logout', 'com.angkorteam.platform.page.LogoutPage', 1),
-  (29, 1, '/platform/rest/browse', 'Platform Rest Browse', 'Platform Rest Browse', 'Platform Rest Browse', 'com.angkorteam.platform.page.rest.RestBrowsePage', 1),
-  (32, 1, '/platform/setting', 'Platform Setting', 'Platform Setting', 'Platform Setting', 'com.angkorteam.platform.page.SettingPage', 1),
-  (23, 1, '/platform/user/browse', 'Platform User Browse', 'Platform User Browse', 'Platform User Browse', 'com.angkorteam.platform.page.user.UserBrowsePage', 1),
-  (100, 1, '/platform/file/create', 'Platform File Create', 'Platform File Create', 'Platform File Create', 'com.angkorteam.platform.page.file.FileCreatePage', 1),
-  (101, 1, '/platform/file/modify', 'Platform File Modify', 'Platform File Modify', 'Platform File Modify', 'com.angkorteam.platform.page.file.FileModifyPage', 1),
-  (103, 1, '/platform/section/modify', 'Platform Section Modify', 'Platform Section Modify', 'Platform Section Modify', 'com.angkorteam.platform.page.section.SectionModifyPage', 1),
-  (104, 1, '/platform/menu/item/modify', 'Platform Menu Item Modify', 'Platform Menu Item Modify', 'Platform Menu Item Modify', 'com.angkorteam.platform.page.menuitem.MenuItemModifyPage', 1),
-  (105, 1, '/platform/menu/modify', 'Platform Menu Modify', 'Platform Menu Modify', 'Platform Menu Modify', 'com.angkorteam.platform.page.menu.MenuModifyPage', 1),
-  (106, 1, '/platform/layout/modify', 'Platform Layout Modify', 'Platform Layout Modify', 'Platform Layout Modify', 'com.angkorteam.platform.page.layout.LayoutModifyPage', 1),
-  (107, 1, '/platform/page/modify', 'Platform Page Modify', 'Platform Page Modify', 'Platform Page Modify', 'com.angkorteam.platform.page.page.PageModifyPage', 1),
-  (108, 1, '/platform/role/create', 'Platform Role Create', 'Platform Role Create', 'Platform Role Create', 'com.angkorteam.platform.page.role.RoleCreatePage', 1),
-  (109, 1, '/platform/role/modify', 'Platform Role Modify', 'Platform Role Modify', 'Platform Role Modify', 'com.angkorteam.platform.page.role.RoleModifyPage', 1),
-  (110, 1, '/platform/user/modify', 'Platform User Modify', 'Platform User Modify', 'Platform User Modify', 'com.angkorteam.platform.page.user.UserModifyPage', 1),
-  (111, 1, '/platform/user/create', 'Platform User Create', 'Platform User Create', 'Platform User Create', 'com.angkorteam.platform.page.user.UserCreatePage', 1),
-  (112, 1, '/platform/user/password', 'Platform User Password', 'Platform User Password', 'Platform User Password', 'com.angkorteam.platform.page.user.UserPasswordPage', 1),
-  (113, 1, '/platform/rest/modify', 'Platform Rest Modify', 'Platform Rest Modify', 'Platform Rest Modify', 'com.angkorteam.platform.page.rest.RestModifyPage', 1),
-  (114, 1, '/ecommerce/color/browse', 'eCommerce Color Browse', 'eCommerce Color Browse', 'eCommerce Color Browse', 'com.angkorteam.ecommerce.page.color.ColorBrowsePage', 1),
-  (115, 1, '/ecommerce/color/create', 'eCommerce Color Create', 'eCommerce Color Create', 'eCommerce Color Create', 'com.angkorteam.ecommerce.page.color.ColorCreatePage', 1);
+CREATE TABLE `ecommerce_cart_product_item` (
 
+  `ecommerce_cart_product_item_id` BIGINT(19) NOT NULL,
+  `ecommerce_product_id`           BIGINT(19) NOT NULL,
+  `ecommerce_product_variant_id`   BIGINT(19) NOT NULL,
+  `ecommerce_cart_id`              BIGINT(19) NOT NULL,
+  `quantity`                       INT(11)    NOT NULL,
 
--- # mysql__platform_page_role_ddl.sql
--- ################################################################
-CREATE TABLE `platform_page_role` (
-
-  `platform_page_role_id` BIGINT(19) NOT NULL,
-  `platform_page_id`      BIGINT(19) NOT NULL,
-  `platform_role_id`      BIGINT(19) NOT NULL,
-
-  UNIQUE KEY (`platform_page_id`, `platform_role_id`),
-  PRIMARY KEY (`platform_page_role_id`)
+  KEY (`ecommerce_product_variant_id`),
+  KEY (`ecommerce_product_id`),
+  KEY (`quantity`),
+  KEY (`ecommerce_cart_id`),
+  PRIMARY KEY (`ecommerce_cart_product_item_id`)
 );
 
 
--- # mysql__platform_page_role_insert.sql
+-- # mysql__ecommerce_category_ddl.sql
 -- ################################################################
-INSERT INTO platform_page_role (platform_page_role_id, platform_role_id, platform_page_id)
-VALUES
-  (uuid_short(), 4, 168),
-  (uuid_short(), 4, 167),
-  (uuid_short(), 5, 166),
-  (uuid_short(), 5, 165),
-  (uuid_short(), 1, 164),
-  (uuid_short(), 1, 163),
-  (uuid_short(), 1, 162),
-  (uuid_short(), 1, 159),
-  (uuid_short(), 1, 160),
-  (uuid_short(), 1, 161),
-  (uuid_short(), 1, 156),
-  (uuid_short(), 1, 157),
-  (uuid_short(), 1, 158),
-  (uuid_short(), 1, 154),
-  (uuid_short(), 1, 155),
-  (uuid_short(), 1, 151),
-  (uuid_short(), 1, 152),
-  (uuid_short(), 1, 153),
-  (uuid_short(), 1, 149),
-  (uuid_short(), 1, 150),
-  (uuid_short(), 1, 148),
-  (uuid_short(), 1, 147),
-  (uuid_short(), 1, 146),
-  (uuid_short(), 1, 145),
-  (uuid_short(), 1, 142),
-  (uuid_short(), 1, 143),
-  (uuid_short(), 1, 144),
-  (uuid_short(), 1, 139),
-  (uuid_short(), 1, 140),
-  (uuid_short(), 1, 141),
-  (uuid_short(), 1, 136),
-  (uuid_short(), 1, 137),
-  (uuid_short(), 1, 138),
-  (uuid_short(), 1, 133),
-  (uuid_short(), 1, 134),
-  (uuid_short(), 1, 135),
-  (uuid_short(), 1, 131),
-  (uuid_short(), 1, 132),
-  (uuid_short(), 1, 128),
-  (uuid_short(), 1, 129),
-  (uuid_short(), 1, 130),
-  (uuid_short(), 1, 125),
-  (uuid_short(), 1, 126),
-  (uuid_short(), 1, 127),
-  (uuid_short(), 1, 122),
-  (uuid_short(), 1, 123),
-  (uuid_short(), 1, 124),
-  (uuid_short(), 1, 119),
-  (uuid_short(), 1, 120),
-  (uuid_short(), 1, 121),
-  (uuid_short(), 1, 116),
-  (uuid_short(), 1, 117),
-  (uuid_short(), 1, 118),
-  (uuid_short(), 1, 1),
-  (uuid_short(), 1, 100),
-  (uuid_short(), 1, 101),
-  (uuid_short(), 1, 103),
-  (uuid_short(), 1, 22),
-  (uuid_short(), 1, 8),
-  (uuid_short(), 1, 2),
-  (uuid_short(), 1, 5),
-  (uuid_short(), 1, 104),
-  (uuid_short(), 1, 105),
-  (uuid_short(), 1, 106),
-  (uuid_short(), 1, 11),
-  (uuid_short(), 1, 16),
-  (uuid_short(), 1, 107),
-  (uuid_short(), 1, 19),
-  (uuid_short(), 1, 108),
-  (uuid_short(), 1, 109),
-  (uuid_short(), 1, 32),
-  (uuid_short(), 1, 110),
-  (uuid_short(), 1, 23),
-  (uuid_short(), 1, 111),
-  (uuid_short(), 1, 112),
-  (uuid_short(), 1, 29),
-  (uuid_short(), 1, 113),
-  (uuid_short(), 1, 114),
-  (uuid_short(), 1, 115);
+CREATE TABLE `ecommerce_category` (
 
+  `ecommerce_category_id`        BIGINT(19)   NOT NULL,
+  `name`                         VARCHAR(255) NOT NULL,
+  `type`                         VARCHAR(255) NOT NULL,
+  `order`                        INT(11),
+  `code`                         VARCHAR(255) NOT NULL,
+  `full_code`                    VARCHAR(255) NOT NULL,
+  `path`                         VARCHAR(255) NOT NULL,
+  `parent_path`                  VARCHAR(255) NOT NULL,
+  `parent_ecommerce_category_id` BIGINT(19),
 
--- # mysql__platform_rest_ddl.sql
--- ################################################################
-CREATE TABLE `platform_rest` (
-
-  `platform_rest_id` BIGINT(19)   NOT NULL,
-  `name`             VARCHAR(255) NOT NULL,
-  `description`      VARCHAR(255),
-  `java_class`       VARCHAR(255) NOT NULL,
-  `version`          INT(11)      NOT NULL DEFAULT 1,
-
-  KEY (`version`),
-  KEY (`description`),
   KEY (`name`),
-  UNIQUE KEY (`java_class`),
-  PRIMARY KEY (`platform_rest_id`)
-);
-
-
--- # mysql__platform_rest_insert.sql
--- ################################################################
-INSERT INTO platform_rest (platform_rest_id, name, description, java_class, version)
-VALUES
-  (1, 'System Controller', 'System Controller', 'com.angkorteam.ecommerce.controller.SystemController', 1);
-
-
--- # mysql__platform_rest_role_ddl.sql
--- ################################################################
-CREATE TABLE `platform_rest_role` (
-
-  `platform_rest_role_id` BIGINT(19) NOT NULL,
-  `platform_rest_id`      BIGINT(19) NOT NULL,
-  `platform_role_id`      BIGINT(19) NOT NULL,
-
-  UNIQUE KEY (`platform_rest_id`, `platform_role_id`),
-  PRIMARY KEY (`platform_rest_role_id`)
-);
-
-
--- # mysql__platform_role_ddl.sql
--- ################################################################
-CREATE TABLE `platform_role` (
-
-  `platform_role_id` BIGINT(19)   NOT NULL,
-  `name`             VARCHAR(100) NOT NULL,
-  `description`      VARCHAR(255),
-  `version`          INT(11)      NOT NULL DEFAULT 1,
-
-  KEY (`version`),
-  KEY (`description`),
-  UNIQUE KEY (`name`),
-  PRIMARY KEY (`platform_role_id`)
-);
-
-
--- # mysql__platform_role_insert.sql
--- ################################################################
-INSERT INTO `platform_role` (`platform_role_id`, `name`, `description`, `version`)
-VALUES
-  (4, 'ecommerce_vendor', 'vendor role', 1),
-  (5, 'ecommerce_user', 'user role', 1),
-  (6, 'ecommerce_advance_vendor', 'advance vendor role', 1),
-  (1, 'administrator', 'administrative role, users belonging to this role are Gods', 1),
-  (2, 'system', 'system role to give users maintain system', 1),
-  (3, 'service', 'service role to give access resource to call api', 1);
-
-
--- # mysql__platform_section_ddl.sql
--- ################################################################
-CREATE TABLE `platform_section` (
-
-  `platform_section_id` BIGINT(19)   NOT NULL,
-  `title`               VARCHAR(100) NOT NULL,
-  `order`               INT(11)      NOT NULL DEFAULT 0,
-  `version`             INT(11)      NOT NULL DEFAULT 1,
-
-  KEY (`version`),
+  KEY (`full_code`),
+  KEY (`code`),
+  KEY (`parent_path`),
+  KEY (`path`),
+  KEY (`type`),
   KEY (`order`),
-  UNIQUE KEY (`title`),
-  PRIMARY KEY (`platform_section_id`)
+  KEY (`parent_ecommerce_category_id`),
+  PRIMARY KEY (`ecommerce_category_id`)
 );
 
 
--- # mysql__platform_section_insert.sql
+-- # mysql__ecommerce_color_ddl.sql
 -- ################################################################
-INSERT INTO `platform_section` (`platform_section_id`, `title`, `order`, `version`)
-VALUES
-  (1, 'Admin Console', 1, 1),
-  (2, 'User Console', 2, 1);
+CREATE TABLE `ecommerce_color` (
 
+  `ecommerce_color_id`   BIGINT(19)   NOT NULL,
+  `value`                VARCHAR(255),
+  `code`                 VARCHAR(255),
+  `img_platform_file_id` BIGINT(19),
+  `reference`            VARCHAR(100) NOT NULL,
 
--- # mysql__platform_setting_ddl.sql
--- ################################################################
-CREATE TABLE `platform_setting` (
-
-  `platform_setting_id` BIGINT(19)   NOT NULL,
-  `key`                 VARCHAR(100) NOT NULL,
-  `description`         VARCHAR(255),
-  `value`               VARCHAR(255) NOT NULL,
-  `version`             INT(11)      NOT NULL DEFAULT 1,
-
-  KEY (`version`),
-  KEY (`description`),
   KEY (`value`),
-  UNIQUE KEY (`key`),
-  PRIMARY KEY (`platform_setting_id`)
+  KEY (`code`),
+  KEY (`img_platform_file_id`),
+  UNIQUE KEY (`reference`),
+  PRIMARY KEY (`ecommerce_color_id`)
 );
 
 
--- # mysql__platform_setting_insert.sql
+-- # mysql__ecommerce_device_ddl.sql
 -- ################################################################
-INSERT INTO `platform_setting` (`platform_setting_id`, `key`, `value`, `description`, `version`)
-VALUES
-  (1, 'home_page', 'Home Page', 'Home Page', 1);
+CREATE TABLE `ecommerce_device` (
+
+  `ecommerce_device_id` BIGINT(19)   NOT NULL,
+  `device_token`       VARCHAR(255) NOT NULL,
+  `platform`           VARCHAR(255) NOT NULL,
+  `platform_user_id`   BIGINT(19),
+
+  KEY (`platform_user_id`),
+  UNIQUE KEY (`device_token`, `platform`),
+  PRIMARY KEY (`ecommerce_device_id`)
+);
 
 
--- # mysql__platform_user_ddl.sql
+-- # mysql__ecommerce_discount_ddl.sql
 -- ################################################################
-CREATE TABLE `platform_user` (
+CREATE TABLE `ecommerce_discount` (
 
-  `platform_user_id` BIGINT(19)   NOT NULL,
-  `login`            VARCHAR(255) NOT NULL,
-  `password`         VARCHAR(255) NOT NULL,
-  `full_name`        VARCHAR(255) NOT NULL,
-  `platform_role_id` BIGINT(19)   NOT NULL,
-  `system`           BIT(1)       NOT NULL DEFAULT 0,
-  `status`           VARCHAR(20)  NOT NULL DEFAULT 'ACTIVE',
-  `version`          INT(11)      NOT NULL DEFAULT 1,
-  `access_token`     VARCHAR(255) NOT NULL,
-  `street`           VARCHAR(255),
-  `city`             VARCHAR(255),
-  `house_number`     VARCHAR(255),
-  `zip`              VARCHAR(255),
-  `phone`            VARCHAR(255),
-  `gender`           VARCHAR(10),
-  `country`          VARCHAR(100),
+  `ecommerce_discount_id` BIGINT(19)   NOT NULL,
+  `name`                 VARCHAR(255) NOT NULL,
+  `type`                 VARCHAR(255) NOT NULL,
+  `value`                VARCHAR(255) NOT NULL,
+  `value_formatted`      VARCHAR(255) NOT NULL,
+  `min_cart_amount`      VARCHAR(255) NOT NULL,
 
+  KEY (`type`),
+  KEY (`value`),
+  KEY (`value_formatted`),
+  KEY (`min_cart_amount`),
+  UNIQUE KEY (`name`),
+  PRIMARY KEY (`ecommerce_discount_id`)
+);
+
+
+-- # mysql__ecommerce_order_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_order` (
+
+  `ecommerce_order_id`    BIGINT(19)     NOT NULL,
+  `ecommerce_shipping_id` BIGINT(19)     NOT NULL,
+  `ecommerce_payment_id`  BIGINT(19)     NOT NULL,
+  `platform_user_id`      BIGINT(19)     NOT NULL,
+  `name`                  VARCHAR(255),
+  `street`                VARCHAR(255),
+  `house_number`          VARCHAR(255),
+  `city`                  VARCHAR(255),
+  `zip`                   VARCHAR(255),
+  `email`                 VARCHAR(255),
+  `phone`                 VARCHAR(255),
+  `note`                  VARCHAR(255),
+  `date_created`          DATETIME       NOT NULL,
+  `buyer_status`          VARCHAR(255)   NOT NULL,
+  `order_status`          VARCHAR(255)   NOT NULL,
+  `total`                 DECIMAL(15, 4) NOT NULL,
+  `shipping_name`         VARCHAR(255)   NOT NULL,
+  `shipping_price`        DECIMAL(15, 4) NOT NULL,
+  `payment_name`          VARCHAR(255)   NOT NULL,
+  `payment_price`         DECIMAL(15, 4) NOT NULL,
+  `ecommerce_region_id`   BIGINT(19),
+
+  KEY (`ecommerce_shipping_id`),
+  KEY (`ecommerce_payment_id`),
+  KEY (`ecommerce_region_id`),
+  KEY (`platform_user_id`),
+  KEY (`name`),
   KEY (`street`),
-  KEY (`city`),
   KEY (`house_number`),
+  KEY (`city`),
   KEY (`zip`),
+  KEY (`email`),
+  KEY (`date_created`),
   KEY (`phone`),
-  KEY (`gender`),
-  KEY (`country`),
-  KEY (`full_name`),
-  KEY (`password`),
-  KEY (`platform_role_id`),
-  KEY (`system`),
-  KEY (`status`),
-  KEY (`version`),
-  UNIQUE KEY (`access_token`),
-  UNIQUE KEY (`login`),
-  PRIMARY KEY (`platform_user_id`)
+  KEY (`total`),
+  KEY (`note`),
+  KEY (`shipping_name`),
+  KEY (`shipping_price`),
+  KEY (`buyer_status`),
+  KEY (`order_status`),
+  PRIMARY KEY (`ecommerce_order_id`)
 );
 
 
--- # mysql__platform_user_insert.sql
+-- # mysql__ecommerce_order_item_ddl.sql
 -- ################################################################
-INSERT INTO `platform_user` (`platform_user_id`, `platform_role_id`, `login`, `password`, `full_name`, `system`, `status`, `version`, `access_token`)
-VALUES
-  (1, 1, 'admin', md5('admin'), 'admin', TRUE, 'ACTIVE', 1, uuid()),
-  (2, 2, 'system', md5('system'), 'system', TRUE, 'ACTIVE', 1, uuid()),
-  (3, 3, 'service', md5('service'), 'service', TRUE, 'ACTIVE', 1, uuid());
+CREATE TABLE `ecommerce_order_item` (
+
+  `ecommerce_order_item_id`      BIGINT(19) NOT NULL,
+  `ecommerce_order_id`           BIGINT(19) NOT NULL,
+  `ecommerce_category_id`        BIGINT(19) NOT NULL,
+  `quantity`                     INT(11),
+  `total_price`                  DECIMAL(15, 4),
+  `ecommerce_product_id`         BIGINT(19) NOT NULL,
+  `ecommerce_product_variant_id` BIGINT(19),
+  `product_url`                  VARCHAR(255),
+  `product_name`                 VARCHAR(255),
+  `product_price`                DECIMAL(15, 4),
+  `product_shipping_price`       DECIMAL(15, 4),
+  `product_reference`            VARCHAR(255),
+  `product_discount_price`       DECIMAL(15, 4),
+  `product_description`          VARCHAR(255),
+  `product_main_image`           VARCHAR(255),
+  `product_main_image_file_id`   BIGINT(19),
+  `variant_reference`            VARCHAR(255),
+  `ecommerce_color_id`           BIGINT(19),
+  `color_value`                  VARCHAR(255),
+  `color_code`                   VARCHAR(255),
+  `color_img`                    VARCHAR(255),
+  `color_reference`              VARCHAR(255),
+  `color_img_file_id`            BIGINT(19),
+  `ecommerce_size_id`            BIGINT(19),
+  `size_value`                   VARCHAR(255),
+  `size_reference`               VARCHAR(255),
+
+  KEY (`ecommerce_order_id`),
+  KEY (`ecommerce_category_id`),
+  KEY (`quantity`),
+  KEY (`total_price`),
+  KEY (`ecommerce_product_id`),
+  KEY (`ecommerce_product_variant_id`),
+  KEY (`product_url`),
+  KEY (`product_name`),
+  KEY (`product_price`),
+  KEY (`product_shipping_price`),
+  KEY (`product_discount_price`),
+  KEY (`product_description`),
+  KEY (`product_main_image`),
+  KEY (`product_main_image_file_id`),
+  KEY (`variant_reference`),
+  KEY (`ecommerce_color_id`),
+  KEY (`color_value`),
+  KEY (`color_code`),
+  KEY (`color_img`),
+  KEY (`color_reference`),
+  KEY (`color_img_file_id`),
+  KEY (`ecommerce_size_id`),
+  KEY (`size_value`),
+  KEY (`size_reference`),
+  PRIMARY KEY (`ecommerce_order_item_id`)
+);
 
 
--- # mysql__platform_uuid_ddl.sql
+-- # mysql__ecommerce_page_ddl.sql
 -- ################################################################
-CREATE TABLE `platform_uuid` (
+CREATE TABLE `ecommerce_page` (
 
-  `platform_uuid_id` BIGINT(19)   NOT NULL AUTO_INCREMENT,
-  `table_name`       VARCHAR(255) NOT NULL,
-  `value`            BIGINT(19)   NOT NULL,
+  `ecommerce_page_id` BIGINT(19)    NOT NULL,
+  `title`             VARCHAR(255)  NOT NULL,
+  `text`              VARCHAR(1000) NOT NULL,
+  `order`             INT(11),
+
+  KEY (`order`),
+  KEY (`text`),
+  UNIQUE KEY (`title`),
+  PRIMARY KEY (`ecommerce_page_id`)
+);
+
+
+-- # mysql__ecommerce_payment_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_payment` (
+
+  `ecommerce_payment_id` BIGINT(19)     NOT NULL,
+  `name`                VARCHAR(255)   NOT NULL,
+  `description`         VARCHAR(255),
+  `price`               DECIMAL(15, 4) NOT NULL,
+
+  KEY (`name`),
+  KEY (`description`),
+  KEY (`price`),
+  PRIMARY KEY (`ecommerce_payment_id`)
+);
+
+
+-- # mysql__ecommerce_product_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_product` (
+
+  `ecommerce_product_id`                 BIGINT(19)   NOT NULL,
+  `platform_user_id`                     BIGINT(19)   NOT NULL,
+  `name`                                 VARCHAR(255),
+  `price`                                DECIMAL(15, 4),
+  `url`                                  VARCHAR(255),
+  `ready`                                BIT(1),
+  `shipping_price`                       DECIMAL(15, 4),
+  `quantity`                             INT(11)      NOT NULL,
+  `ecommerce_category_id`                BIGINT(19)   NOT NULL,
+  `ecommerce_brand_id`                   BIGINT(19),
+  `discount_price`                       DECIMAL(15, 4),
+  `reference`                            VARCHAR(100) NOT NULL,
+  `description`                          TEXT,
+  `main_image_platform_file_id`          BIGINT(19),
+  `main_image_high_res_platform_file_id` BIGINT(19),
+  `last_modified`                        DATETIME,
+  `popularity`                           INT(11),
+  `normal_price`                         DECIMAL(15, 4),
+
+  KEY (`main_image_platform_file_id`),
+  KEY (`main_image_high_res_platform_file_id`),
+  KEY (`discount_price`),
+  KEY (`ecommerce_category_id`),
+  KEY (`ecommerce_brand_id`),
+  KEY (`url`),
+  KEY (`shipping_price`),
+  KEY (`quantity`),
+  KEY (`price`),
+  KEY (`name`),
+  KEY (`ready`),
+  KEY (`last_modified`),
+  KEY (`popularity`),
+  KEY (`normal_price`),
+  KEY (`platform_user_id`),
+  UNIQUE KEY (`reference`),
+  FULLTEXT KEY (`description`),
+  PRIMARY KEY (`ecommerce_product_id`)
+);
+
+
+-- # mysql__ecommerce_product_image_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_product_image` (
+
+  `ecommerce_product_image_id` BIGINT(19) NOT NULL,
+  `ecommerce_product_id`       BIGINT(19) NOT NULL,
+  `name`                       VARCHAR(255),
+  `platform_file_id`           BIGINT(19) NOT NULL,
+
+  KEY (`name`),
+  KEY (`platform_file_id`),
+  KEY (`ecommerce_product_id`),
+  PRIMARY KEY (`ecommerce_product_image_id`)
+);
+
+
+-- # mysql__ecommerce_product_related_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_product_related` (
+
+  `ecommerce_product_related_id` BIGINT(19) NOT NULL,
+  `ecommerce_product_id`         BIGINT(19) NOT NULL,
+  `related_ecommerce_product_id` BIGINT(19) NOT NULL,
+
+  UNIQUE KEY (`ecommerce_product_id`, `related_ecommerce_product_id`),
+  PRIMARY KEY (`ecommerce_product_related_id`)
+);
+
+
+-- # mysql__ecommerce_product_variant_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_product_variant` (
+
+  `ecommerce_product_variant_id` BIGINT(19)   NOT NULL,
+  `ecommerce_product_id`         BIGINT(19)   NOT NULL,
+  `quantity`                     INT(11)      NOT NULL,
+  `reference`                    VARCHAR(100) NOT NULL,
+  `ecommerce_color_id`           BIGINT(19)   NOT NULL,
+  `ecommerce_size_id`            BIGINT(19)   NOT NULL,
+
+  KEY (`ecommerce_product_id`),
+  KEY (`quantity`),
+  UNIQUE KEY (`reference`),
+  UNIQUE KEY (`ecommerce_color_id`, `ecommerce_size_id`, `ecommerce_product_id`),
+  PRIMARY KEY (`ecommerce_product_variant_id`)
+);
+
+
+-- # mysql__ecommerce_product_variant_image_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_product_variant_image` (
+
+  `ecommerce_product_variant_image_id` BIGINT(19) NOT NULL,
+  `ecommerce_product_variant_id`       BIGINT(19) NOT NULL,
+  `name`                               VARCHAR(255),
+  `platform_file_id`                   BIGINT(19) NOT NULL,
+  `ecommerce_product_id`               BIGINT(19) NOT NULL,
+
+  KEY (`name`),
+  KEY (`ecommerce_product_id`),
+  KEY (`platform_file_id`),
+  KEY (`ecommerce_product_variant_id`),
+  PRIMARY KEY (`ecommerce_product_variant_image_id`)
+);
+
+
+-- # mysql__ecommerce_shipping_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_shipping` (
+
+  `ecommerce_shipping_id` BIGINT(19)     NOT NULL,
+  `name`                  VARCHAR(255)   NOT NULL,
+  `min_cart_amount`       DOUBLE(15, 4)  NOT NULL,
+  `ecommerce_branch_id`   BIGINT(19),
+  `description`           VARCHAR(255),
+  `availability_time`     VARCHAR(255),
+  `availability_date`     VARCHAR(255),
+  `type`                  VARCHAR(255)   NOT NULL,
+  `price`                 DECIMAL(15, 4) NOT NULL,
+
+  KEY (`type`),
+  KEY (`price`),
+  UNIQUE KEY (`name`, `ecommerce_branch_id`),
+  PRIMARY KEY (`ecommerce_shipping_id`)
+);
+
+
+-- # mysql__ecommerce_shipping_payment_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_shipping_payment` (
+
+  `ecommerce_shipping_payment_id` BIGINT(19) NOT NULL,
+  `ecommerce_shipping_id`         BIGINT(19) NOT NULL,
+  `ecommerce_payment_id`          BIGINT(19) NOT NULL,
+
+  UNIQUE KEY (`ecommerce_shipping_id`, `ecommerce_payment_id`),
+  PRIMARY KEY (`ecommerce_shipping_payment_id`)
+);
+
+
+-- # mysql__ecommerce_shop_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_shop` (
+
+  `ecommerce_shop_id`          BIGINT(19) NOT NULL,
+  `name`                       VARCHAR(255),
+  `description`                VARCHAR(255),
+  `url`                        VARCHAR(255),
+  `logo_platform_file_id`      BIGINT(19),
+  `google_ua`                  VARCHAR(100),
+  `language`                   VARCHAR(100),
+  `flag_icon_platform_file_id` BIGINT(19),
+
+  KEY (`flag_icon_platform_file_id`),
+  KEY (`google_ua`),
+  KEY (`language`),
+  KEY (`logo_platform_file_id`),
+  KEY (`description`),
+  UNIQUE KEY (`name`),
+  PRIMARY KEY (`ecommerce_shop_id`)
+);
+
+
+-- # mysql__ecommerce_size_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_size` (
+
+  `ecommerce_size_id` BIGINT(19)   NOT NULL,
+  `value`             VARCHAR(255),
+  `reference`         VARCHAR(100) NOT NULL,
 
   KEY (`value`),
-  UNIQUE KEY (`table_name`),
-  PRIMARY KEY (`platform_uuid_id`)
-
+  UNIQUE KEY (`reference`),
+  PRIMARY KEY (`ecommerce_size_id`)
 );
 
 
-
--- # mysql__platform_uuid_insert.sql
+-- # mysql__ecommerce_vendor_order_ddl.sql
 -- ################################################################
-INSERT INTO `platform_uuid` (table_name, value)
-  VALUE
-  ('ecommerce_banner', 1000),
-  ('ecommerce_brand', 1000),
-  ('ecommerce_page', 1000),
-  ('ecommerce_category', 1000);
+CREATE TABLE `ecommerce_vendor_order` (
+
+  `ecommerce_vendor_order_id` BIGINT(19)     NOT NULL,
+  `ecommerce_order_id`        BIGINT(19)     NOT NULL,
+  `date_created`              DATETIME       NOT NULL,
+  `order_status`              VARCHAR(255)   NOT NULL,
+  `vendor_status`             VARCHAR(255)   NOT NULL,
+  `platform_user_id`          BIGINT(19)     NOT NULL,
+  `total`                     DECIMAL(15, 4) NOT NULL,
+
+  KEY (`ecommerce_order_id`),
+  KEY (`vendor_status`),
+  KEY (`order_status`),
+  KEY (`date_created`),
+  KEY (`total`),
+  KEY (`platform_user_id`),
+  PRIMARY KEY (`ecommerce_vendor_order_id`)
+);
+
+
+-- # mysql__ecommerce_vendor_order_item_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_vendor_order_item` (
+
+  `ecommerce_vendor_order_item_id`      BIGINT(19) NOT NULL,
+  `ecommerce_vendor_order_id`           BIGINT(19) NOT NULL,
+  `ecommerce_category_id`               BIGINT(19) NOT NULL,
+  `quantity`                            INT(11),
+  `total_price`                         DECIMAL(15, 4),
+  `ecommerce_product_id`                BIGINT(19) NOT NULL,
+  `ecommerce_product_variant_id`        BIGINT(19),
+  `product_url`                         VARCHAR(255),
+  `product_name`                        VARCHAR(255),
+  `product_price`                       DECIMAL(15, 4),
+  `product_reference`                   VARCHAR(255),
+  `product_discount_price`              DECIMAL(15, 4),
+  `product_description`                 VARCHAR(255),
+  `product_main_image`                  VARCHAR(255),
+  `product_main_image_platform_file_id` BIGINT(19),
+  `variant_reference`                   VARCHAR(255),
+  `ecommerce_color_id`                  BIGINT(19),
+  `color_value`                         VARCHAR(255),
+  `color_code`                          VARCHAR(255),
+  `color_img`                           VARCHAR(255),
+  `color_reference`                     VARCHAR(255),
+  `color_img_platform_file_id`          BIGINT(19),
+  `ecommerce_size_id`                   BIGINT(19),
+  `size_value`                          VARCHAR(255),
+  `size_reference`                      VARCHAR(255),
+
+  KEY (`ecommerce_vendor_order_id`),
+  KEY (`ecommerce_category_id`),
+  KEY (`quantity`),
+  KEY (`total_price`),
+  KEY (`ecommerce_product_id`),
+  KEY (`ecommerce_product_variant_id`),
+  KEY (`product_url`),
+  KEY (`product_name`),
+  KEY (`product_price`),
+  KEY (`product_discount_price`),
+  KEY (`product_description`),
+  KEY (`product_main_image`),
+  KEY (`product_main_image_platform_file_id`),
+  KEY (`variant_reference`),
+  KEY (`ecommerce_color_id`),
+  KEY (`color_value`),
+  KEY (`color_code`),
+  KEY (`color_img`),
+  KEY (`color_reference`),
+  KEY (`color_img_platform_file_id`),
+  KEY (`ecommerce_size_id`),
+  KEY (`size_value`),
+  KEY (`size_reference`),
+  PRIMARY KEY (`ecommerce_vendor_order_item_id`)
+);
+
+
+-- # mysql__ecommerce_wishlist_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_wishlist` (
+
+  `ecommerce_wishlist_id` BIGINT(19) NOT NULL,
+  `platform_user_id`      BIGINT(19) NOT NULL,
+  `ecommerce_product_id`  BIGINT(19) NOT NULL,
+
+  UNIQUE KEY (`platform_user_id`, `ecommerce_product_id`),
+  PRIMARY KEY (`ecommerce_wishlist_id`)
+);
 
 

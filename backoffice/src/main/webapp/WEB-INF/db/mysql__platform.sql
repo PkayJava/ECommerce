@@ -107,7 +107,7 @@ CREATE TABLE `platform_menu` (
 
 -- # mysql__platform_menu_insert.sql
 -- ################################################################
-INSERT INTO `platform_menu` (`platform_menu_id`, `platform_section_id`, `platform_parent_menu_id`, `title`, `path`, `icon`, `order`, `version`)
+INSERT INTO `platform_menu` (`platform_menu_id`, `platform_section_id`, `parent_platform_menu_id`, `title`, `path`, `icon`, `order`, `version`)
 VALUES
   (1, 1, NULL, 'Content', 'Admin Console > Content', 'fa-align-justify', 1, 1),
   (2, 1, NULL, 'Security', 'Admin Console > Security', 'fa-lock', 2, 1),

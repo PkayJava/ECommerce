@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<wicket:extend>
+    <wicket:container wicket:id="layout">
+        <div class="box box-primary">
+            <form role="form" wicket:id="form">
+                <div class="box-body">
+                    <!-- Row -->
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>Login</label>
+                        <span wicket:id="loginLabel" type="text" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>Full Name</label>
+                        <span wicket:id="fullNameLabel" type="text" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <hr/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>Reference</label>
+                        <span wicket:id="referenceLabel" type="text" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>Name</label>
+                        <span wicket:id="nameLabel" type="text" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <label wicket:for="shippingPriceField">Shipping Price</label>
+                        <input wicket:id="shippingPriceField" type="text" class="form-control"/>
+                        <span wicket:id="shippingPriceFeedback" class="help-block"/>
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <label>Normal Price</label>
+                        <span wicket:id="normalPriceLabel" type="text" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <label>Discount Price</label>
+                        <span wicket:id="discountPriceLabel" type="text" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label>Description</label>
+                        <span wicket:id="descriptionLabel" type="text" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>Category</label>
+                        <span wicket:id="categoryLabel" type="text" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>Brand</label>
+                        <span wicket:id="brandLabel" type="text" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>Main Image</label>
+                        <img wicket:id="mainImageLabel" class="img-responsive img-thumbnail"/>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label>Main Image High Res</label>
+                        <img wicket:id="mainImageHighResLabel" class="img-responsive img-thumbnail"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <hr/>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="box-footer">
+                    <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                    <a wicket:id="deleteButton" class="btn btn-danger">Delete</a>
+                    <a wicket:id="closeButton" class="btn btn-default pull-right">Close</a>
+                </div>
+            </form>
+        </div>
+    </wicket:container>
+</wicket:extend>
+</body>
+</html>

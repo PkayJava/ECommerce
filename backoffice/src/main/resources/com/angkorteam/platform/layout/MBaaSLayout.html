@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:border>
+    <div class="wrapper">
+        <!-- Main Header -->
+        <header class="main-header">
+
+            <!-- Logo -->
+            <a class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><wicket:message key="brand.text.mini"/></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><wicket:message key="brand.text"/></span>
+            </a>
+
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#"><i class="fa fa-user"></i> <span wicket:id="welcomeNameLabel"></span></a>
+                        </li>
+                        <wicket:enclosure child="logoutPage">
+                            <li>
+                                <a wicket:id="logoutPage"><i class="fa fa-sign-out"></i> <span>Logout</span></a>
+                            </li>
+                        </wicket:enclosure>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <wicket:container wicket:id="sectionWidgets"/>
+                </ul>
+                <!-- /.sidebar-menu -->
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section wicket:id="headerContainer" class="content-header">
+                <h1>
+                    <wicket:container wicket:id="headerTitle"/>
+                    <small wicket:id="headerDescription"/>
+                </h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <wicket:body/>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2016 <a href="#">Angkor Team</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+</wicket:border>
+</html>

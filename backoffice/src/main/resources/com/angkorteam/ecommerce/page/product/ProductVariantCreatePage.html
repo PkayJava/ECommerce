@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<wicket:extend>
+    <wicket:container wicket:id="layout">
+        <div class="box box-primary">
+            <form role="form" wicket:id="form">
+                <div class="box-body">
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="referenceField">Reference</label>
+                        <input wicket:id="referenceField" type="text" class="form-control"/>
+                        <span wicket:id="referenceFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="colorField">Color</label>
+                        <select wicket:id="colorField" class="form-control select2" style="width: 100%;"></select>
+                        <span wicket:id="colorFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="sizeField">Size</label>
+                        <select wicket:id="sizeField" class="form-control select2" style="width: 100%;"></select>
+                        <span wicket:id="sizeFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="quantityField">Quantity</label>
+                        <input wicket:id="quantityField" type="text" class="form-control"/>
+                        <span wicket:id="quantityFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label>Image</label>
+                        <div wicket:id="imageField"/>
+                        <span wicket:id="imageFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="box-footer">
+                    <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                    <a wicket:id="closeButton" class="btn btn-default pull-right">Close</a>
+                </div>
+            </form>
+        </div>
+    </wicket:container>
+</wicket:extend>
+</body>
+</html>

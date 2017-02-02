@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<wicket:extend>
+    <wicket:container wicket:id="layout">
+        <div class="box box-primary">
+            <form role="form" wicket:id="form">
+                <div class="box-body">
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="homePageField">Home Page</label>
+                        <select wicket:id="homePageField" class="form-control select2" style="width: 100%;"></select>
+                        <span wicket:id="homePageFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="googleApiKeyField">Google Api Key</label>
+                        <input type="text" wicket:id="googleApiKeyField" class="form-control"/>
+                        <span wicket:id="googleApiKeyFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="assetField">Asset</label>
+                        <input type="text" wicket:id="assetField" class="form-control"/>
+                        <span wicket:id="assetFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="timeFormatField">Time Format</label>
+                        <input type="text" wicket:id="timeFormatField" class="form-control"/>
+                        <span wicket:id="timeFormatFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="dateFormatField">Date Format</label>
+                        <input type="text" wicket:id="dateFormatField" class="form-control"/>
+                        <span wicket:id="dateFormatFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="datetimeFormatField">Datetime Format</label>
+                        <input type="text" wicket:id="datetimeFormatField" class="form-control"/>
+                        <span wicket:id="datetimeFormatFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="priceFormatField">Price Format</label>
+                        <input type="text" wicket:id="priceFormatField" class="form-control"/>
+                        <span wicket:id="priceFormatFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="currencyField">Currency</label>
+                        <input type="text" wicket:id="currencyField" class="form-control"/>
+                        <span wicket:id="currencyFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="box-footer">
+                    <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                </div>
+            </form>
+        </div>
+    </wicket:container>
+</wicket:extend>
+</body>
+</html>

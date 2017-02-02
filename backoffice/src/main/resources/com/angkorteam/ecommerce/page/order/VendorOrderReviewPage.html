@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<wicket:extend>
+    <wicket:fragment wicket:id="itemTemplate">
+        <td><wicket:container wicket:id="quantityLabel"/></td>
+        <td><wicket:container wicket:id="productLabel"/></td>
+        <td><wicket:container wicket:id="codeLabel"/></td>
+        <td><wicket:container wicket:id="colorLabel"/></td>
+        <td><wicket:container wicket:id="sizeLabel"/></td>
+        <td><wicket:container wicket:id="unitPriceLabel"/></td>
+        <td><wicket:container wicket:id="amountLabel"/></td>
+    </wicket:fragment>
+    <wicket:container wicket:id="layout">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <i class="fa fa-envelope"></i>
+
+                <h3 class="box-title" wicket:id="orderNoLabel"></h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <!-- info row -->
+                <div class="row invoice-info">
+                    <div class="col-sm-4 invoice-col">
+
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 invoice-col">
+
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 invoice-col">
+                        <b>Created Date:</b> <wicket:container wicket:id="createdDateLabel"/><br>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                <!-- Table row -->
+                <div class="row">
+                    <div class="col-xs-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Qty</th>
+                                <th>Product</th>
+                                <th>Code #</th>
+                                <th>Color</th>
+                                <th>Size</th>
+                                <th>Unit Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr wicket:id="items"/>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <!-- accepted payments column -->
+                    <div class="col-xs-6">
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-6">
+                        <p class="lead">Summary</p>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <th>Total:</th>
+                                    <td wicket:id="totalAmountLabel"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                <!-- this row will not appear when printing -->
+                <div class="row no-print">
+                    <div class="col-xs-12">
+                        <a wicket:id="closeButton" class="btn btn-default pull-right"><i class="fa fa-print"></i> Close</a>
+                        <a wicket:id="confirmStockButton" type="button" class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-credit-card"></i> Confirm Stock</a>
+                        <a wicket:id="packageAndDeliveryButton" type="button" class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-credit-card"></i> Package & Delivery</a>
+                        <a wicket:id="cancelButton" type="button" class="btn btn-success pull-right" style="margin-right: 5px;"><i class="fa fa-credit-card"></i> Cancel</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </wicket:container>
+</wicket:extend>
+</body>
+</html>

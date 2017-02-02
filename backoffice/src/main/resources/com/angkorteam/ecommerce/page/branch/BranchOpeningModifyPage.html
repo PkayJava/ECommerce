@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<wicket:extend>
+    <wicket:container wicket:id="layout">
+        <div class="box box-primary">
+            <form role="form" wicket:id="form">
+                <div class="box-body">
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="dayField">Day</label>
+                        <input wicket:id="dayField" type="text" class="form-control"/>
+                        <span wicket:id="dayFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="openingField">Opening</label>
+                        <textarea wicket:id="openingField" class="form-control"></textarea>
+                        <span wicket:id="openingFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="box-footer">
+                    <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                    <a wicket:id="closeButton" class="btn btn-default pull-right">Close</a>
+                </div>
+            </form>
+        </div>
+    </wicket:container>
+</wicket:extend>
+</body>
+</html>

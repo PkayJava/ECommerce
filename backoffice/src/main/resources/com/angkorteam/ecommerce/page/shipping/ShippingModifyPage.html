@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<wicket:extend>
+    <wicket:container wicket:id="layout">
+        <div class="box box-primary">
+            <form role="form" wicket:id="form">
+                <div class="box-body">
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="nameField">Name</label>
+                        <input wicket:id="nameField" type="text" class="form-control"/>
+                        <span wicket:id="nameFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="priceField">Price</label>
+                        <input wicket:id="priceField" type="text" class="form-control"/>
+                        <span wicket:id="priceFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="minCartAmountField">Minimum Cart Amount</label>
+                        <input wicket:id="minCartAmountField" type="text" class="form-control"/>
+                        <span wicket:id="minCartAmountFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="availabilityTimeField">AvailabilityTime</label>
+                        <input wicket:id="availabilityTimeField" type="text" class="form-control"/>
+                        <span wicket:id="availabilityTimeFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="availabilityDateField">Availability Date</label>
+                        <input wicket:id="availabilityDateField" type="text" class="form-control"/>
+                        <span wicket:id="availabilityDateFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="descriptionField">Description</label>
+                        <input wicket:id="descriptionField" type="text" class="form-control"/>
+                        <span wicket:id="descriptionFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="typeField">Type</label>
+                        <select wicket:id="typeField" class="form-control"/>
+                        <span wicket:id="typeFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="branchField">Branch</label>
+                        <select wicket:id="branchField" class="form-control select2" style="width: 100%;"></select>
+                        <span wicket:id="branchFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="paymentField">Payment</label>
+                        <select wicket:id="paymentField" class="form-control select2" style="width: 100%;"></select>
+                        <span wicket:id="paymentFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="box-footer">
+                    <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                    <a wicket:id="closeButton" class="btn btn-default pull-right">Close</a>
+                </div>
+            </form>
+        </div>
+    </wicket:container>
+</wicket:extend>
+</body>
+</html>

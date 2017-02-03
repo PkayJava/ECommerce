@@ -144,7 +144,7 @@ public class BannerCreatePage extends MBaaSPage {
         insertQuery.addValue("type = :type", this.type);
         insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", productId);
         insertQuery.addValue("ecommerce_category_id = :ecommerce_category_id", categoryId);
-        insertQuery.addValue("image_url_file_id = :image_url_file_id", imageUrlFileId);
+        insertQuery.addValue("image_url_platform_file_id = :image_url_platform_file_id ", imageUrlFileId);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
         setResponsePage(BannerBrowsePage.class);
     }

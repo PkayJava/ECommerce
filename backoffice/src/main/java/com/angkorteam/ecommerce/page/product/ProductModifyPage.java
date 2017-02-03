@@ -233,8 +233,8 @@ public class ProductModifyPage extends MBaaSPage {
         updateQuery.addValue("description = :description", this.description);
         updateQuery.addValue("last_modified = :last_modified", new Date());
         updateQuery.addValue("discount_price = :discount_price", this.discountPrice);
-        updateQuery.addValue("main_image_file_id = :main_image_file_id", mainImageFileId);
-        updateQuery.addValue("main_image_high_res_file_id = :main_image_high_res_file_id", mainImageHighResFileId);
+        updateQuery.addValue("main_image_platform_file_id = :main_image_platform_file_id", mainImageFileId);
+        updateQuery.addValue("main_image_high_res_platform_file_id = :main_image_high_res_platform_file_id", mainImageHighResFileId);
         updateQuery.addValue("ready = :ready", false);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

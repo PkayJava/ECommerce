@@ -80,8 +80,8 @@ public class RoleCreatePage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         Long roleId = randomUUIDLong();
         InsertQuery insertQuery = null;
-        insertQuery = new InsertQuery("role");
-        insertQuery.addValue("role_id = :role_id", roleId);
+        insertQuery = new InsertQuery("platform_role");
+        insertQuery.addValue("platform_role_id = :role_id", roleId);
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("description = :description", this.description);
         insertQuery.addValue("version = :version", 1);
@@ -89,20 +89,20 @@ public class RoleCreatePage extends MBaaSPage {
 
         if (this.pageValue != null && !this.pageValue.isEmpty()) {
             for (Option page : this.pageValue) {
-                insertQuery = new InsertQuery("page_role");
-                insertQuery.addValue("page_role_id = :page_role_id", randomUUIDLong());
-                insertQuery.addValue("page_id = :page_id", page.getId());
-                insertQuery.addValue("role_id = :role_id", roleId);
+                insertQuery = new InsertQuery("platform_page_role");
+                insertQuery.addValue("platform_page_role_id = :page_role_id", randomUUIDLong());
+                insertQuery.addValue("platform_page_id = :page_id", page.getId());
+                insertQuery.addValue("platform_role_id = :role_id", roleId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
             }
         }
 
         if (this.rest != null && !this.rest.isEmpty()) {
             for (Option rest : this.rest) {
-                insertQuery = new InsertQuery("rest_role");
-                insertQuery.addValue("rest_role_id = :rest_role_id", randomUUIDLong());
-                insertQuery.addValue("rest_id = :rest_id", rest.getId());
-                insertQuery.addValue("role_id = :role_id", roleId);
+                insertQuery = new InsertQuery("platform_rest_role");
+                insertQuery.addValue("platform_rest_role_id = :rest_role_id", randomUUIDLong());
+                insertQuery.addValue("platform_rest_id = :rest_id", rest.getId());
+                insertQuery.addValue("platform_role_id = :role_id", roleId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
             }
         }

@@ -39,7 +39,7 @@ public class SectionModifyPage extends MBaaSPage {
         PageParameters parameters = getPageParameters();
         this.sectionId = parameters.get("sectionId").toString("");
 
-        PlatformSection section = getJdbcTemplate().queryForObject("select * from section where section_id = ?", PlatformSection.class, this.sectionId);
+        PlatformSection section = getJdbcTemplate().queryForObject("select * from platform_section where platform_section_id = ?", PlatformSection.class, this.sectionId);
 
         this.order = section.getOrder();
         this.title = section.getTitle();
@@ -69,10 +69,10 @@ public class SectionModifyPage extends MBaaSPage {
     }
 
     private void saveButtonOnSubmit(Button button) {
-        UpdateQuery updateQuery = new UpdateQuery("section");
+        UpdateQuery updateQuery = new UpdateQuery("platform_section");
         updateQuery.addValue("title = :title", this.title);
         updateQuery.addValue("`order` = :order", this.order);
-        updateQuery.addWhere("section_id = :section_id", this.sectionId);
+        updateQuery.addWhere("platform_section_id = :platform_section_id", this.sectionId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 
         setResponsePage(SectionBrowsePage.class);

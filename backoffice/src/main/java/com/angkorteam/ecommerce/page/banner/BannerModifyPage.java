@@ -153,7 +153,7 @@ public class BannerModifyPage extends MBaaSPage {
         updateQuery.addValue("type = :type", this.type);
         updateQuery.addValue("ecommerce_product_id = :ecommerce_product_id", productId);
         updateQuery.addValue("ecommerce_category_id = :ecommerce_category_id", categoryId);
-        updateQuery.addValue("image_url_file_id = :image_url_file_id", imageUrlFileId);
+        updateQuery.addValue("image_url_platform_file_id = :image_url_platform_file_id", imageUrlFileId);
         updateQuery.addWhere("ecommerce_banner_id = :ecommerce_banner_id", this.ecommerceBannerId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
         setResponsePage(BannerBrowsePage.class);

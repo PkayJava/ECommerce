@@ -45,7 +45,7 @@ public class VendorOrderBrowsePage extends MBaaSPage {
         provider.selectField("ecommerceVendorOrderId", String.class);
         provider.selectField("userId", String.class);
 
-        provider.addWhere("user_id = '" + getSession().getUserId() + "'");
+        provider.addWhere("user_id = '" + getSession().getPlatformUserId() + "'");
 
         provider.setSort("dateCreated", SortOrder.DESCENDING);
 

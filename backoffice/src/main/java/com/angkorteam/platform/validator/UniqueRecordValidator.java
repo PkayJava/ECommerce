@@ -3,7 +3,7 @@ package com.angkorteam.platform.validator;
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
-import com.angkorteam.platform.Spring;
+import com.angkorteam.platform.Platform;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
@@ -75,7 +75,7 @@ public class UniqueRecordValidator<T> implements IValidator<T> {
         }
         if (newValue != null) {
             try {
-                NamedParameterJdbcTemplate named = Spring.getBean(NamedParameterJdbcTemplate.class);
+                NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
                 SelectQuery selectQuery = new SelectQuery(this.tableName);
                 selectQuery.addField("count(*)");
                 selectQuery.addWhere(this.fieldName + " = :newValue", newValue);

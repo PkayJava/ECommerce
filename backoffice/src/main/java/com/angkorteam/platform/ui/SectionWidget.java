@@ -2,7 +2,7 @@ package com.angkorteam.platform.ui;
 
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
-import com.angkorteam.platform.Spring;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.model.PlatformMenu;
 import com.angkorteam.platform.model.PlatformMenuItem;
 import com.angkorteam.platform.model.PlatformSection;
@@ -33,19 +33,19 @@ public class SectionWidget extends Panel {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        NamedParameterJdbcTemplate named = Spring.getBean(NamedParameterJdbcTemplate.class);
+        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         SelectQuery selectQuery = null;
 
         Label label = new Label("sectionTitle", this.section.getTitle());
         add(label);
 
-        selectQuery = new SelectQuery("menu");
-        selectQuery.addWhere("section_id = :section_id", this.section.getSectionId());
+        selectQuery = new SelectQuery("platform_menu");
+        selectQuery.addWhere("platform_section_id = :section_id", this.section.getPlatformSectionId());
         selectQuery.addOrderBy("`order`");
         List<PlatformMenu> menus = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), PlatformMenu.class);
 
-        selectQuery = new SelectQuery("menu_item");
-        selectQuery.addWhere("section_id = :section_id", this.section.getSectionId());
+        selectQuery = new SelectQuery("platform_menu_item");
+        selectQuery.addWhere("platform_section_id = :section_id", this.section.getPlatformSectionId());
         selectQuery.addOrderBy("`order` ");
         List<PlatformMenuItem> menuItems = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), PlatformMenuItem.class);
         List<Object> items = Lists.newArrayList();
@@ -57,11 +57,11 @@ public class SectionWidget extends Panel {
         for (Object item : items) {
             if (item instanceof PlatformMenu) {
                 PlatformMenu menu = (PlatformMenu) item;
-                MenuWidget itemWidget = new MenuWidget(itemWidgets.newChildId(), menu.getMenuId());
+                MenuWidget itemWidget = new MenuWidget(itemWidgets.newChildId(), menu.getPlatformMenuId());
                 itemWidgets.add(itemWidget);
             } else if (item instanceof PlatformMenuItem) {
                 PlatformMenuItem menuItem = (PlatformMenuItem) item;
-                MenuItemWidget itemWidget = new MenuItemWidget(itemWidgets.newChildId(), menuItem.getMenuItemId());
+                MenuItemWidget itemWidget = new MenuItemWidget(itemWidgets.newChildId(), menuItem.getPlatformMenuItemId());
                 itemWidgets.add(itemWidget);
             }
         }

@@ -11,7 +11,7 @@ public class ECommerceOrder implements Serializable{
     private Long ecommerceOrderId;
     private Long ecommerceShippingId;
     private Long ecommercePaymentId;
-    private Long userId;
+    private Long platformUserId;
     private String name;
     private String street;
     private String houseNumber;
@@ -54,12 +54,12 @@ public class ECommerceOrder implements Serializable{
         this.ecommercePaymentId = ecommercePaymentId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getPlatformUserId() {
+        return platformUserId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setPlatformUserId(Long platformUserId) {
+        this.platformUserId = platformUserId;
     }
 
     public String getName() {
@@ -211,7 +211,7 @@ public class ECommerceOrder implements Serializable{
             return false;
         if (ecommercePaymentId != null ? !ecommercePaymentId.equals(that.ecommercePaymentId) : that.ecommercePaymentId != null)
             return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (platformUserId != null ? !platformUserId.equals(that.platformUserId) : that.platformUserId != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (street != null ? !street.equals(that.street) : that.street != null) return false;
         if (houseNumber != null ? !houseNumber.equals(that.houseNumber) : that.houseNumber != null) return false;
@@ -237,7 +237,7 @@ public class ECommerceOrder implements Serializable{
         int result = ecommerceOrderId != null ? ecommerceOrderId.hashCode() : 0;
         result = 31 * result + (ecommerceShippingId != null ? ecommerceShippingId.hashCode() : 0);
         result = 31 * result + (ecommercePaymentId != null ? ecommercePaymentId.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (platformUserId != null ? platformUserId.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (street != null ? street.hashCode() : 0);
         result = 31 * result + (houseNumber != null ? houseNumber.hashCode() : 0);

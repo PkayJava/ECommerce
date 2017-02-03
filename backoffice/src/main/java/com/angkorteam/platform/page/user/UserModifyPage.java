@@ -7,9 +7,9 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.model.PlatformUser;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
-import com.angkorteam.platform.model.PlatformUser;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -50,7 +50,7 @@ public class UserModifyPage extends MBaaSPage {
         PageParameters parameters = getPageParameters();
         this.userId = parameters.get("userId").toString("");
 
-        PlatformUser userRecord = getJdbcTemplate().queryForObject("select * from user where user_id = ?", PlatformUser.class, this.userId);
+        PlatformUser userRecord = getJdbcTemplate().queryForObject("select * from platform_user where platform_user_id = ?", PlatformUser.class, this.userId);
 
         this.form = new Form<>("form");
         layout.add(this.form);
@@ -66,14 +66,14 @@ public class UserModifyPage extends MBaaSPage {
         this.loginLabel = new Label("loginLabel", new PropertyModel<>(this, "login"));
         this.form.add(loginLabel);
 
-        if (userRecord.getRoleId() != null) {
-            SelectQuery selectQuery = new SelectQuery("role");
-            selectQuery.addField("role_id AS id");
+        if (userRecord.getPlatformRoleId() != null) {
+            SelectQuery selectQuery = new SelectQuery("platform_role");
+            selectQuery.addField("platform_role_id AS id");
             selectQuery.addField("name AS text");
-            selectQuery.addWhere("role_id = :role_id", userRecord.getRoleId());
+            selectQuery.addWhere("platform_role_id = :platform_role_id", userRecord.getPlatformRoleId());
             this.role = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
         }
-        this.roleField = new Select2SingleChoice<>("roleField", new PropertyModel<>(this, "role"), new OptionSingleChoiceProvider("role", "role_id", "name"));
+        this.roleField = new Select2SingleChoice<>("roleField", new PropertyModel<>(this, "role"), new OptionSingleChoiceProvider("platform_role", "platform_role_id", "name"));
         this.roleField.setRequired(true);
         this.form.add(this.roleField);
         this.roleFeedback = new TextFeedbackPanel("roleFeedback", this.roleField);
@@ -88,10 +88,10 @@ public class UserModifyPage extends MBaaSPage {
     }
 
     private void saveButtonOnSubmit(Button button) {
-        UpdateQuery updateQuery = new UpdateQuery("user");
+        UpdateQuery updateQuery = new UpdateQuery("platform_user");
         updateQuery.addValue("full_name = :full_name", this.fullName);
-        updateQuery.addValue("role_id = :role_id", this.role.getId());
-        updateQuery.addWhere("user_id = :user_id", this.userId);
+        updateQuery.addValue("platform_role_id = :role_id", this.role.getId());
+        updateQuery.addWhere("platform_user_id = :user_id", this.userId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
         setResponsePage(UserBrowsePage.class);
     }

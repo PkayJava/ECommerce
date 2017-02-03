@@ -147,8 +147,8 @@ public class ShopCreatePage extends MBaaSPage {
         insertQuery.addValue("language = :language", this.language);
         insertQuery.addValue("url = :url", this.url);
         insertQuery.addValue("google_ua = :google_ua", this.google);
-        insertQuery.addValue("logo_file_id = :logo_file_id", logoFileId);
-        insertQuery.addValue("flag_icon_file_id = :flag_icon_file_id", flagIconFileId);
+        insertQuery.addValue("logo_platform_file_id = :logo_platform_file_id", logoFileId);
+        insertQuery.addValue("flag_icon_platform_file_id = :flag_icon_platform_file_id", flagIconFileId);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
         setResponsePage(ShopBrowsePage.class);
     }

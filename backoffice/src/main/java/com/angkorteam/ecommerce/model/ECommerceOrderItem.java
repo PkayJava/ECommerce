@@ -22,14 +22,14 @@ public class ECommerceOrderItem implements Serializable {
     private Double productDiscountPrice;
     private String productDescription;
     private String productMainImage;
-    private Long productMainImageFileId;
+    private Long productMainImagePlatformFileId;
     private String variantReference;
     private Long ecommerceColorId;
     private String colorValue;
     private String colorCode;
     private String colorImg;
     private String colorReference;
-    private Long colorImgFileId;
+    private Long colorImgPlatformFileId;
     private Long ecommerceSizeId;
     private String sizeValue;
     private String sizeReference;
@@ -154,12 +154,12 @@ public class ECommerceOrderItem implements Serializable {
         this.productMainImage = productMainImage;
     }
 
-    public Long getProductMainImageFileId() {
-        return productMainImageFileId;
+    public Long getProductMainImagePlatformFileId() {
+        return productMainImagePlatformFileId;
     }
 
-    public void setProductMainImageFileId(Long productMainImageFileId) {
-        this.productMainImageFileId = productMainImageFileId;
+    public void setProductMainImagePlatformFileId(Long productMainImagePlatformFileId) {
+        this.productMainImagePlatformFileId = productMainImagePlatformFileId;
     }
 
     public String getVariantReference() {
@@ -210,12 +210,12 @@ public class ECommerceOrderItem implements Serializable {
         this.colorReference = colorReference;
     }
 
-    public Long getColorImgFileId() {
-        return colorImgFileId;
+    public Long getColorImgPlatformFileId() {
+        return colorImgPlatformFileId;
     }
 
-    public void setColorImgFileId(Long colorImgFileId) {
-        this.colorImgFileId = colorImgFileId;
+    public void setColorImgPlatformFileId(Long colorImgPlatformFileId) {
+        this.colorImgPlatformFileId = colorImgPlatformFileId;
     }
 
     public Long getECommerceSizeId() {
@@ -274,7 +274,7 @@ public class ECommerceOrderItem implements Serializable {
             return false;
         if (productMainImage != null ? !productMainImage.equals(that.productMainImage) : that.productMainImage != null)
             return false;
-        if (productMainImageFileId != null ? !productMainImageFileId.equals(that.productMainImageFileId) : that.productMainImageFileId != null)
+        if (productMainImagePlatformFileId != null ? !productMainImagePlatformFileId.equals(that.productMainImagePlatformFileId) : that.productMainImagePlatformFileId != null)
             return false;
         if (variantReference != null ? !variantReference.equals(that.variantReference) : that.variantReference != null)
             return false;
@@ -285,7 +285,7 @@ public class ECommerceOrderItem implements Serializable {
         if (colorImg != null ? !colorImg.equals(that.colorImg) : that.colorImg != null) return false;
         if (colorReference != null ? !colorReference.equals(that.colorReference) : that.colorReference != null)
             return false;
-        if (colorImgFileId != null ? !colorImgFileId.equals(that.colorImgFileId) : that.colorImgFileId != null)
+        if (colorImgPlatformFileId != null ? !colorImgPlatformFileId.equals(that.colorImgPlatformFileId) : that.colorImgPlatformFileId != null)
             return false;
         if (ecommerceSizeId != null ? !ecommerceSizeId.equals(that.ecommerceSizeId) : that.ecommerceSizeId != null)
             return false;
@@ -310,14 +310,14 @@ public class ECommerceOrderItem implements Serializable {
         result = 31 * result + (productDiscountPrice != null ? productDiscountPrice.hashCode() : 0);
         result = 31 * result + (productDescription != null ? productDescription.hashCode() : 0);
         result = 31 * result + (productMainImage != null ? productMainImage.hashCode() : 0);
-        result = 31 * result + (productMainImageFileId != null ? productMainImageFileId.hashCode() : 0);
+        result = 31 * result + (productMainImagePlatformFileId != null ? productMainImagePlatformFileId.hashCode() : 0);
         result = 31 * result + (variantReference != null ? variantReference.hashCode() : 0);
         result = 31 * result + (ecommerceColorId != null ? ecommerceColorId.hashCode() : 0);
         result = 31 * result + (colorValue != null ? colorValue.hashCode() : 0);
         result = 31 * result + (colorCode != null ? colorCode.hashCode() : 0);
         result = 31 * result + (colorImg != null ? colorImg.hashCode() : 0);
         result = 31 * result + (colorReference != null ? colorReference.hashCode() : 0);
-        result = 31 * result + (colorImgFileId != null ? colorImgFileId.hashCode() : 0);
+        result = 31 * result + (colorImgPlatformFileId != null ? colorImgPlatformFileId.hashCode() : 0);
         result = 31 * result + (ecommerceSizeId != null ? ecommerceSizeId.hashCode() : 0);
         result = 31 * result + (sizeValue != null ? sizeValue.hashCode() : 0);
         result = 31 * result + (sizeReference != null ? sizeReference.hashCode() : 0);

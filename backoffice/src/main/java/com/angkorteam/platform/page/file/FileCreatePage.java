@@ -4,7 +4,6 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.platform.Configuration;
 import com.angkorteam.platform.Platform;
-import com.angkorteam.platform.Spring;
 import com.angkorteam.platform.page.MBaaSPage;
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.commons.io.FilenameUtils;
@@ -71,7 +70,7 @@ public class FileCreatePage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         FileUpload file = this.file.get(0);
 
-        XMLPropertiesConfiguration configuration = Spring.getBean(XMLPropertiesConfiguration.class);
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
 
         String patternFolder = configuration.getString(Configuration.PATTERN_FOLDER);
 

@@ -9,7 +9,7 @@ public class ECommerceBranchTransport implements Serializable {
 
     private Long ecommerceBranchTransportId;
     private Long ecommerceBranchId;
-    private Long iconFileId;
+    private Long iconPlatformFileId;
     private String text;
 
     public Long getECommerceBranchTransportId() {
@@ -28,12 +28,12 @@ public class ECommerceBranchTransport implements Serializable {
         this.ecommerceBranchId = ecommerceBranchId;
     }
 
-    public Long getIconFileId() {
-        return iconFileId;
+    public Long getIconPlatformFileId() {
+        return iconPlatformFileId;
     }
 
-    public void setIconFileId(Long iconFileId) {
-        this.iconFileId = iconFileId;
+    public void setIconPlatformFileId(Long iconPlatformFileId) {
+        this.iconPlatformFileId = iconPlatformFileId;
     }
 
     public String getText() {
@@ -55,7 +55,7 @@ public class ECommerceBranchTransport implements Serializable {
             return false;
         if (ecommerceBranchId != null ? !ecommerceBranchId.equals(that.ecommerceBranchId) : that.ecommerceBranchId != null)
             return false;
-        if (iconFileId != null ? !iconFileId.equals(that.iconFileId) : that.iconFileId != null) return false;
+        if (iconPlatformFileId != null ? !iconPlatformFileId.equals(that.iconPlatformFileId) : that.iconPlatformFileId != null) return false;
         return text != null ? text.equals(that.text) : that.text == null;
     }
 
@@ -63,7 +63,7 @@ public class ECommerceBranchTransport implements Serializable {
     public int hashCode() {
         int result = ecommerceBranchTransportId != null ? ecommerceBranchTransportId.hashCode() : 0;
         result = 31 * result + (ecommerceBranchId != null ? ecommerceBranchId.hashCode() : 0);
-        result = 31 * result + (iconFileId != null ? iconFileId.hashCode() : 0);
+        result = 31 * result + (iconPlatformFileId != null ? iconPlatformFileId.hashCode() : 0);
         result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }

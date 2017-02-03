@@ -243,7 +243,7 @@ public class ProductCreatePage extends MBaaSPage {
         }
         insertQuery.addValue("normal_price = :normal_price", this.normalPrice);
         insertQuery.addValue("ecommerce_category_id = :ecommerce_category_id", this.category.getId());
-        insertQuery.addValue("user_id = :user_id", getSession().getUserId());
+        insertQuery.addValue("platform_user_id = :platform_user_id", getSession().getPlatformUserId());
 
         if (this.brand != null) {
             insertQuery.addValue("ecommerce_brand_id = :ecommerce_brand_id", this.brand.getId());
@@ -254,11 +254,11 @@ public class ProductCreatePage extends MBaaSPage {
         if (this.discountPrice != null) {
             insertQuery.addValue("discount_price = :discount_price", this.discountPrice);
         }
-        insertQuery.addValue("main_image_file_id = :main_image_file_id", mainImageFileId);
+        insertQuery.addValue("main_image_platform_file_id = :main_image_platform_file_id", mainImageFileId);
 
         insertQuery.addValue("last_modified = :last_modified", new Date());
         insertQuery.addValue("popularity = :popularity", 0);
-        insertQuery.addValue("main_image_high_res_file_id = :main_image_high_res_file_id", mainImageHighResFileId);
+        insertQuery.addValue("main_image_high_res_platform_file_id = :main_image_high_res_platform_file_id", mainImageHighResFileId);
         insertQuery.addValue("quantity = :quantity", this.quantity);
         insertQuery.addValue("shipping_price = :shipping_price", 0);
         insertQuery.addValue("ready = :ready", false);
@@ -311,7 +311,7 @@ public class ProductCreatePage extends MBaaSPage {
                 insertQuery.addValue("ecommerce_product_variant_image_id = :ecommerce_product_variant_image", randomUUIDLong());
                 insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant_id", variantId);
                 insertQuery.addValue("name = :name", randomUUIDLong());
-                insertQuery.addValue("file_id = :file_id", imageFileId);
+                insertQuery.addValue("platform_file_id = :platform_file_id", imageFileId);
                 insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", productId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
             }

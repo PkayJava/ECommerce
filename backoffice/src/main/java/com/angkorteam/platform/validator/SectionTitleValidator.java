@@ -2,7 +2,7 @@ package com.angkorteam.platform.validator;
 
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
-import com.angkorteam.platform.Spring;
+import com.angkorteam.platform.Platform;
 import com.google.common.base.Strings;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
@@ -24,14 +24,14 @@ public class SectionTitleValidator implements IValidator<String> {
 
     @Override
     public void validate(IValidatable<String> validatable) {
-        NamedParameterJdbcTemplate named = Spring.getBean(NamedParameterJdbcTemplate.class);
+        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         String title = validatable.getValue();
         if (!Strings.isNullOrEmpty(title)) {
-            SelectQuery selectQuery = new SelectQuery("section");
+            SelectQuery selectQuery = new SelectQuery("platform_section");
             selectQuery.addField("count(*)");
             selectQuery.addWhere("title = :title", title);
             if (!Strings.isNullOrEmpty(this.sectionId)) {
-                selectQuery.addWhere("section_id != :section_id", this.sectionId);
+                selectQuery.addWhere("platform_section_id != :section_id", this.sectionId);
             }
             int count = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), int.class);
             if (count > 0) {

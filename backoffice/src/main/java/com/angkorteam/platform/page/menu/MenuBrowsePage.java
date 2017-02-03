@@ -27,11 +27,11 @@ public class MenuBrowsePage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcProvider provider = new JdbcProvider("menu");
-        provider.addJoin("LEFT JOIN menu parent on menu.parent_menu_id = parent.menu_id");
-        provider.addJoin("LEFT JOIN section on menu.section_id = section.section_id");
+        JdbcProvider provider = new JdbcProvider("platform_menu menu");
+        provider.addJoin("LEFT JOIN platform_menu parent on menu.parent_platform_menu_id = parent.platform_menu_id");
+        provider.addJoin("LEFT JOIN platform_section on menu.platform_section_id = platform_section.platform_section_id");
 
-        provider.boardField("menu.menu_id", "menuId", Long.class);
+        provider.boardField("menu.platform_menu_id", "menuId", Long.class);
         provider.boardField("menu.title", "title", String.class);
         provider.boardField("menu.icon", "icon", String.class);
         provider.boardField("parent.path", "parent", String.class);

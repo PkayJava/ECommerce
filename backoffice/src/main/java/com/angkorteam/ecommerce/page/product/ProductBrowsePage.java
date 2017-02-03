@@ -62,7 +62,7 @@ public class ProductBrowsePage extends MBaaSPage {
         provider.setSort("ready", SortOrder.ASCENDING);
 
         if (!getSession().getRoles().hasRole("administrator")) {
-            provider.addWhere("ecommerce_product.user_id = '" + getSession().getUserId() + "'");
+            provider.addWhere("ecommerce_product.user_id = '" + getSession().getPlatformUserId() + "'");
         }
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);

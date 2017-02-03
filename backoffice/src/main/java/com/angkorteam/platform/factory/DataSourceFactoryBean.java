@@ -6,6 +6,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.context.ServletContextAware;
@@ -19,9 +20,9 @@ import java.io.File;
 /**
  * Created by Khauv Socheat on 2/4/2016.
  */
-public class DataSourceFactoryBean implements FactoryBean<DataSource>, InitializingBean, ServletContextAware {
+public class DataSourceFactoryBean implements FactoryBean<DataSource>, InitializingBean, ServletContextAware, DisposableBean {
 
-    private DataSource dataSource;
+    private DataSource delegate;
 
     private ServletContext servletContext;
 
@@ -29,7 +30,7 @@ public class DataSourceFactoryBean implements FactoryBean<DataSource>, Initializ
 
     @Override
     public DataSource getObject() throws Exception {
-        return this.dataSource;
+        return this.delegate;
     }
 
     @Override
@@ -63,27 +64,27 @@ public class DataSourceFactoryBean implements FactoryBean<DataSource>, Initializ
             String jdbcUrl = "jdbc:mysql://" + configuration.getString(Configuration.APP_JDBC_HOSTNAME) + ":" + configuration.getString(Configuration.APP_JDBC_PORT) + "/" + configuration.getString(Configuration.APP_JDBC_DATABASE) + "?" + configuration.getString(Configuration.APP_JDBC_EXTRA);
             String username = configuration.getString(Configuration.APP_JDBC_USERNAME);
             String password = configuration.getString(Configuration.APP_JDBC_PASSWORD);
-            this.dataSource = getDataSource(jdbcDriver, jdbcUrl, username, password);
+            this.delegate = getDataSource(jdbcDriver, jdbcUrl, username, password);
         } else if (StringUtils.equalsIgnoreCase(jdbcType, "Container")) {
             String jdbcJndi = this.configuration.getString(Configuration.APP_JDBC_JNDI);
             Context initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup("java:/comp/env");
-            this.dataSource = (DataSource) envContext.lookup(jdbcJndi);
+            this.delegate = (DataSource) envContext.lookup(jdbcJndi);
         }
     }
 
     protected BasicDataSource getDataSource(String jdbcDriver, String jdbcUrl, String username, String password) {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(jdbcDriver);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-        dataSource.setMaxIdle(100);
-        dataSource.setMinIdle(50);
-        dataSource.setMaxWaitMillis(5000);
-        dataSource.setMaxTotal(200);
-        dataSource.setInitialSize(30);
-        dataSource.setUrl(jdbcUrl);
-        return dataSource;
+        BasicDataSource delegate = new BasicDataSource();
+        delegate.setDriverClassName(jdbcDriver);
+        delegate.setUsername(username);
+        delegate.setPassword(password);
+        delegate.setMaxIdle(100);
+        delegate.setMinIdle(50);
+        delegate.setMaxWaitMillis(5000);
+        delegate.setMaxTotal(200);
+        delegate.setInitialSize(30);
+        delegate.setUrl(jdbcUrl);
+        return delegate;
     }
 
     @Override
@@ -91,5 +92,11 @@ public class DataSourceFactoryBean implements FactoryBean<DataSource>, Initializ
         this.servletContext = servletContext;
     }
 
+    @Override
+    public void destroy() throws Exception {
+        if (this.delegate instanceof BasicDataSource) {
+            ((BasicDataSource) this.delegate).close();
+        }
+    }
 }
 

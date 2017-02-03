@@ -13,7 +13,7 @@ public class ECommerceVendorOrder implements Serializable {
     private Date dateCreated;
     private String orderStatus;
     private String vendorStatus;
-    private Long userId;
+    private Long platformUserId;
     private Double total;
 
     public Long getECommerceVendorOrderId() {
@@ -56,12 +56,12 @@ public class ECommerceVendorOrder implements Serializable {
         this.vendorStatus = vendorStatus;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getPlatformUserId() {
+        return platformUserId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setPlatformUserId(Long platformUserId) {
+        this.platformUserId = platformUserId;
     }
 
     public Double getTotal() {
@@ -86,7 +86,7 @@ public class ECommerceVendorOrder implements Serializable {
         if (dateCreated != null ? !dateCreated.equals(that.dateCreated) : that.dateCreated != null) return false;
         if (orderStatus != null ? !orderStatus.equals(that.orderStatus) : that.orderStatus != null) return false;
         if (vendorStatus != null ? !vendorStatus.equals(that.vendorStatus) : that.vendorStatus != null) return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (platformUserId != null ? !platformUserId.equals(that.platformUserId) : that.platformUserId != null) return false;
         return total != null ? total.equals(that.total) : that.total == null;
     }
 
@@ -97,7 +97,7 @@ public class ECommerceVendorOrder implements Serializable {
         result = 31 * result + (dateCreated != null ? dateCreated.hashCode() : 0);
         result = 31 * result + (orderStatus != null ? orderStatus.hashCode() : 0);
         result = 31 * result + (vendorStatus != null ? vendorStatus.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (platformUserId != null ? platformUserId.hashCode() : 0);
         result = 31 * result + (total != null ? total.hashCode() : 0);
         return result;
     }

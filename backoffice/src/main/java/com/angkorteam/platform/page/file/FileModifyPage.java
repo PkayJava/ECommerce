@@ -3,9 +3,9 @@ package com.angkorteam.platform.page.file;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.platform.page.MBaaSPage;
-import com.angkorteam.platform.Spring;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.model.PlatformFile;
+import com.angkorteam.platform.page.MBaaSPage;
 import org.apache.commons.io.FileUtils;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -46,12 +46,12 @@ public class FileModifyPage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 
         PageParameters parameters = getPageParameters();
         this.fileId = parameters.get("fileId").toString();
 
-        PlatformFile fileRecord = jdbcTemplate.queryForObject("select * from file where file_id = ?", PlatformFile.class, fileId);
+        PlatformFile fileRecord = jdbcTemplate.queryForObject("select * from platform_file where platform_file_id = ?", PlatformFile.class, fileId);
 
         this.form = new Form<>("form");
         layout.add(this.form);
@@ -88,8 +88,8 @@ public class FileModifyPage extends MBaaSPage {
     }
 
     private void saveButtonOnSubmit(Button button) {
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
-        jdbcTemplate.update("update file set label = ? where file_id = ?", this.name, this.fileId);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+        jdbcTemplate.update("update platform_file set label = ? where platform_file_id = ?", this.name, this.fileId);
         setResponsePage(FileBrowsePage.class);
     }
 }

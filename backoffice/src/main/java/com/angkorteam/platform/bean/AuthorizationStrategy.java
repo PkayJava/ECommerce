@@ -3,8 +3,8 @@ package com.angkorteam.platform.bean;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.Session;
-import com.angkorteam.platform.Spring;
 import com.angkorteam.platform.model.PlatformPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.authorization.Action;
@@ -35,19 +35,19 @@ public class AuthorizationStrategy implements IAuthorizationStrategy {
             roles = new Roles();
         }
 
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 
         String javaClass = componentClass.getName();
 
-        PlatformPage page = jdbcTemplate.queryForObject("select * from page where java_class = ?", PlatformPage.class, javaClass);
+        PlatformPage page = jdbcTemplate.queryForObject("select * from platform_page where java_class = ?", PlatformPage.class, javaClass);
         if (page != null) {
 
-            SelectQuery selectQuery = new SelectQuery("role");
-            selectQuery.addField("role.name");
-            selectQuery.addJoin(JoinType.InnerJoin, "page_role", "role.role_id = page_role.role_id");
-            selectQuery.addWhere("page_role.page_id = ?");
+            SelectQuery selectQuery = new SelectQuery("platform_role");
+            selectQuery.addField("platform_role.name");
+            selectQuery.addJoin(JoinType.InnerJoin, "platform_page_role", "platform_role.platform_role_id = platform_page_role.platform_role_id");
+            selectQuery.addWhere("platform_page_role.platform_page_id = ?");
 
-            List<String> pageRoles = jdbcTemplate.queryForList(selectQuery.toSQL(), String.class, page.getPageId());
+            List<String> pageRoles = jdbcTemplate.queryForList(selectQuery.toSQL(), String.class, page.getPlatformPageId());
             if (pageRoles != null && !pageRoles.isEmpty()) {
                 Roles r = new Roles();
                 r.addAll(pageRoles);

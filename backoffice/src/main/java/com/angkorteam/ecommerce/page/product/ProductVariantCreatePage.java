@@ -146,7 +146,7 @@ public class ProductVariantCreatePage extends MBaaSPage {
                 insertQuery.addValue("ecommerce_product_variant_image_id = :ecommerce_product_variant_image", randomUUIDLong());
                 insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant_id", variantId);
                 insertQuery.addValue("name = :name", randomUUIDLong());
-                insertQuery.addValue("file_id = :file_id", imageFileId);
+                insertQuery.addValue("platform_file_id = :platform_file_id", imageFileId);
                 insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
             }

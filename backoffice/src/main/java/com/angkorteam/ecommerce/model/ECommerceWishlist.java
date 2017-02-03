@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ECommerceWishlist implements Serializable {
 
     private Long ecommerceWishlistId;
-    private Long userId;
+    private Long platformUserId;
     private Long ecommerceProductId;
 
     public Long getECommerceWishlistId() {
@@ -19,12 +19,12 @@ public class ECommerceWishlist implements Serializable {
         this.ecommerceWishlistId = ecommerceWishlistId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getPlatformUserId() {
+        return platformUserId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setPlatformUserId(Long platformUserId) {
+        this.platformUserId = platformUserId;
     }
 
     public Long getECommerceProductId() {
@@ -44,14 +44,14 @@ public class ECommerceWishlist implements Serializable {
 
         if (ecommerceWishlistId != null ? !ecommerceWishlistId.equals(that.ecommerceWishlistId) : that.ecommerceWishlistId != null)
             return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (platformUserId != null ? !platformUserId.equals(that.platformUserId) : that.platformUserId != null) return false;
         return ecommerceProductId != null ? ecommerceProductId.equals(that.ecommerceProductId) : that.ecommerceProductId == null;
     }
 
     @Override
     public int hashCode() {
         int result = ecommerceWishlistId != null ? ecommerceWishlistId.hashCode() : 0;
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (platformUserId != null ? platformUserId.hashCode() : 0);
         result = 31 * result + (ecommerceProductId != null ? ecommerceProductId.hashCode() : 0);
         return result;
     }

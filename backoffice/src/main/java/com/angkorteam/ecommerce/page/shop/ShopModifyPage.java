@@ -164,8 +164,8 @@ public class ShopModifyPage extends MBaaSPage {
         updateQuery.addValue("language = :language", this.language);
         updateQuery.addValue("url = :url", this.url);
         updateQuery.addValue("google_ua = :google_ua", this.google);
-        updateQuery.addValue("logo_file_id = :logo_file_id", logoFileId);
-        updateQuery.addValue("flag_icon_file_id = :flag_icon_file_id", flagIconFileId);
+        updateQuery.addValue("logo_platform_file_id = :logo_platform_file_id", logoFileId);
+        updateQuery.addValue("flag_icon_platform_file_id = :flag_icon_platform_file_id", flagIconFileId);
         updateQuery.addWhere("ecommerce_shop_id = :ecommerce_shop_id", this.ecommerceShopId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

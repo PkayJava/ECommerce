@@ -4,11 +4,11 @@ import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.Session;
-import com.angkorteam.platform.page.MBaaSPage;
-import com.angkorteam.platform.Spring;
 import com.angkorteam.platform.model.PlatformMenuItem;
 import com.angkorteam.platform.model.PlatformPage;
+import com.angkorteam.platform.page.MBaaSPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -47,8 +47,8 @@ public class MenuItemWidget extends Panel {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        NamedParameterJdbcTemplate named = Spring.getBean(NamedParameterJdbcTemplate.class);
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 
         this.menuItemContainer = new WebMarkupContainer("menuItemContainer");
         this.menuItemContainer.add(AttributeModifier.replace("class", new PropertyModel<>(this, "cssClass")));
@@ -56,18 +56,18 @@ public class MenuItemWidget extends Panel {
 
         SelectQuery selectQuery = null;
 
-        PlatformMenuItem menuItem = jdbcTemplate.queryForObject("select * from menu_item where menu_item_id = ?", PlatformMenuItem.class, this.menuItemId);
+        PlatformMenuItem menuItem = jdbcTemplate.queryForObject("select * from platform_menu_item where platform_menu_item_id = ?", PlatformMenuItem.class, this.menuItemId);
 
-        PlatformPage page = jdbcTemplate.queryForObject("select * from page where page_id = ?", PlatformPage.class, menuItem.getPageId());
+        PlatformPage page = jdbcTemplate.queryForObject("select * from platform_page where platform_page_id = ?", PlatformPage.class, menuItem.getPlatformPageId());
         if (page == null) {
-            LOGGER.debug("page id {} is not found", menuItem.getPageId());
+            LOGGER.debug("page id {} is not found", menuItem.getPlatformPageId());
         }
         Roles sessionRoles = getSession().getRoles();
 
-        selectQuery = new SelectQuery("role");
-        selectQuery.addField("role.name");
-        selectQuery.addJoin(JoinType.InnerJoin, "page_role", "page_role.role_id = role.role_id");
-        selectQuery.addWhere("page_role.page_id = :page_id", page.getPageId());
+        selectQuery = new SelectQuery("platform_role");
+        selectQuery.addField("platform_role.name");
+        selectQuery.addJoin(JoinType.InnerJoin, "platform_page_role", "platform_page_role.platform_role_id = platform_role.platform_role_id");
+        selectQuery.addWhere("platform_page_role.platform_page_id = :page_id", page.getPlatformPageId());
         List<String> pageRoles = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
 
         if (pageRoles != null && !pageRoles.isEmpty()) {
@@ -95,9 +95,9 @@ public class MenuItemWidget extends Panel {
         menuItemLink.add(menuItemIcon);
         menuItemIcon.add(AttributeModifier.replace("class", "fa " + menuItem.getIcon()));
 
-        this.menuItemLabel = new Label("menuItemLabel", (String) menuItem.getTitle());
+        this.menuItemLabel = new Label("menuItemLabel", menuItem.getTitle());
         menuItemLink.add(this.menuItemLabel);
-        this.menuItemLabel.setRenderBodyOnly(menuItem.getSectionId() == null);
+        this.menuItemLabel.setRenderBodyOnly(menuItem.getPlatformSectionId() == null);
     }
 
     @Override

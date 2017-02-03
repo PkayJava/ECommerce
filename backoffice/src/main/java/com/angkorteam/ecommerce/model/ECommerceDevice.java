@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ECommerceDevice implements Serializable {
 
     private Long ecommerceDeviceId;
-    private Long userId;
+    private Long platformUserId;
     private String deviceToken;
     private String platform;
 
@@ -20,12 +20,12 @@ public class ECommerceDevice implements Serializable {
         this.ecommerceDeviceId = ecommerceDeviceId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getPlatformUserId() {
+        return platformUserId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setPlatformUserId(Long platformUserId) {
+        this.platformUserId = platformUserId;
     }
 
     public String getDeviceToken() {
@@ -53,7 +53,7 @@ public class ECommerceDevice implements Serializable {
 
         if (ecommerceDeviceId != null ? !ecommerceDeviceId.equals(that.ecommerceDeviceId) : that.ecommerceDeviceId != null)
             return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (platformUserId != null ? !platformUserId.equals(that.platformUserId) : that.platformUserId != null) return false;
         if (deviceToken != null ? !deviceToken.equals(that.deviceToken) : that.deviceToken != null) return false;
         return platform != null ? platform.equals(that.platform) : that.platform == null;
     }
@@ -61,7 +61,7 @@ public class ECommerceDevice implements Serializable {
     @Override
     public int hashCode() {
         int result = ecommerceDeviceId != null ? ecommerceDeviceId.hashCode() : 0;
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (platformUserId != null ? platformUserId.hashCode() : 0);
         result = 31 * result + (deviceToken != null ? deviceToken.hashCode() : 0);
         result = 31 * result + (platform != null ? platform.hashCode() : 0);
         return result;

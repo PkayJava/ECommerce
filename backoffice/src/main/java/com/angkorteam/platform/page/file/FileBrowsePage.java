@@ -4,11 +4,11 @@ import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater
 import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.filter.*;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.platform.Configuration;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.model.PlatformFile;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.JdbcProvider;
-import com.angkorteam.platform.Configuration;
-import com.angkorteam.platform.Spring;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.FileUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -36,8 +36,8 @@ public class FileBrowsePage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcProvider provider = new JdbcProvider("file");
-        provider.boardField("file_id", "fileId", Long.class);
+        JdbcProvider provider = new JdbcProvider("platform_file");
+        provider.boardField("platform_file_id", "fileId", Long.class);
         provider.boardField("name", "name", String.class);
         provider.boardField("mime", "mime", String.class);
         provider.boardField("length", "length", Integer.class);
@@ -64,18 +64,18 @@ public class FileBrowsePage extends MBaaSPage {
     }
 
     private void itemClick(String link, Map<String, Object> object, AjaxRequestTarget target) {
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 
         Long fileId = (Long) object.get("fileId");
-        PlatformFile fileRecord = jdbcTemplate.queryForObject("select * from file where file_id = ?", PlatformFile.class, fileId);
+        PlatformFile fileRecord = jdbcTemplate.queryForObject("select * from platform_file where platform_file_id = ?", PlatformFile.class, fileId);
 
         if ("Delete".equals(link)) {
-            String repo = jdbcTemplate.queryForObject("select value from setting where `key` = ?", String.class, Configuration.RESOURCE_REPO);
+            String repo = jdbcTemplate.queryForObject("select value from platform_setting where `key` = ?", String.class, Configuration.RESOURCE_REPO);
             String path = fileRecord.getPath();
             String name = fileRecord.getName();
             File file = new File(repo, path + "/" + name);
             FileUtils.deleteQuietly(file);
-            jdbcTemplate.update("delete from file where file_id = ?", fileId);
+            jdbcTemplate.update("delete from platform_file where platform_file_id = ?", fileId);
             target.add(this.dataTable);
             return;
         }

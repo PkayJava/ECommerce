@@ -16,8 +16,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -30,6 +34,8 @@ import java.util.List;
  */
 public abstract class Platform {
 
+    private static ServletContext servletContext;
+
     public static PlatformUser getCurrentUser(HttpServletRequest request) throws UnsupportedEncodingException {
         String authorization = request.getHeader("Authorization");
         byte[] base64Token = authorization.substring(6).getBytes("UTF-8");
@@ -37,8 +43,8 @@ public abstract class Platform {
         String token = new String(decoded, "UTF-8");
         Integer delim = token.indexOf(":");
         String accessToken = token.substring(0, delim);
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
-        return jdbcTemplate.queryForObject("select * from user where access_token = ?", PlatformUser.class, accessToken);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+        return jdbcTemplate.queryForObject("select * from platform_user where access_token = ?", PlatformUser.class, accessToken);
     }
 
     public static LinksVO buildLinks(HttpServletRequest request, long total, long limit) {
@@ -154,15 +160,15 @@ public abstract class Platform {
         }
         String accessToken = token.substring(0, delim);
 
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         PlatformUser userRecord = jdbcTemplate.queryForObject("select * from platform_user where access_token = ?", PlatformUser.class, accessToken);
-        PlatformRole roleRecord = jdbcTemplate.queryForObject("select * from platform_role where platform_role_id = ?", PlatformRole.class, userRecord.getRoleId());
+        PlatformRole roleRecord = jdbcTemplate.queryForObject("select * from platform_role where platform_role_id = ?", PlatformRole.class, userRecord.getPlatformRoleId());
 
-        SelectQuery selectQuery = new SelectQuery("platform_role role");
-        selectQuery.addField("role.name");
-        selectQuery.addJoin(JoinType.InnerJoin, "rest_role", "role.role_id = rest_role.role_id");
-        selectQuery.addJoin(JoinType.InnerJoin, "rest", "rest_role.rest_id = rest.rest_id");
-        selectQuery.addWhere("rest.java_class = ?");
+        SelectQuery selectQuery = new SelectQuery("platform_role");
+        selectQuery.addField("platform_role.name");
+        selectQuery.addJoin(JoinType.InnerJoin, "platform_rest_role", "platform_role.platform_role_id = platform_rest_role.platform_role_id");
+        selectQuery.addJoin(JoinType.InnerJoin, "platform_rest", "platform_rest_role.platform_rest_id = platform_rest.platform_rest_id");
+        selectQuery.addWhere("platform_rest.java_class = ?");
         List<String> serviceRoles = jdbcTemplate.queryForList(selectQuery.toSQL(), String.class, clazz.getName());
         if (serviceRoles == null || serviceRoles.isEmpty()) {
         } else {
@@ -175,28 +181,28 @@ public abstract class Platform {
     }
 
     public static String getSetting(String key) {
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
-        return jdbcTemplate.queryForObject("select value from setting where `key` = ?", String.class, key);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+        return jdbcTemplate.queryForObject("select value from platform_setting where `key` = ?", String.class, key);
     }
 
     public static void putSetting(String key, String value) {
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
-        int count = jdbcTemplate.queryForObject("select count(*) from setting where `key` = ?", int.class, key);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+        int count = jdbcTemplate.queryForObject("select count(*) from platform_setting where `key` = ?", int.class, key);
         if (count > 0) {
-            jdbcTemplate.update("update setting set value = ? where `key` = ?", value, key);
+            jdbcTemplate.update("update platform_setting set value = ? where `key` = ?", value, key);
         } else {
-            InsertQuery insertQuery = new InsertQuery("setting");
-            insertQuery.addValue("setting_id = :setting_id", randomUUIDLong());
+            InsertQuery insertQuery = new InsertQuery("platform_setting");
+            insertQuery.addValue("platform_setting_id = :setting_id", randomUUIDLong());
             insertQuery.addValue("description = :description", "");
             insertQuery.addValue("version = :version", 1);
             insertQuery.addValue("`key` = :key", key);
-            NamedParameterJdbcTemplate named = Spring.getBean(NamedParameterJdbcTemplate.class);
+            NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
             named.update(insertQuery.toSQL(), insertQuery.getParam());
         }
     }
 
     public static Integer randomUUIDInteger(String tableName) {
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         int value = jdbcTemplate.queryForObject("select value from `platform_uuid` where table_name = ? for update", Integer.class, tableName);
         value = value + 1;
         jdbcTemplate.update("update `platform_uuid` set value = ? where table_name = ?", value, tableName);
@@ -204,19 +210,19 @@ public abstract class Platform {
     }
 
     public static Long randomUUIDLong() {
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         return jdbcTemplate.queryForObject("select uuid_short() from dual", Long.class);
     }
 
     public static String randomUUIDString() {
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         return jdbcTemplate.queryForObject("select uuid() from dual", String.class);
     }
 
     public static long saveFile(File file) {
-        NamedParameterJdbcTemplate named = Spring.getBean(NamedParameterJdbcTemplate.class);
+        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
 
-        XMLPropertiesConfiguration configuration = Spring.getBean(XMLPropertiesConfiguration.class);
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
 
         String patternFolder = configuration.getString(Configuration.PATTERN_FOLDER);
 
@@ -241,8 +247,8 @@ public abstract class Platform {
         String label = file.getName();
 
         Long fileId = randomUUIDLong();
-        InsertQuery insertQuery = new InsertQuery("file");
-        insertQuery.addValue("file_id = :file_id", fileId);
+        InsertQuery insertQuery = new InsertQuery("platform_file");
+        insertQuery.addValue("platform_file_id = :file_id", fileId);
         insertQuery.addValue("path = :path", path);
         insertQuery.addValue("mime = :mime", mime);
         insertQuery.addValue("extension = :extension", extension);
@@ -268,5 +274,22 @@ public abstract class Platform {
         } else {
             return "application/octet-stream";
         }
+    }
+
+    public static <T> T getBean(String name, Class<T> requiredType) {
+        if (servletContext == null) {
+            servletContext = WebApplication.get().getServletContext();
+        }
+        ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+        return applicationContext.getBean(name, requiredType);
+    }
+
+
+    public static <T> T getBean(Class<T> requiredType) {
+        if (servletContext == null) {
+            servletContext = WebApplication.get().getServletContext();
+        }
+        ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+        return applicationContext.getBean(requiredType);
     }
 }

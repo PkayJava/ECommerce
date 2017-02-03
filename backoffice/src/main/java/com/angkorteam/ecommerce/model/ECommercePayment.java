@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ECommercePayment implements Serializable {
 
     private Long ecommercePaymentId;
-    private String  name;
+    private String name;
     private String description;
     private Double price;
 

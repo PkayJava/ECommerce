@@ -2,7 +2,7 @@ package com.angkorteam.platform.validator;
 
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
-import com.angkorteam.platform.Spring;
+import com.angkorteam.platform.Platform;
 import com.google.common.base.Strings;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
@@ -24,7 +24,7 @@ public class RestNameValidator implements IValidator<String> {
 
     @Override
     public void validate(IValidatable<String> validatable) {
-        NamedParameterJdbcTemplate named = Spring.getBean(NamedParameterJdbcTemplate.class);
+        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
 
         String name = validatable.getValue();
         if (!Strings.isNullOrEmpty(name)) {

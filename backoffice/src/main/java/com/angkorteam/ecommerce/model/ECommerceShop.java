@@ -11,10 +11,10 @@ public class ECommerceShop implements Serializable {
     private String name;
     private String description;
     private String url;
-    private String logoFileId;
+    private String logoPlatformFileId;
     private String googleUa;
     private String language;
-    private String flagIconFileId;
+    private String flagIconPlatformFileId;
 
     public Long getECommerceShopId() {
         return ecommerceShopId;
@@ -48,12 +48,12 @@ public class ECommerceShop implements Serializable {
         this.url = url;
     }
 
-    public String getLogoFileId() {
-        return logoFileId;
+    public String getLogoPlatformFileId() {
+        return logoPlatformFileId;
     }
 
-    public void setLogoFileId(String logoFileId) {
-        this.logoFileId = logoFileId;
+    public void setLogoPlatformFileId(String logoPlatformFileId) {
+        this.logoPlatformFileId = logoPlatformFileId;
     }
 
     public String getGoogleUa() {
@@ -72,12 +72,12 @@ public class ECommerceShop implements Serializable {
         this.language = language;
     }
 
-    public String getFlagIconFileId() {
-        return flagIconFileId;
+    public String getFlagIconPlatformFileId() {
+        return flagIconPlatformFileId;
     }
 
-    public void setFlagIconFileId(String flagIconFileId) {
-        this.flagIconFileId = flagIconFileId;
+    public void setFlagIconPlatformFileId(String flagIconPlatformFileId) {
+        this.flagIconPlatformFileId = flagIconPlatformFileId;
     }
 
     @Override
@@ -92,10 +92,10 @@ public class ECommerceShop implements Serializable {
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (url != null ? !url.equals(that.url) : that.url != null) return false;
-        if (logoFileId != null ? !logoFileId.equals(that.logoFileId) : that.logoFileId != null) return false;
+        if (logoPlatformFileId != null ? !logoPlatformFileId.equals(that.logoPlatformFileId) : that.logoPlatformFileId != null) return false;
         if (googleUa != null ? !googleUa.equals(that.googleUa) : that.googleUa != null) return false;
         if (language != null ? !language.equals(that.language) : that.language != null) return false;
-        return flagIconFileId != null ? flagIconFileId.equals(that.flagIconFileId) : that.flagIconFileId == null;
+        return flagIconPlatformFileId != null ? flagIconPlatformFileId.equals(that.flagIconPlatformFileId) : that.flagIconPlatformFileId == null;
     }
 
     @Override
@@ -104,10 +104,10 @@ public class ECommerceShop implements Serializable {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (logoFileId != null ? logoFileId.hashCode() : 0);
+        result = 31 * result + (logoPlatformFileId != null ? logoPlatformFileId.hashCode() : 0);
         result = 31 * result + (googleUa != null ? googleUa.hashCode() : 0);
         result = 31 * result + (language != null ? language.hashCode() : 0);
-        result = 31 * result + (flagIconFileId != null ? flagIconFileId.hashCode() : 0);
+        result = 31 * result + (flagIconPlatformFileId != null ? flagIconPlatformFileId.hashCode() : 0);
         return result;
     }
 }

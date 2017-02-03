@@ -1,6 +1,6 @@
 package com.angkorteam.platform.bean;
 
-import com.angkorteam.platform.Spring;
+import com.angkorteam.platform.Platform;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.cycle.IRequestCycleListener;
@@ -21,7 +21,7 @@ public class ConnectionRequestCycleBean implements IRequestCycleListener {
 
     @Override
     public IRequestHandler onException(RequestCycle cycle, Exception ex) {
-        DataSource dataSource = Spring.getBean("dataSource", DataSource.class);
+        DataSource dataSource = Platform.getBean("dataSource", DataSource.class);
         try {
             Connection connection = dataSource.getConnection();
             if (connection != null) {

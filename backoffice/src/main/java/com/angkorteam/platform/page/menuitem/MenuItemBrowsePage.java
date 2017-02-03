@@ -31,18 +31,18 @@ public class MenuItemBrowsePage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcProvider provider = new JdbcProvider("menu_item");
+        JdbcProvider provider = new JdbcProvider("platform_menu_item");
 
-        provider.addJoin("LEFT JOIN menu on menu_item.menu_id = menu.menu_id");
-        provider.addJoin("LEFT JOIN section on menu_item.section_id = section.section_id");
-        provider.addJoin("LEFT JOIN page on menu_item.page_id = page.page_id");
+        provider.addJoin("LEFT JOIN menu on platform_menu_item.platform_menu_id = platform_menu.platform_menu_id");
+        provider.addJoin("LEFT JOIN section on platform_menu_item.platform_section_id = platform_section.platform_section_id");
+        provider.addJoin("LEFT JOIN page on platform_menu_item.platform_page_id = platform_page.platform_page_id");
 
-        provider.boardField("menu_item.menu_item_id", "menuItemId", Long.class);
-        provider.boardField("menu_item.title", "title", String.class);
-        provider.boardField("menu_item.icon", "icon", String.class);
-        provider.boardField("page.page_title", "page", String.class);
-        provider.boardField("menu.path", "menu", String.class);
-        provider.boardField("section.title", "section", String.class);
+        provider.boardField("platform_menu_item.platform_menu_item_id", "menuItemId", Long.class);
+        provider.boardField("platform_menu_item.title", "title", String.class);
+        provider.boardField("platform_menu_item.icon", "icon", String.class);
+        provider.boardField("platform_page.page_title", "page", String.class);
+        provider.boardField("platform_menu.path", "menu", String.class);
+        provider.boardField("platform_section.title", "section", String.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);

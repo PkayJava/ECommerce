@@ -33,13 +33,13 @@ public class UserBrowsePage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcProvider provider = new JdbcProvider("user");
-        provider.addJoin("LEFT JOIN role ON user.role_id = role.role_id");
-        provider.boardField("user.user_id", "userId", Long.class);
-        provider.boardField("user.full_name", "fullName", String.class);
-        provider.boardField("user.login", "login", String.class);
-        provider.boardField("role.name", "roleName", String.class);
-        provider.boardField("user.status", "status", String.class);
+        JdbcProvider provider = new JdbcProvider("platform_user");
+        provider.addJoin("LEFT JOIN role ON platform_user.platform_role_id = platform_role.platform_role_id");
+        provider.boardField("platform_user.platform_user_id", "userId", Long.class);
+        provider.boardField("platform_user.full_name", "fullName", String.class);
+        provider.boardField("platform_user.login", "login", String.class);
+        provider.boardField("platform_role.name", "roleName", String.class);
+        provider.boardField("platform_user.status", "status", String.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);
@@ -79,7 +79,7 @@ public class UserBrowsePage extends MBaaSPage {
             parameters.add("userId", userId);
             setResponsePage(UserModifyPage.class, parameters);
         } else if ("Delete".equals(link)) {
-            getJdbcTemplate().update("delete from user where user_id = ?", userId);
+            getJdbcTemplate().update("delete from platform_user where platform_user_id = ?", userId);
             target.add(this.dataTable);
         } else if ("Reset PWD".equals(link)) {
             PageParameters parameters = new PageParameters();

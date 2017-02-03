@@ -106,7 +106,7 @@ public class ColorCreatePage extends MBaaSPage {
         insertQuery.addValue("code = :code", this.code);
         insertQuery.addValue("reference = :reference", this.reference);
         insertQuery.addValue("value = :value", this.value);
-        insertQuery.addValue("img_file_id = :img_file_id", imgFileId);
+        insertQuery.addValue("img_platform_file_id = :img_platform_file_id", imgFileId);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 
         setResponsePage(ColorBrowsePage.class);

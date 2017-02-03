@@ -31,9 +31,9 @@ public class RestBrowsePage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcProvider provider = new JdbcProvider("rest");
+        JdbcProvider provider = new JdbcProvider("platform_rest");
 
-        provider.boardField("rest_id", "restId", Long.class);
+        provider.boardField("platform_rest_id", "restId", Long.class);
         provider.boardField("name", "name", String.class);
         provider.boardField("description", "description", String.class);
 

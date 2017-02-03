@@ -10,7 +10,7 @@ public class ECommerceProductVariantImage implements Serializable {
     private Long ecommerceProductVariantImageId;
     private Long ecommerceProductVariantId;
     private String name;
-    private Long fileId;
+    private Long platformFileId;
     private Long ecommerceProductId;
 
     public Long getECommerceProductVariantImageId() {
@@ -37,12 +37,12 @@ public class ECommerceProductVariantImage implements Serializable {
         this.name = name;
     }
 
-    public Long getFileId() {
-        return fileId;
+    public Long getPlatformFileId() {
+        return platformFileId;
     }
 
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
+    public void setPlatformFileId(Long platformFileId) {
+        this.platformFileId = platformFileId;
     }
 
     public Long getECommerceProductId() {
@@ -65,7 +65,7 @@ public class ECommerceProductVariantImage implements Serializable {
         if (ecommerceProductVariantId != null ? !ecommerceProductVariantId.equals(that.ecommerceProductVariantId) : that.ecommerceProductVariantId != null)
             return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (fileId != null ? !fileId.equals(that.fileId) : that.fileId != null) return false;
+        if (platformFileId != null ? !platformFileId.equals(that.platformFileId) : that.platformFileId != null) return false;
         return ecommerceProductId != null ? ecommerceProductId.equals(that.ecommerceProductId) : that.ecommerceProductId == null;
     }
 
@@ -74,7 +74,7 @@ public class ECommerceProductVariantImage implements Serializable {
         int result = ecommerceProductVariantImageId != null ? ecommerceProductVariantImageId.hashCode() : 0;
         result = 31 * result + (ecommerceProductVariantId != null ? ecommerceProductVariantId.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (fileId != null ? fileId.hashCode() : 0);
+        result = 31 * result + (platformFileId != null ? platformFileId.hashCode() : 0);
         result = 31 * result + (ecommerceProductId != null ? ecommerceProductId.hashCode() : 0);
         return result;
     }

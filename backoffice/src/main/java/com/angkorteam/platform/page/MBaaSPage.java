@@ -6,11 +6,10 @@ import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.Session;
-import com.angkorteam.platform.Spring;
-import com.angkorteam.platform.model.PlayformLayout;
 import com.angkorteam.platform.model.PlatformMenu;
 import com.angkorteam.platform.model.PlatformMenuItem;
 import com.angkorteam.platform.model.PlatformPage;
+import com.angkorteam.platform.model.PlayformLayout;
 import com.google.common.collect.Lists;
 import org.apache.wicket.markup.html.border.Border;
 import org.slf4j.Logger;
@@ -37,14 +36,14 @@ public abstract class MBaaSPage extends AdminLTEPage {
         super.onInitialize();
         this.breadcrumb = initBreadcrumb();
 
-        PlatformPage page = getJdbcTemplate().queryForObject("select * from page where java_class = ?", PlatformPage.class, getClass().getName());
+        PlatformPage page = getJdbcTemplate().queryForObject("select * from platform_page where java_class = ?", PlatformPage.class, getClass().getName());
         if (page == null) {
             LOGGER.debug("{} is not registered in {}", getClass().getName(), "page");
         }
 
-        PlayformLayout layout = getJdbcTemplate().queryForObject("select * from layout where layout_id = ?", PlayformLayout.class, page.getLayoutId());
+        PlayformLayout layout = getJdbcTemplate().queryForObject("select * from platform_layout where platform_layout_id = ?", PlayformLayout.class, page.getPlatformLayoutId());
         if (layout == null) {
-            LOGGER.debug("layout id {} is not registered", page.getLayoutId());
+            LOGGER.debug("layout id {} is not registered", page.getPlatformLayoutId());
         }
 
         Class<? extends Border> layoutClass = null;
@@ -77,9 +76,9 @@ public abstract class MBaaSPage extends AdminLTEPage {
     }
 
     public PlatformMenuItem getMenuItem() {
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
-        PlatformPage page = jdbcTemplate.queryForObject("select * from page where java_class = ?", PlatformPage.class, getClass().getName());
-        PlatformMenuItem menuItem = jdbcTemplate.queryForObject("select * from menu_item where page_id = ?", PlatformMenuItem.class, page.getPageId());
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+        PlatformPage page = jdbcTemplate.queryForObject("select * from platform_page where java_class = ?", PlatformPage.class, getClass().getName());
+        PlatformMenuItem menuItem = jdbcTemplate.queryForObject("select * from platform_menu_item where platform_page_id = ?", PlatformMenuItem.class, page.getPlatformPageId());
         return menuItem;
     }
 
@@ -89,34 +88,34 @@ public abstract class MBaaSPage extends AdminLTEPage {
         if (menuItem == null) {
             return breadcrumb;
         }
-        if (menuItem.getMenuItemId() != null) {
-            breadcrumb.add("MenuItemId:" + menuItem.getMenuItemId());
+        if (menuItem.getPlatformMenuItemId() != null) {
+            breadcrumb.add("MenuItemId:" + menuItem.getPlatformMenuItemId());
         }
-        if (menuItem.getSectionId() != null) {
-            breadcrumb.add("SectionId:" + menuItem.getSectionId());
+        if (menuItem.getPlatformSectionId() != null) {
+            breadcrumb.add("SectionId:" + menuItem.getPlatformSectionId());
         }
-        if (menuItem.getMenuId() != null) {
-            breadcrumb.add("MenuId:" + menuItem.getMenuId());
+        if (menuItem.getPlatformMenuId() != null) {
+            breadcrumb.add("MenuId:" + menuItem.getPlatformMenuId());
         }
 
-        Long menuId = menuItem.getMenuId();
+        Long menuId = menuItem.getPlatformMenuId();
 
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 
         while (true) {
             if (menuId == null) {
                 break;
             }
-            PlatformMenu menu = jdbcTemplate.queryForObject("select * from menu where menu_id = ?", PlatformMenu.class, menuId);
+            PlatformMenu menu = jdbcTemplate.queryForObject("select * from platform_menu where platform_menu_id = ?", PlatformMenu.class, menuId);
             if (menu == null) {
                 break;
             }
-            menuId = menu.getParentMenuId();
-            if (menu.getSectionId() != null) {
-                breadcrumb.add("SectionId:" + menu.getSectionId());
+            menuId = menu.getParentPlatformMenuId();
+            if (menu.getPlatformSectionId() != null) {
+                breadcrumb.add("SectionId:" + menu.getPlatformSectionId());
             }
-            if (menu.getParentMenuId() != null) {
-                breadcrumb.add("MenuId:" + menu.getParentMenuId());
+            if (menu.getParentPlatformMenuId() != null) {
+                breadcrumb.add("MenuId:" + menu.getParentPlatformMenuId());
             }
 
         }
@@ -129,11 +128,11 @@ public abstract class MBaaSPage extends AdminLTEPage {
     }
 
     protected NamedParameterJdbcTemplate getNamed() {
-        return Spring.getBean(NamedParameterJdbcTemplate.class);
+        return Platform.getBean(NamedParameterJdbcTemplate.class);
     }
 
     protected JdbcTemplate getJdbcTemplate() {
-        return Spring.getBean(JdbcTemplate.class);
+        return Platform.getBean(JdbcTemplate.class);
     }
 
     protected Long randomUUIDLong() {

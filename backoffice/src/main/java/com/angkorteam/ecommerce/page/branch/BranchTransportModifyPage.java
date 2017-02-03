@@ -93,7 +93,7 @@ public class BranchTransportModifyPage extends MBaaSPage {
 
         UpdateQuery updateQuery = new UpdateQuery("ecommerce_branch_transport");
         updateQuery.addValue("`text` = :text", this.text);
-        updateQuery.addValue("icon_file_id = :icon_file_id", iconFileId);
+        updateQuery.addValue("icon_platform_file_id = :icon_platform_file_id", iconFileId);
         updateQuery.addWhere("ecommerce_branch_transport_id = :ecommerce_branch_transport_id", iconFileId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

@@ -51,7 +51,7 @@ public class LayoutModifyPage extends MBaaSPage {
 
         this.layoutId = parameters.get("layoutId").toString("");
 
-        PlayformLayout layoutVO = getJdbcTemplate().queryForObject("select * from layout where layout_id = ?", PlayformLayout.class, this.layoutId);
+        PlayformLayout layoutVO = getJdbcTemplate().queryForObject("select * from platform_layout where platform_layout_id = ?", PlayformLayout.class, this.layoutId);
 
         this.name = layoutVO.getName();
         this.description = layoutVO.getDescription();
@@ -81,10 +81,10 @@ public class LayoutModifyPage extends MBaaSPage {
     }
 
     private void saveButtonOnSubmit(Button button) {
-        UpdateQuery updateQuery = new UpdateQuery("layout");
+        UpdateQuery updateQuery = new UpdateQuery("platform_layout");
         updateQuery.addValue("name = :name", this.name);
         updateQuery.addValue("description = :description", this.description);
-        updateQuery.addWhere("layout_id = :layout_id", this.layoutId);
+        updateQuery.addWhere("platform_layout_id = :platform_layout_id", this.layoutId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
         setResponsePage(LayoutBrowsePage.class);
     }

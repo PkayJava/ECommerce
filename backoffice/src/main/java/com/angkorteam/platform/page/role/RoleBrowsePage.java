@@ -27,9 +27,9 @@ public class RoleBrowsePage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcProvider provider = new JdbcProvider("role");
+        JdbcProvider provider = new JdbcProvider("platform_role");
 
-        provider.boardField("role_id", "roleId", Long.class);
+        provider.boardField("platform_role_id", "roleId", Long.class);
         provider.boardField("name", "name", String.class);
         provider.boardField("description", "description", String.class);
 

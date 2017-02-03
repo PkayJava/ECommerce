@@ -1,7 +1,7 @@
 package com.angkorteam.platform.provider;
 
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
-import com.angkorteam.platform.Spring;
+import com.angkorteam.platform.Platform;
 import com.google.gson.Gson;
 
 /**
@@ -23,11 +23,11 @@ public class OptionMultipleChoiceProvider extends com.angkorteam.framework.exten
 
     @Override
     public Gson getGson() {
-        return Spring.getBean(Gson.class);
+        return Platform.getBean(Gson.class);
     }
 
     @Override
     public NamedParameterJdbcTemplate getNamed() {
-        return Spring.getBean(NamedParameterJdbcTemplate.class);
+        return Platform.getBean(NamedParameterJdbcTemplate.class);
     }
 }

@@ -10,9 +10,9 @@ import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.model.PlatformPage;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionMultipleChoiceProvider;
-import com.angkorteam.platform.model.PlatformPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -68,24 +68,24 @@ public class PageModifyPage extends MBaaSPage {
 
         this.pageId = parameters.get("pageId").toString("");
 
-        PlatformPage page = getJdbcTemplate().queryForObject("select * from page where page_id = ?", PlatformPage.class, this.pageId);
+        PlatformPage page = getJdbcTemplate().queryForObject("select * from platform_page where platform_page_id = ?", PlatformPage.class, this.pageId);
         this.pageTitle = page.getPageTitle();
         this.pageDescription = page.getPageDescription();
         this.htmlTitle = page.getHtmlTitle();
         this.mountPath = page.getPath();
 
-        if (page.getLayoutId() != null) {
-            SelectQuery selectQuery = new SelectQuery("layout");
-            selectQuery.addField("layout_id id", "name text");
-            selectQuery.addWhere("layout_id = :layout_id", page.getLayoutId());
+        if (page.getPlatformLayoutId() != null) {
+            SelectQuery selectQuery = new SelectQuery("platform_layout");
+            selectQuery.addField("platform_layout_id id", "name text");
+            selectQuery.addWhere("platform_layout_id = :platform_layout_id", page.getPlatformLayoutId());
             this.layout = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
         }
 
-        SelectQuery selectQuery = new SelectQuery("role");
-        selectQuery.addField("role.role_id AS id");
-        selectQuery.addField("role.name AS text");
-        selectQuery.addJoin(JoinType.InnerJoin, "page_role", "page_role.role_id = role.role_id");
-        selectQuery.addWhere("page_role.page_id = :page_id", this.pageId);
+        SelectQuery selectQuery = new SelectQuery("platform_role");
+        selectQuery.addField("platform_role.platform_role_id AS id");
+        selectQuery.addField("platform_role.name AS text");
+        selectQuery.addJoin(JoinType.InnerJoin, "platform_page_role", "platform_page_role.platform_role_id = platform_role.platform_role_id");
+        selectQuery.addWhere("platform_page_role.platform_page_id = :page_id", this.pageId);
         this.role = getNamed().queryForList(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
 
         this.form = new Form<>("form");
@@ -132,26 +132,26 @@ public class PageModifyPage extends MBaaSPage {
     }
 
     private void saveButtonOnSubmit(Button button) {
-        UpdateQuery updateQuery = new UpdateQuery("page");
+        UpdateQuery updateQuery = new UpdateQuery("platform_page");
         updateQuery.addValue("html_title = :html_title", this.htmlTitle);
         updateQuery.addValue("page_title = :page_title", this.pageTitle);
         updateQuery.addValue("page_description = :page_description", this.pageDescription);
         if (this.layout == null) {
-            updateQuery.addValue("layout_id = NULL");
+            updateQuery.addValue("platform_layout_id = NULL");
         } else {
-            updateQuery.addValue("layout_id = :layout_id", this.layout.getId());
+            updateQuery.addValue("platform_layout_id = :platform_layout_id", this.layout.getId());
         }
-        updateQuery.addWhere("page_id = :page_id", this.pageId);
+        updateQuery.addWhere("platform_page_id = :platform_page_id", this.pageId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 
-        getJdbcTemplate().update("delete from page_role where page_id = ?", this.pageId);
+        getJdbcTemplate().update("delete from platform_page_role where platform_page_id = ?", this.pageId);
 
         if (this.role != null) {
             for (Option role : this.role) {
-                InsertQuery insertQuery = new InsertQuery("page_role");
-                insertQuery.addValue("page_role_id = :page_role_id", randomUUIDLong());
-                insertQuery.addValue("role_id = :role_id", role.getId());
-                insertQuery.addValue("page_id = :page_id", this.pageId);
+                InsertQuery insertQuery = new InsertQuery("platform_page_role");
+                insertQuery.addValue("platform_page_role_id = :page_role_id", randomUUIDLong());
+                insertQuery.addValue("platform_role_id = :role_id", role.getId());
+                insertQuery.addValue("platform_page_id = :page_id", this.pageId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
             }
         }

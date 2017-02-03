@@ -98,8 +98,8 @@ public class ProductReviewPage extends MBaaSPage {
         productQuery.addField("ecommerce_product.description AS description");
         productQuery.addField("CONCAT('" + asset + "','/api/resource', main_image.path, '/', main_image.name) AS mainImage");
         productQuery.addField("CONCAT('" + asset + "','/api/resource', main_image_high_res.path, '/', main_image_high_res.name) AS mainImageHighRes");
-        productQuery.addJoin(JoinType.LeftJoin, "file AS main_image", "ecommerce_product.main_image_file_id = main_image.file_id");
-        productQuery.addJoin(JoinType.LeftJoin, "file AS main_image_high_res", "ecommerce_product.main_image_high_res_file_id = main_image_high_res.file_id");
+        productQuery.addJoin(JoinType.LeftJoin, "file AS main_image", "ecommerce_product.main_image_platform_file_id = main_image.platform_file_id");
+        productQuery.addJoin(JoinType.LeftJoin, "file AS main_image_high_res", "ecommerce_product.main_image_high_res_platform_file_id = main_image_high_res.platform_file_id");
         productQuery.addJoin(JoinType.LeftJoin, "ecommerce_category", "ecommerce_product.ecommerce_category_id = ecommerce_category.ecommerce_category_id");
         productQuery.addJoin(JoinType.LeftJoin, "ecommerce_brand", "ecommerce_product.ecommerce_brand_id = ecommerce_brand.ecommerce_brand_id");
         productQuery.addJoin(JoinType.InnerJoin, "user", "ecommerce_product.user_id = user.user_id");

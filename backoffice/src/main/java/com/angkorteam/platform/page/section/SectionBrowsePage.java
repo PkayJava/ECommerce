@@ -27,8 +27,8 @@ public class SectionBrowsePage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcProvider provider = new JdbcProvider("section");
-        provider.boardField("section_id", "sectionId", Long.class);
+        JdbcProvider provider = new JdbcProvider("platform_section");
+        provider.boardField("platform_section_id", "sectionId", Long.class);
         provider.boardField("title", "title", String.class);
         provider.boardField("`order`", "order", Integer.class);
 

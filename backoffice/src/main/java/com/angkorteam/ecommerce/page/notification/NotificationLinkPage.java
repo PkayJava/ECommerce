@@ -3,8 +3,8 @@ package com.angkorteam.ecommerce.page.notification;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
-import com.angkorteam.platform.Spring;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -80,11 +80,11 @@ public class NotificationLinkPage extends MBaaSPage {
     }
 
     private void sendButtonOnSubmit(Button button) {
-        ThreadPoolTaskScheduler scheduler = Spring.getBean(ThreadPoolTaskScheduler.class);
+        ThreadPoolTaskScheduler scheduler = Platform.getBean(ThreadPoolTaskScheduler.class);
 
         scheduler.execute(() -> {
-            JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
-            Gson gson = Spring.getBean("gson", Gson.class);
+            JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+            Gson gson = Platform.getBean("gson", Gson.class);
 
             Map<String, Object> googleCloudMessage = Maps.newHashMap();
             Map<String, Object> data = Maps.newHashMap();

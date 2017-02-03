@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ECommerceBanner implements Serializable {
 
     private Long ecommerceBannerId;
-    private Long imageUrlFileId;
+    private Long imageUrlPlatformFileId;
     private Long ecommerceProductId;
     private Long ecommerceCategoryId;
     private String name;
@@ -23,12 +23,12 @@ public class ECommerceBanner implements Serializable {
         this.ecommerceBannerId = ecommerceBannerId;
     }
 
-    public Long getImageUrlFileId() {
-        return imageUrlFileId;
+    public Long getImageUrlPlatformFileId() {
+        return imageUrlPlatformFileId;
     }
 
-    public void setImageUrlFileId(Long imageUrlFileId) {
-        this.imageUrlFileId = imageUrlFileId;
+    public void setImageUrlPlatformFileId(Long imageUrlPlatformFileId) {
+        this.imageUrlPlatformFileId = imageUrlPlatformFileId;
     }
 
     public Long getECommerceProductId() {
@@ -80,7 +80,7 @@ public class ECommerceBanner implements Serializable {
 
         if (ecommerceBannerId != null ? !ecommerceBannerId.equals(that.ecommerceBannerId) : that.ecommerceBannerId != null)
             return false;
-        if (imageUrlFileId != null ? !imageUrlFileId.equals(that.imageUrlFileId) : that.imageUrlFileId != null)
+        if (imageUrlPlatformFileId != null ? !imageUrlPlatformFileId.equals(that.imageUrlPlatformFileId) : that.imageUrlPlatformFileId != null)
             return false;
         if (ecommerceProductId != null ? !ecommerceProductId.equals(that.ecommerceProductId) : that.ecommerceProductId != null)
             return false;
@@ -94,7 +94,7 @@ public class ECommerceBanner implements Serializable {
     @Override
     public int hashCode() {
         int result = ecommerceBannerId != null ? ecommerceBannerId.hashCode() : 0;
-        result = 31 * result + (imageUrlFileId != null ? imageUrlFileId.hashCode() : 0);
+        result = 31 * result + (imageUrlPlatformFileId != null ? imageUrlPlatformFileId.hashCode() : 0);
         result = 31 * result + (ecommerceProductId != null ? ecommerceProductId.hashCode() : 0);
         result = 31 * result + (ecommerceCategoryId != null ? ecommerceCategoryId.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);

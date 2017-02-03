@@ -70,7 +70,7 @@ public class Application extends AuthenticatedWebApplication {
     }
 
     protected void initPageMount() {
-        DataSource dataSource = Spring.getBean("delegate", DataSource.class);
+        DataSource dataSource = Platform.getBean("delegate", DataSource.class);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         List<PlatformPage> pages = jdbcTemplate.queryForList("select * from platform_page", PlatformPage.class);
         for (PlatformPage page : pages) {
@@ -86,7 +86,7 @@ public class Application extends AuthenticatedWebApplication {
 
     @Override
     public RuntimeConfigurationType getConfigurationType() {
-        XMLPropertiesConfiguration configuration = Spring.getBean(XMLPropertiesConfiguration.class);
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
         return RuntimeConfigurationType.valueOf(configuration.getString(Configuration.WICKET));
     }
 

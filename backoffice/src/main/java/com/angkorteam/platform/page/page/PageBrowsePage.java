@@ -29,13 +29,13 @@ public class PageBrowsePage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcProvider provider = new JdbcProvider("page");
-        provider.addJoin("LEFT JOIN layout on page.layout_id = layout.layout_id");
+        JdbcProvider provider = new JdbcProvider("platform_page");
+        provider.addJoin("LEFT JOIN platform_layout on platform_page.platform_layout_id = platform_layout.platform_layout_id");
 
-        provider.boardField("page.page_id", "pageId", Long.class);
-        provider.boardField("page.page_title", "title", String.class);
-        provider.boardField("page.path", "path", String.class);
-        provider.boardField("layout.name", "layout", String.class);
+        provider.boardField("platform_page.platform_page_id", "pageId", Long.class);
+        provider.boardField("platform_page.page_title", "title", String.class);
+        provider.boardField("platform_page.path", "path", String.class);
+        provider.boardField("platform_layout.name", "layout", String.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);

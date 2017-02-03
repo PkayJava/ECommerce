@@ -96,14 +96,14 @@ public class UserCreatePage extends MBaaSPage {
     }
 
     private void saveButtonOnSubmit(Button button) {
-        InsertQuery insertQuery = new InsertQuery("user");
-        insertQuery.addValue("user_id = :user_id", randomUUIDLong());
+        InsertQuery insertQuery = new InsertQuery("platform_user");
+        insertQuery.addValue("platform_user_id = :platform_user_id", randomUUIDLong());
         insertQuery.addValue("system = :system", false);
         insertQuery.addValue("status = :status", "ACTIVE");
         insertQuery.addValue("login = :login", this.login);
         insertQuery.addValue("password = MD5(:password)", this.password);
         insertQuery.addValue("full_name =:full_name", this.fullName);
-        insertQuery.addValue("role_id = :role_id", this.role.getId());
+        insertQuery.addValue("platform_role_id = :platform_role_id", this.role.getId());
         insertQuery.addValue("access_token = :access_token", randomUUID());
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
         setResponsePage(UserBrowsePage.class);

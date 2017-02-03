@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ECommerceColor implements Serializable {
 
     private Long ecommerceColorId;
-    private Long imgFileId;
+    private Long imgPlatformFileId;
     private String value;
     private String code;
     private String reference;
@@ -21,12 +21,12 @@ public class ECommerceColor implements Serializable {
         this.ecommerceColorId = ecommerceColorId;
     }
 
-    public Long getImgFileId() {
-        return imgFileId;
+    public Long getImgPlatformFileId() {
+        return imgPlatformFileId;
     }
 
-    public void setImgFileId(Long imgFileId) {
-        this.imgFileId = imgFileId;
+    public void setImgPlatformFileId(Long imgPlatformFileId) {
+        this.imgPlatformFileId = imgPlatformFileId;
     }
 
     public String getValue() {
@@ -62,7 +62,7 @@ public class ECommerceColor implements Serializable {
 
         if (ecommerceColorId != null ? !ecommerceColorId.equals(that.ecommerceColorId) : that.ecommerceColorId != null)
             return false;
-        if (imgFileId != null ? !imgFileId.equals(that.imgFileId) : that.imgFileId != null) return false;
+        if (imgPlatformFileId != null ? !imgPlatformFileId.equals(that.imgPlatformFileId) : that.imgPlatformFileId != null) return false;
         if (value != null ? !value.equals(that.value) : that.value != null) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
         return reference != null ? reference.equals(that.reference) : that.reference == null;
@@ -71,7 +71,7 @@ public class ECommerceColor implements Serializable {
     @Override
     public int hashCode() {
         int result = ecommerceColorId != null ? ecommerceColorId.hashCode() : 0;
-        result = 31 * result + (imgFileId != null ? imgFileId.hashCode() : 0);
+        result = 31 * result + (imgPlatformFileId != null ? imgPlatformFileId.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (reference != null ? reference.hashCode() : 0);

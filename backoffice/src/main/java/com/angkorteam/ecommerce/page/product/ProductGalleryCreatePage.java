@@ -89,7 +89,7 @@ public class ProductGalleryCreatePage extends MBaaSPage {
         insertQuery.addValue("ecommerce_product_image_id = :ecommerce_product_image_id", randomUUIDLong());
         insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
         insertQuery.addValue("name = :name", name);
-        insertQuery.addValue("file_id = :file_id", imageFileId);
+        insertQuery.addValue("platform_file_id = :platform_file_id", imageFileId);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 
         UpdateQuery updateQuery = new UpdateQuery("ecommerce_product");

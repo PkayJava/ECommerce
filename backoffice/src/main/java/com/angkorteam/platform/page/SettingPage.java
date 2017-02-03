@@ -82,7 +82,7 @@ public class SettingPage extends MBaaSPage {
         this.form = new Form<>("form");
         layout.add(this.form);
 
-        this.homePageField = new Select2SingleChoice<>("homePageField", new PropertyModel<>(this, "homePage"), new OptionSingleChoiceProvider("page", "page_id", "page_title"));
+        this.homePageField = new Select2SingleChoice<>("homePageField", new PropertyModel<>(this, "homePage"), new OptionSingleChoiceProvider("platform_page", "platform_page_id", "page_title"));
         this.homePageField.setRequired(true);
         this.form.add(this.homePageField);
         this.homePageFeedback = new TextFeedbackPanel("homePageFeedback", this.homePageField);
@@ -150,15 +150,15 @@ public class SettingPage extends MBaaSPage {
 
     void loadSetting(String key, PropertyModel<String> model) {
         verify(key);
-        String value = getJdbcTemplate().queryForObject("select value from setting where `key` = ?", String.class, key);
+        String value = getJdbcTemplate().queryForObject("select value from platform_setting where `key` = ?", String.class, key);
         model.setObject(value);
     }
 
     void verify(String key) {
-        int count = getJdbcTemplate().queryForObject("select count(*) from setting where `key` = ?", int.class, key);
+        int count = getJdbcTemplate().queryForObject("select count(*) from platform_setting where `key` = ?", int.class, key);
         if (count == 0) {
-            InsertQuery insertQuery = new InsertQuery("setting");
-            insertQuery.addValue("setting_id = :setting_id", randomUUIDLong());
+            InsertQuery insertQuery = new InsertQuery("platform_setting");
+            insertQuery.addValue("platform_setting_id = :platform_setting_id", randomUUIDLong());
             insertQuery.addValue("`key` = :key", key);
             insertQuery.addValue("`value` = :value", "");
             insertQuery.addValue("`version` = :version", 1);
@@ -168,11 +168,11 @@ public class SettingPage extends MBaaSPage {
 
     void loadHomePage(String key) {
         verify(key);
-        SelectQuery selectQuery = new SelectQuery("setting");
-        selectQuery.addField("page.page_id AS id");
-        selectQuery.addField("page.page_title AS text");
-        selectQuery.addJoin(JoinType.InnerJoin, "page", "setting.value = page.page_id");
-        selectQuery.addWhere("setting.key = :keu", key);
+        SelectQuery selectQuery = new SelectQuery("platform_setting");
+        selectQuery.addField("platform_page.platform_page_id AS id");
+        selectQuery.addField("platform_page.page_title AS text");
+        selectQuery.addJoin(JoinType.InnerJoin, "platform_page", "platform_setting.value = platform_page.platform_page_id");
+        selectQuery.addWhere("platform_setting.key = :key", key);
         this.homePage = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
     }
 
@@ -191,7 +191,7 @@ public class SettingPage extends MBaaSPage {
     }
 
     void saveSetting(String key, String value) {
-        UpdateQuery updateQuery = new UpdateQuery("setting");
+        UpdateQuery updateQuery = new UpdateQuery("platform_setting");
         updateQuery.addValue("`value` = :value", value);
         updateQuery.addWhere("`key` = :key", key);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());

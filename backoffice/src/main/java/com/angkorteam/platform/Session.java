@@ -23,23 +23,23 @@ public class Session extends AuthenticatedWebSession {
         this.roles = new Roles();
     }
 
-    public final String getUserId() {
+    public final String getPlatformUserId() {
         return this.userId;
     }
 
     @Override
     protected boolean authenticate(String username, String password) {
         SelectQuery selectQuery = null;
-        selectQuery = new SelectQuery("user");
+        selectQuery = new SelectQuery("platform_user");
         selectQuery.addWhere("login = :login", username);
         selectQuery.addWhere("password = MD5(:password)", password);
         PlatformUser user = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), PlatformUser.class);
         if (user != null) {
-            String role = getJdbcTemplate().queryForObject("select name from role where role_id = ?", String.class, user.getRoleId());
+            String role = getJdbcTemplate().queryForObject("select name from platform_role where platform_role_id = ?", String.class, user.getPlatformRoleId());
             if (!Strings.isNullOrEmpty(role)) {
                 this.roles.add(role);
             }
-            this.userId = String.valueOf(user.getUserId());
+            this.userId = String.valueOf(user.getPlatformUserId());
         }
         return user != null;
     }
@@ -50,10 +50,10 @@ public class Session extends AuthenticatedWebSession {
     }
 
     protected NamedParameterJdbcTemplate getNamed() {
-        return Spring.getBean(NamedParameterJdbcTemplate.class);
+        return Platform.getBean(NamedParameterJdbcTemplate.class);
     }
 
     protected JdbcTemplate getJdbcTemplate() {
-        return Spring.getBean(JdbcTemplate.class);
+        return Platform.getBean(JdbcTemplate.class);
     }
 }

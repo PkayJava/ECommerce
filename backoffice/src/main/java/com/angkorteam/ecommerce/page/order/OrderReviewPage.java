@@ -303,7 +303,7 @@ public class OrderReviewPage extends MBaaSPage {
             SelectQuery selectQuery = new SelectQuery("ecommerce_product");
             selectQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", orderItemRecord.getECommerceProductId());
             ECommerceProduct productRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceProduct.class);
-            Long userId = productRecord.getUserId();
+            Long userId = productRecord.getPlatformUserId();
             if (!vendorsOrderItems.containsKey(userId)) {
                 vendorsOrderItems.put(userId, Lists.newArrayList());
             }
@@ -323,7 +323,7 @@ public class OrderReviewPage extends MBaaSPage {
             insertQuery.addValue("date_created = :date_created", new Date());
             insertQuery.addValue("order_status = :order_status", "Check Stock");
             insertQuery.addValue("vendor_status = :vendor_status", "New");
-            insertQuery.addValue("user_id = :user_id", sellerId);
+            insertQuery.addValue("platform_user_id = :user_id", sellerId);
             insertQuery.addValue("total = :total", total);
             getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
             for (ECommerceOrderItem item : sellerItems.getValue()) {
@@ -342,14 +342,14 @@ public class OrderReviewPage extends MBaaSPage {
                 insertQuery.addValue("product_discount_price = :product_discount_price", item.getProductDiscountPrice());
                 insertQuery.addValue("product_description = :product_description", item.getProductDescription());
                 insertQuery.addValue("product_main_image = :product_main_image", item.getProductMainImage());
-                insertQuery.addValue("product_main_image_file_id = :product_main_image_file_id", item.getProductMainImageFileId());
+                insertQuery.addValue("product_main_image_platform_file_id = :product_main_image_file_id", item.getProductMainImagePlatformFileId());
                 insertQuery.addValue("variant_reference = :variant_reference", item.getVariantReference());
                 insertQuery.addValue("ecommerce_color_id = :ecommerce_color_id", item.getECommerceColorId());
                 insertQuery.addValue("color_value = :color_value", item.getColorValue());
                 insertQuery.addValue("color_code = :color_code", item.getColorCode());
                 insertQuery.addValue("color_img = :color_img", item.getColorImg());
                 insertQuery.addValue("color_reference = :color_reference", item.getColorReference());
-                insertQuery.addValue("color_img_file_id = :color_img_file_id", item.getColorImgFileId());
+                insertQuery.addValue("color_img_platform_file_id = :color_img_file_id", item.getColorImgPlatformFileId());
                 insertQuery.addValue("ecommerce_size_id = :ecommerce_size_id", item.getECommerceSizeId());
                 insertQuery.addValue("size_value = :size_value", item.getSizeValue());
                 insertQuery.addValue("size_reference = :size_reference", item.getSizeReference());

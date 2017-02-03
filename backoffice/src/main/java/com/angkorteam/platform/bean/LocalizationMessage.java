@@ -2,7 +2,7 @@ package com.angkorteam.platform.bean;
 
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
-import com.angkorteam.platform.Spring;
+import com.angkorteam.platform.Platform;
 import com.google.common.base.Strings;
 import org.apache.wicket.Component;
 import org.apache.wicket.Localizer;
@@ -46,8 +46,8 @@ public class LocalizationMessage extends Localizer {
 
     @Override
     public String getString(String key, Component component, IModel<?> model, Locale locale, String style, String defaultValue) throws MissingResourceException {
-        NamedParameterJdbcTemplate named = Spring.getBean(NamedParameterJdbcTemplate.class);
-        SelectQuery selectQuery = new SelectQuery("localization");
+        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
+        SelectQuery selectQuery = new SelectQuery("platform_localization");
         selectQuery.addField("label");
         selectQuery.addWhere("lower(`key`) = lower(:key)", key);
         if (locale != null) {

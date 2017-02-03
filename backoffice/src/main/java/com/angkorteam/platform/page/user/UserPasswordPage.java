@@ -4,8 +4,8 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.UpdateQuery;
-import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.model.PlatformUser;
+import com.angkorteam.platform.page.MBaaSPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -24,25 +24,25 @@ public class UserPasswordPage extends MBaaSPage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordPage.class);
 
-    String userId;
+    private String userId;
 
-    String fullName;
-    Label fullNameLabel;
+    private String fullName;
+    private Label fullNameLabel;
 
-    String login;
-    Label loginLabel;
+    private String login;
+    private Label loginLabel;
 
-    String password;
-    TextField<String> passwordField;
-    TextFeedbackPanel passwordFeedback;
+    private String password;
+    private TextField<String> passwordField;
+    private TextFeedbackPanel passwordFeedback;
 
-    String retypePassword;
-    TextField<String> retypePasswordField;
-    TextFeedbackPanel retypePasswordFeedback;
+    private String retypePassword;
+    private TextField<String> retypePasswordField;
+    private TextFeedbackPanel retypePasswordFeedback;
 
-    Button saveButton;
-    Form<Void> form;
-    BookmarkablePageLink<Void> closeButton;
+    private Button saveButton;
+    private Form<Void> form;
+    private BookmarkablePageLink<Void> closeButton;
 
     @Override
     protected void doInitialize(Border layout) {
@@ -54,7 +54,7 @@ public class UserPasswordPage extends MBaaSPage {
         PageParameters parameters = getPageParameters();
         this.userId = parameters.get("userId").toString("");
 
-        PlatformUser userRecord = getJdbcTemplate().queryForObject("select * from user where user_id = ?", PlatformUser.class, this.userId);
+        PlatformUser userRecord = getJdbcTemplate().queryForObject("select * from platform_user where platform_user_id = ?", PlatformUser.class, this.userId);
 
         this.fullName = userRecord.getFullName();
         this.fullNameLabel = new Label("fullNameLabel", new PropertyModel<>(this, "fullName"));

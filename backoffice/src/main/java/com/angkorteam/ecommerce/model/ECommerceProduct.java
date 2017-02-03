@@ -9,7 +9,7 @@ import java.util.Date;
 public class ECommerceProduct implements Serializable {
 
     private Long ecommerceProductId;
-    private Long userId;
+    private Long platformUserId;
     private String name;
     private Double price;
     private String url;
@@ -21,8 +21,8 @@ public class ECommerceProduct implements Serializable {
     private Double discountPrice;
     private String reference;
     private String description;
-    private Long mainImageFileId;
-    private Long mainImageHighResFileId;
+    private Long mainImagePlatformFileId;
+    private Long mainImageHighResPlatformFileId;
     private Date lastModified;
     private Integer popularity;
     private Double normalPrice;
@@ -35,12 +35,12 @@ public class ECommerceProduct implements Serializable {
         this.ecommerceProductId = ecommerceProductId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getPlatformUserId() {
+        return platformUserId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setPlatformUserId(Long platformUserId) {
+        this.platformUserId = platformUserId;
     }
 
     public String getName() {
@@ -131,20 +131,20 @@ public class ECommerceProduct implements Serializable {
         this.description = description;
     }
 
-    public Long getMainImageFileId() {
-        return mainImageFileId;
+    public Long getMainImagePlatformFileId() {
+        return mainImagePlatformFileId;
     }
 
-    public void setMainImageFileId(Long mainImageFileId) {
-        this.mainImageFileId = mainImageFileId;
+    public void setMainImagePlatformFileId(Long mainImagePlatformFileId) {
+        this.mainImagePlatformFileId = mainImagePlatformFileId;
     }
 
-    public Long getMainImageHighResFileId() {
-        return mainImageHighResFileId;
+    public Long getMainImageHighResPlatformFileId() {
+        return mainImageHighResPlatformFileId;
     }
 
-    public void setMainImageHighResFileId(Long mainImageHighResFileId) {
-        this.mainImageHighResFileId = mainImageHighResFileId;
+    public void setMainImageHighResPlatformFileId(Long mainImageHighResPlatformFileId) {
+        this.mainImageHighResPlatformFileId = mainImageHighResPlatformFileId;
     }
 
     public Date getLastModified() {
@@ -180,7 +180,7 @@ public class ECommerceProduct implements Serializable {
 
         if (ecommerceProductId != null ? !ecommerceProductId.equals(that.ecommerceProductId) : that.ecommerceProductId != null)
             return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (platformUserId != null ? !platformUserId.equals(that.platformUserId) : that.platformUserId != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
         if (url != null ? !url.equals(that.url) : that.url != null) return false;
@@ -196,9 +196,9 @@ public class ECommerceProduct implements Serializable {
             return false;
         if (reference != null ? !reference.equals(that.reference) : that.reference != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (mainImageFileId != null ? !mainImageFileId.equals(that.mainImageFileId) : that.mainImageFileId != null)
+        if (mainImagePlatformFileId != null ? !mainImagePlatformFileId.equals(that.mainImagePlatformFileId) : that.mainImagePlatformFileId != null)
             return false;
-        if (mainImageHighResFileId != null ? !mainImageHighResFileId.equals(that.mainImageHighResFileId) : that.mainImageHighResFileId != null)
+        if (mainImageHighResPlatformFileId != null ? !mainImageHighResPlatformFileId.equals(that.mainImageHighResPlatformFileId) : that.mainImageHighResPlatformFileId != null)
             return false;
         if (lastModified != null ? !lastModified.equals(that.lastModified) : that.lastModified != null) return false;
         if (popularity != null ? !popularity.equals(that.popularity) : that.popularity != null) return false;
@@ -208,7 +208,7 @@ public class ECommerceProduct implements Serializable {
     @Override
     public int hashCode() {
         int result = ecommerceProductId != null ? ecommerceProductId.hashCode() : 0;
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (platformUserId != null ? platformUserId.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
@@ -220,8 +220,8 @@ public class ECommerceProduct implements Serializable {
         result = 31 * result + (discountPrice != null ? discountPrice.hashCode() : 0);
         result = 31 * result + (reference != null ? reference.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (mainImageFileId != null ? mainImageFileId.hashCode() : 0);
-        result = 31 * result + (mainImageHighResFileId != null ? mainImageHighResFileId.hashCode() : 0);
+        result = 31 * result + (mainImagePlatformFileId != null ? mainImagePlatformFileId.hashCode() : 0);
+        result = 31 * result + (mainImageHighResPlatformFileId != null ? mainImageHighResPlatformFileId.hashCode() : 0);
         result = 31 * result + (lastModified != null ? lastModified.hashCode() : 0);
         result = 31 * result + (popularity != null ? popularity.hashCode() : 0);
         result = 31 * result + (normalPrice != null ? normalPrice.hashCode() : 0);

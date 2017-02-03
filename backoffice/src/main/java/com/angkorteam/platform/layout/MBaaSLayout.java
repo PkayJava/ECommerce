@@ -1,13 +1,13 @@
 package com.angkorteam.platform.layout;
 
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.Session;
-import com.angkorteam.platform.page.LogoutPage;
-import com.angkorteam.platform.ui.SectionWidget;
-import com.angkorteam.platform.Spring;
 import com.angkorteam.platform.model.PlatformPage;
 import com.angkorteam.platform.model.PlatformSection;
 import com.angkorteam.platform.model.PlatformUser;
+import com.angkorteam.platform.page.LogoutPage;
+import com.angkorteam.platform.ui.SectionWidget;
 import com.google.common.base.Strings;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -39,7 +39,7 @@ public class MBaaSLayout extends Border {
     protected void onInitialize() {
         super.onInitialize();
 
-        JdbcTemplate jdbcTemplate = Spring.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 
         String javaClass = getPage().getClass().getName();
         this.page = jdbcTemplate.queryForObject("select * from page where  java_class = ?", PlatformPage.class, javaClass);
@@ -66,9 +66,9 @@ public class MBaaSLayout extends Border {
         BookmarkablePageLink<Void> logoutPage = new BookmarkablePageLink<>("logoutPage", LogoutPage.class);
         addToBorder(logoutPage);
 
-        PlatformUser user = jdbcTemplate.queryForObject("select * from user where user_id = ?", PlatformUser.class, getSession().getUserId());
+        PlatformUser user = jdbcTemplate.queryForObject("select * from user where user_id = ?", PlatformUser.class, getSession().getPlatformUserId());
         if (user == null) {
-            LOGGER.debug("user id {} is deleted", getSession().getUserId());
+            LOGGER.debug("user id {} is deleted", getSession().getPlatformUserId());
         }
         if (user != null) {
             this.welcomeName = Strings.isNullOrEmpty(user.getFullName()) ? user.getLogin() : user.getFullName();

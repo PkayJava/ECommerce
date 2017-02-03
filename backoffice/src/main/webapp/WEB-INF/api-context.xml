@@ -87,6 +87,10 @@
         <property name="delegate" ref="delegate"/>
     </bean>
 
+    <bean id="transactionManager" class="com.angkorteam.platform.factory.TransactionManagerFactoryBean">
+        <property name="delegate" ref="delegate"/>
+    </bean>
+
     <bean id="jdbcTemplate" class="com.angkorteam.framework.spring.JdbcTemplate" scope="request">
         <constructor-arg index="0" ref="dataSource"/>
     </bean>

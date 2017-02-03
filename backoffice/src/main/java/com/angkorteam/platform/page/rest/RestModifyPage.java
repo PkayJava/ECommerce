@@ -9,10 +9,10 @@ import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.model.PlatformRest;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionMultipleChoiceProvider;
 import com.angkorteam.platform.validator.RestNameValidator;
-import com.angkorteam.platform.model.PlatformRest;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -53,19 +53,19 @@ public class RestModifyPage extends MBaaSPage {
 
         this.restId = getPageParameters().get("restId").toString("");
 
-        PlatformRest rest = getJdbcTemplate().queryForObject("select * from rest where rest_id = ?", PlatformRest.class, this.restId);
+        PlatformRest rest = getJdbcTemplate().queryForObject("select * from platform_rest where platform_rest_id = ?", PlatformRest.class, this.restId);
 
         this.form = new Form<>("form");
         layout.add(this.form);
 
-        SelectQuery selectQuery = new SelectQuery("role");
-        selectQuery.addField("role.role_id AS id");
-        selectQuery.addField("role.name AS text");
-        selectQuery.addJoin(JoinType.InnerJoin, "rest_role", "rest_role.role_id = role.role_id");
-        selectQuery.addWhere("rest_role.rest_id = :rest_id", this.restId);
+        SelectQuery selectQuery = new SelectQuery("platform_role");
+        selectQuery.addField("platform_role.platform_role_id AS id");
+        selectQuery.addField("platform_role.name AS text");
+        selectQuery.addJoin(JoinType.InnerJoin, "platform_rest_role", "platform_rest_role.platform_role_id = platform_role.platform_role_id");
+        selectQuery.addWhere("platform_rest_role.platform_rest_id = :rest_id", this.restId);
 
         this.role = getNamed().queryForList(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
-        this.roleField = new Select2MultipleChoice<>("roleField", new PropertyModel<>(this, "role"), new OptionMultipleChoiceProvider("role", "role_id", "name"));
+        this.roleField = new Select2MultipleChoice<>("roleField", new PropertyModel<>(this, "role"), new OptionMultipleChoiceProvider("platform_role", "platform_role_id", "name"));
         this.form.add(this.roleField);
         this.roleFeedback = new TextFeedbackPanel("roleFeedback", this.roleField);
         this.form.add(this.roleFeedback);
@@ -97,20 +97,20 @@ public class RestModifyPage extends MBaaSPage {
 
     private void saveButtonOnSubmit(Button button) {
 
-        UpdateQuery updateQuery = new UpdateQuery("rest");
+        UpdateQuery updateQuery = new UpdateQuery("platform_rest");
         updateQuery.addValue("name = :name", this.name);
         updateQuery.addValue("description = :description", this.description);
-        updateQuery.addWhere("rest_id = :rest_id", this.restId);
+        updateQuery.addWhere("platform_rest_id = :platform_rest_id", this.restId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 
-        getJdbcTemplate().update("delete from rest_role where rest_id = ?", this.restId);
+        getJdbcTemplate().update("delete from platform_rest_role where platform_rest_id = ?", this.restId);
 
         if (this.role != null) {
             for (Option role : this.role) {
-                InsertQuery insertQuery = new InsertQuery("rest_role");
-                insertQuery.addValue("rest_role_id = :rest_role", randomUUIDLong());
-                insertQuery.addValue("role_id = :role_id", role.getId());
-                insertQuery.addValue("rest_id = :rest_id", this.restId);
+                InsertQuery insertQuery = new InsertQuery("platform_rest_role");
+                insertQuery.addValue("platform_rest_role_id = :rest_role", randomUUIDLong());
+                insertQuery.addValue("platform_role_id = :role_id", role.getId());
+                insertQuery.addValue("platform_rest_id = :rest_id", this.restId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
             }
         }

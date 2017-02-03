@@ -6,9 +6,9 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.OptionDropDown
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.model.PlatformMenuItem;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.validator.MenuFormValidator;
-import com.angkorteam.platform.model.PlatformMenuItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -57,20 +57,20 @@ public class MenuItemModifyPage extends MBaaSPage {
         PageParameters parameters = getPageParameters();
         this.menuItemId = parameters.get("menuItemId").toString("");
 
-        PlatformMenuItem menuItem = getJdbcTemplate().queryForObject("select * from menu_item where menu_item_id = ?", PlatformMenuItem.class, this.menuItemId);
+        PlatformMenuItem menuItem = getJdbcTemplate().queryForObject("select * from platform_menu_item where platform_menu_item_id = ?", PlatformMenuItem.class, this.menuItemId);
 
         this.title = menuItem.getTitle();
         this.icon = menuItem.getIcon();
         this.order = menuItem.getOrder();
-        if (menuItem.getMenuId() != null) {
-            this.menu = getJdbcTemplate().queryForObject("select menu_id id, title text from menu where menu_id = ?", Option.class, menuItem.getMenuId());
+        if (menuItem.getPlatformMenuId() != null) {
+            this.menu = getJdbcTemplate().queryForObject("select platform_menu_id id, title text from platform_menu where platform_menu_id = ?", Option.class, menuItem.getPlatformMenuId());
         }
-        if (menuItem.getSectionId() != null) {
-            this.section = getJdbcTemplate().queryForObject("select section_id id, title text from section where section_id = ?", Option.class, menuItem.getSectionId());
+        if (menuItem.getPlatformSectionId() != null) {
+            this.section = getJdbcTemplate().queryForObject("select platform_section_id id, title text from platform_section where platform_section_id = ?", Option.class, menuItem.getPlatformSectionId());
         }
 
-        if (menuItem.getPageId() != null) {
-            this.pageTitle = getJdbcTemplate().queryForObject("select page_title from page where page_id = ?", String.class, menuItem.getPageId());
+        if (menuItem.getPlatformPageId() != null) {
+            this.pageTitle = getJdbcTemplate().queryForObject("select page_title from platform_page where platform_page_id = ?", String.class, menuItem.getPlatformPageId());
         }
 
         this.form = new Form<>("form");
@@ -97,13 +97,13 @@ public class MenuItemModifyPage extends MBaaSPage {
         this.pageTitleLabel = new Label("pageTitleLabel", new PropertyModel<>(this, "pageTitle"));
         this.form.add(this.pageTitleLabel);
 
-        this.menuField = new OptionDropDownChoice("menuField", new PropertyModel<>(this, "menu"), getJdbcTemplate(), "menu", "menu_id", "path");
+        this.menuField = new OptionDropDownChoice("menuField", new PropertyModel<>(this, "menu"), getJdbcTemplate(), "platform_menu", "platform_menu_id", "path");
         this.menuField.setNullValid(true);
         this.form.add(this.menuField);
         this.menuFeedback = new TextFeedbackPanel("menuFeedback", this.menuField);
         this.form.add(this.menuFeedback);
 
-        this.sectionField = new OptionDropDownChoice("sectionField", new PropertyModel<>(this, "section"), getJdbcTemplate(), "section", "section_id", "title");
+        this.sectionField = new OptionDropDownChoice("sectionField", new PropertyModel<>(this, "section"), getJdbcTemplate(), "platform_section", "platform_section_id", "title");
         this.sectionField.setNullValid(true);
         this.form.add(this.sectionField);
         this.sectionFeedback = new TextFeedbackPanel("sectionFeedback", this.sectionField);
@@ -120,21 +120,21 @@ public class MenuItemModifyPage extends MBaaSPage {
     }
 
     private void saveButtonOnSubmit(Button button) {
-        UpdateQuery updateQuery = new UpdateQuery("menu_item");
+        UpdateQuery updateQuery = new UpdateQuery("platform_menu_item");
         updateQuery.addValue("title = :title", this.title);
         updateQuery.addValue("`order` = :order", this.order);
         updateQuery.addValue("icon = :icon", this.icon);
         if (this.menu != null) {
-            updateQuery.addValue("menu_id = :menu_id", this.menu.getId());
+            updateQuery.addValue("platform_menu_id = :platform_menu_id", this.menu.getId());
         } else {
-            updateQuery.addValue("menu_id = NULL");
+            updateQuery.addValue("platform_menu_id = NULL");
         }
         if (this.section != null) {
-            updateQuery.addValue("section_id = :section_id", this.section.getId());
+            updateQuery.addValue("platform_section_id = :platform_section_id", this.section.getId());
         } else {
-            updateQuery.addValue("section_id = NULL");
+            updateQuery.addValue("platform_section_id = NULL");
         }
-        updateQuery.addWhere("menu_item_id = :menu_item_id", this.menuItemId);
+        updateQuery.addWhere("platform_menu_item_id = :platform_menu_item_id", this.menuItemId);
 
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

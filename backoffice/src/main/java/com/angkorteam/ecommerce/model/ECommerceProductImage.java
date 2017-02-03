@@ -10,7 +10,7 @@ public class ECommerceProductImage implements Serializable {
     private Long ecommerceProductImageId;
     private Long ecommerceProductId;
     private String name;
-    private Long fileId;
+    private Long platformFileId;
 
     public Long getECommerceProductImageId() {
         return ecommerceProductImageId;
@@ -36,12 +36,12 @@ public class ECommerceProductImage implements Serializable {
         this.name = name;
     }
 
-    public Long getFileId() {
-        return fileId;
+    public Long getPlatformFileId() {
+        return platformFileId;
     }
 
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
+    public void setPlatformFileId(Long platformFileId) {
+        this.platformFileId = platformFileId;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ECommerceProductImage implements Serializable {
         if (ecommerceProductId != null ? !ecommerceProductId.equals(that.ecommerceProductId) : that.ecommerceProductId != null)
             return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return fileId != null ? fileId.equals(that.fileId) : that.fileId == null;
+        return platformFileId != null ? platformFileId.equals(that.platformFileId) : that.platformFileId == null;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ECommerceProductImage implements Serializable {
         int result = ecommerceProductImageId != null ? ecommerceProductImageId.hashCode() : 0;
         result = 31 * result + (ecommerceProductId != null ? ecommerceProductId.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (fileId != null ? fileId.hashCode() : 0);
+        result = 31 * result + (platformFileId != null ? platformFileId.hashCode() : 0);
         return result;
     }
 }

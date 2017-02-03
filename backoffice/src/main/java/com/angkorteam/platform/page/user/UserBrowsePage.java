@@ -34,7 +34,7 @@ public class UserBrowsePage extends MBaaSPage {
         add(layout);
 
         JdbcProvider provider = new JdbcProvider("platform_user");
-        provider.addJoin("LEFT JOIN role ON platform_user.platform_role_id = platform_role.platform_role_id");
+        provider.addJoin("LEFT JOIN platform_role ON platform_user.platform_role_id = platform_role.platform_role_id");
         provider.boardField("platform_user.platform_user_id", "userId", Long.class);
         provider.boardField("platform_user.full_name", "fullName", String.class);
         provider.boardField("platform_user.login", "login", String.class);

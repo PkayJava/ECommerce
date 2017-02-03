@@ -35,7 +35,7 @@ public class MenuBrowsePage extends MBaaSPage {
         provider.boardField("menu.title", "title", String.class);
         provider.boardField("menu.icon", "icon", String.class);
         provider.boardField("parent.path", "parent", String.class);
-        provider.boardField("section.title", "section", String.class);
+        provider.boardField("platform_section.title", "section", String.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);

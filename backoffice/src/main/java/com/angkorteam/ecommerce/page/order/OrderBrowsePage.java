@@ -36,7 +36,7 @@ public class OrderBrowsePage extends MBaaSPage {
 
         JdbcProvider provider = new JdbcProvider("ecommerce_order");
         provider.boardField("ecommerce_order_id", "ecommerceOrderId", Long.class);
-        provider.boardField("user_id", "userId", String.class);
+        provider.boardField("platform_user_id", "userId", String.class);
         provider.boardField("name", "name", String.class);
         provider.boardField("email", "email", String.class);
         provider.boardField("shipping_name", "shippingName", String.class);

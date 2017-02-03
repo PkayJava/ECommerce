@@ -33,9 +33,9 @@ public class MenuItemBrowsePage extends MBaaSPage {
 
         JdbcProvider provider = new JdbcProvider("platform_menu_item");
 
-        provider.addJoin("LEFT JOIN menu on platform_menu_item.platform_menu_id = platform_menu.platform_menu_id");
-        provider.addJoin("LEFT JOIN section on platform_menu_item.platform_section_id = platform_section.platform_section_id");
-        provider.addJoin("LEFT JOIN page on platform_menu_item.platform_page_id = platform_page.platform_page_id");
+        provider.addJoin("LEFT JOIN platform_menu on platform_menu_item.platform_menu_id = platform_menu.platform_menu_id");
+        provider.addJoin("LEFT JOIN platform_section on platform_menu_item.platform_section_id = platform_section.platform_section_id");
+        provider.addJoin("LEFT JOIN platform_page on platform_menu_item.platform_page_id = platform_page.platform_page_id");
 
         provider.boardField("platform_menu_item.platform_menu_item_id", "menuItemId", Long.class);
         provider.boardField("platform_menu_item.title", "title", String.class);

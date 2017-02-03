@@ -42,7 +42,7 @@ public class MBaaSLayout extends Border {
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 
         String javaClass = getPage().getClass().getName();
-        this.page = jdbcTemplate.queryForObject("select * from page where  java_class = ?", PlatformPage.class, javaClass);
+        this.page = jdbcTemplate.queryForObject("select * from platform_page where  java_class = ?", PlatformPage.class, javaClass);
 
         WebMarkupContainer headerContainer = new WebMarkupContainer("headerContainer");
         addToBorder(headerContainer);
@@ -52,7 +52,7 @@ public class MBaaSLayout extends Border {
         headerContainer.add(headerDescription);
         headerContainer.setVisible(!(Strings.isNullOrEmpty(this.page.getPageTitle()) && Strings.isNullOrEmpty(this.page.getPageDescription())));
 
-        List<PlatformSection> sections = jdbcTemplate.queryForList("select * from section order by `order` asc", PlatformSection.class);
+        List<PlatformSection> sections = jdbcTemplate.queryForList("select * from platform_section order by `order` asc", PlatformSection.class);
 
         RepeatingView sectionWidgets = new RepeatingView("sectionWidgets");
 
@@ -66,7 +66,7 @@ public class MBaaSLayout extends Border {
         BookmarkablePageLink<Void> logoutPage = new BookmarkablePageLink<>("logoutPage", LogoutPage.class);
         addToBorder(logoutPage);
 
-        PlatformUser user = jdbcTemplate.queryForObject("select * from user where user_id = ?", PlatformUser.class, getSession().getPlatformUserId());
+        PlatformUser user = jdbcTemplate.queryForObject("select * from platform_user where platform_user_id = ?", PlatformUser.class, getSession().getPlatformUserId());
         if (user == null) {
             LOGGER.debug("user id {} is deleted", getSession().getPlatformUserId());
         }

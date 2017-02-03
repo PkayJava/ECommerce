@@ -38,14 +38,14 @@ public class VendorOrderBrowsePage extends MBaaSPage {
         provider.boardField("ecommerce_vendor_order_id", "ecommerceVendorOrderId", Long.class);
         provider.boardField("vendor_status", "vendorStatus", String.class);
         provider.boardField("order_status", "orderStatus", String.class);
-        provider.boardField("user_id", "userId", Long.class);
+        provider.boardField("platform_user_id", "userId", Long.class);
         provider.boardField("total", "total", Double.class);
         provider.boardField("date_created", "dateCreated", Calendar.DateTime);
 
         provider.selectField("ecommerceVendorOrderId", String.class);
         provider.selectField("userId", String.class);
 
-        provider.addWhere("user_id = '" + getSession().getPlatformUserId() + "'");
+        provider.addWhere("platform_user_id = '" + getSession().getPlatformUserId() + "'");
 
         provider.setSort("dateCreated", SortOrder.DESCENDING);
 

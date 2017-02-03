@@ -39,14 +39,14 @@ public class ProductBrowsePage extends MBaaSPage {
         provider.addJoin("LEFT JOIN ecommerce_category ON ecommerce_product.ecommerce_category_id = ecommerce_category.ecommerce_category_id");
         provider.addJoin("LEFT JOIN ecommerce_brand on ecommerce_product.ecommerce_brand_id = ecommerce_brand.ecommerce_brand_id");
         if (getSession().getRoles().hasRole("administrator")) {
-            provider.addJoin("LEFT JOIN user on ecommerce_product.user_id = user.user_id");
+            provider.addJoin("LEFT JOIN platform_user on ecommerce_product.platform_user_id = platform_user.platform_user_id");
         }
 
         provider.addJoin("LEFT JOIN ecommerce_product_variant on ecommerce_product.ecommerce_product_id = ecommerce_product_variant.ecommerce_product_id");
         provider.setGroupBy("ecommerce_product.ecommerce_product_id");
 
         if (getSession().getRoles().hasRole("administrator")) {
-            provider.boardField("IF(max(user.full_name) is null or max(user.full_name) = '', max(user.login), max(user.full_name))", "fullName", String.class);
+            provider.boardField("IF(max(platform_user.full_name) is null or max(platform_user.full_name) = '', max(platform_user.login), max(platform_user.full_name))", "fullName", String.class);
             provider.boardField("max(ecommerce_product.shipping_price)", "shipping", Double.class);
         }
         provider.boardField("count(ecommerce_product_variant.ecommerce_product_variant_id)", "variant", Integer.class);
@@ -62,7 +62,7 @@ public class ProductBrowsePage extends MBaaSPage {
         provider.setSort("ready", SortOrder.ASCENDING);
 
         if (!getSession().getRoles().hasRole("administrator")) {
-            provider.addWhere("ecommerce_product.user_id = '" + getSession().getPlatformUserId() + "'");
+            provider.addWhere("ecommerce_product.platform_user_id = '" + getSession().getPlatformUserId() + "'");
         }
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);

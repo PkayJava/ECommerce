@@ -29,9 +29,9 @@ public class LayoutBrowsePage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        JdbcProvider provider = new JdbcProvider("layout");
+        JdbcProvider provider = new JdbcProvider("platform_layout");
 
-        provider.boardField("layout_id", "layoutId", Long.class);
+        provider.boardField("platform_layout_id", "layoutId", Long.class);
         provider.boardField("name", "name", String.class);
         provider.boardField("java_class", "javaClass", String.class);
 

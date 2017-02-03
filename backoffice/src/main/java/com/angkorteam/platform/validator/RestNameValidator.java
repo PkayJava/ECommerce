@@ -28,11 +28,11 @@ public class RestNameValidator implements IValidator<String> {
 
         String name = validatable.getValue();
         if (!Strings.isNullOrEmpty(name)) {
-            SelectQuery selectQuery = new SelectQuery("rest");
+            SelectQuery selectQuery = new SelectQuery("platform_rest");
             selectQuery.addField("count(*)");
             selectQuery.addWhere("name = :name", name);
             if (!Strings.isNullOrEmpty(this.restId)) {
-                selectQuery.addWhere("rest_id != :rest_id", restId);
+                selectQuery.addWhere("platform_rest_id != :rest_id", restId);
             }
             int count = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), int.class);
             if (count > 0) {

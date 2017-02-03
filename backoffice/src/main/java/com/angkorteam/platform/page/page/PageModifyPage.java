@@ -91,7 +91,7 @@ public class PageModifyPage extends MBaaSPage {
         this.form = new Form<>("form");
         layout.add(this.form);
 
-        this.roleField = new Select2MultipleChoice<>("roleField", new PropertyModel<>(this, "role"), new OptionMultipleChoiceProvider("role", "role_id", "name"));
+        this.roleField = new Select2MultipleChoice<>("roleField", new PropertyModel<>(this, "role"), new OptionMultipleChoiceProvider("platform_role", "platform_role_id", "name"));
         this.form.add(this.roleField);
         this.roleFeedback = new TextFeedbackPanel("roleFeedback", this.roleField);
         this.form.add(this.roleFeedback);
@@ -99,7 +99,7 @@ public class PageModifyPage extends MBaaSPage {
         this.pathLabel = new Label("pathLabel", new PropertyModel<>(this, "mountPath"));
         this.form.add(this.pathLabel);
 
-        this.layoutField = new OptionDropDownChoice("layoutField", new PropertyModel<>(this, "layout"), getJdbcTemplate(), "layout", "layout_id", "name");
+        this.layoutField = new OptionDropDownChoice("layoutField", new PropertyModel<>(this, "layout"), getJdbcTemplate(), "platform_layout", "platform_layout_id", "name");
         this.layoutField.setRequired(true);
         this.form.add(this.layoutField);
         this.layoutFeedback = new TextFeedbackPanel("layoutFeedback", this.layoutField);

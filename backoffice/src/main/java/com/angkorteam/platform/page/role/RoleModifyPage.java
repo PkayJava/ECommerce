@@ -108,9 +108,9 @@ public class RoleModifyPage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
 
         UpdateQuery updateQuery = new UpdateQuery("platform_role");
-        updateQuery.addValue("platform_role_id = :role_id", randomUUIDLong());
         updateQuery.addValue("name = :name", this.name);
         updateQuery.addValue("description = :description", this.description);
+        updateQuery.addWhere("platform_role_id = :role_id", this.roleId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 
         getJdbcTemplate().update("delete from platform_page_role where platform_role_id = ?", this.roleId);

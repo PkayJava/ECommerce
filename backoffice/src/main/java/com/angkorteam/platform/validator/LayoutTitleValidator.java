@@ -28,11 +28,11 @@ public class LayoutTitleValidator implements IValidator<String> {
 
         String title = validatable.getValue();
         if (!Strings.isNullOrEmpty(title)) {
-            SelectQuery selectQuery = new SelectQuery("layout");
+            SelectQuery selectQuery = new SelectQuery("platform_layout");
             selectQuery.addField("count(*)");
             selectQuery.addWhere("name = :name", title);
             if (!Strings.isNullOrEmpty(this.layoutId)) {
-                selectQuery.addWhere("layout_id != :layout", layoutId);
+                selectQuery.addWhere("platform_layout_id != :layout", layoutId);
             }
             int count = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), int.class);
             if (count > 0) {

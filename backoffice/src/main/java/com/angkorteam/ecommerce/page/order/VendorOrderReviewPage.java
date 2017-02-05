@@ -5,6 +5,7 @@ import com.angkorteam.ecommerce.model.EcommerceVendorOrderItem;
 import com.angkorteam.framework.extension.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -50,8 +51,8 @@ public class VendorOrderReviewPage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        DateFormat datetimeFormat = new SimpleDateFormat(getJdbcTemplate().queryForObject("select `value` from setting where `key` = ?", String.class, "datetime_format"));
-        DecimalFormat priceFormat = new DecimalFormat(getJdbcTemplate().queryForObject("select `value` from setting where `key` = ?", String.class, "price_format"));
+        DateFormat datetimeFormat = new SimpleDateFormat(Platform.getSetting("datetime_format"));
+        DecimalFormat priceFormat = new DecimalFormat(Platform.getSetting("price_format"));
 
         this.ecommerceVendorOrderId = getPageParameters().get("ecommerceVendorOrderId").toString("");
 
@@ -157,7 +158,7 @@ public class VendorOrderReviewPage extends MBaaSPage {
 
     private void confirmStockButtonOnClick(AjaxLink ajaxLink, AjaxRequestTarget target) {
         SelectQuery selectQuery = new SelectQuery("ecommerce_vendor_order");
-        selectQuery.addWhere("ecommerce_vendor_order_id = :ecommerce_vendor_order_id?", this.ecommerceVendorOrderId);
+        selectQuery.addWhere("ecommerce_vendor_order_id = :ecommerce_vendor_order_id", this.ecommerceVendorOrderId);
         EcommerceVendorOrder vendorOrderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceVendorOrder.class);
         String vendorOrderStatus = vendorOrderRecord.getVendorStatus();
         if (!"New".equals(vendorOrderStatus)) {
@@ -206,7 +207,7 @@ public class VendorOrderReviewPage extends MBaaSPage {
         UpdateQuery updateQuery = null;
 
         updateQuery = new UpdateQuery("ecommerce_order");
-        updateQuery.addValue("vendor_status = :vendor_status", "Canceled");
+        updateQuery.addValue("buyer_status = :buyer_status", "Canceled");
         updateQuery.addValue("order_status = :order_status", "Canceled");
         updateQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", orderId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());

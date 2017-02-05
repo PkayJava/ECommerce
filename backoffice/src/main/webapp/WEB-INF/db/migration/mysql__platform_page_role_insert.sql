@@ -1,5 +1,18 @@
 INSERT INTO platform_page_role (platform_page_role_id, platform_role_id, platform_page_id)
 VALUES
+  (uuid_short(), 5, 1),
+  (uuid_short(), 4, 1),
+  (uuid_short(), 4, 155),
+  (uuid_short(), 4, 154),
+  (uuid_short(), 4, 151),
+  (uuid_short(), 4, 152),
+  (uuid_short(), 4, 153),
+  (uuid_short(), 4, 149),
+  (uuid_short(), 4, 150),
+  (uuid_short(), 4, 148),
+  (uuid_short(), 4, 147),
+  (uuid_short(), 4, 146),
+  (uuid_short(), 4, 145),
   (uuid_short(), 4, 168),
   (uuid_short(), 4, 167),
   (uuid_short(), 5, 166),

@@ -251,9 +251,9 @@ public class OrderReviewPage extends MBaaSPage {
             this.cancelButton.setVisible(true);
             SelectQuery selectQuery = new SelectQuery("ecommerce_vendor_order");
             selectQuery.addField("count(*)");
-            selectQuery.addWhere("ecommerce_order_id = ?", this.ecommerceOrderId);
-            selectQuery.addWhere("order_status = ?", "Shipping Request");
-            selectQuery.addWhere("vendor_status = ?", "Packaged & Shipped");
+            selectQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
+            selectQuery.addWhere("order_status = :order_status", "Shipping Request");
+            selectQuery.addWhere("vendor_status = :vendor_status", "Packaged & Shipped");
             int shippedCount = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), int.class);
             this.cancelButton.setVisible(shippedCount == 0);
             this.packageAndDeliveryButton.setVisible(shippedCount == vendorCount);
@@ -280,7 +280,7 @@ public class OrderReviewPage extends MBaaSPage {
 
         EcommerceOrder ecommerceOrder = getJdbcTemplate().queryForObject("select * from ecommerce_order where ecommerce_order_id = ?", EcommerceOrder.class, this.ecommerceOrderId);
 
-        if ("New".equals(ecommerceOrder.getOrderStatus())) {
+        if (!"New".equals(ecommerceOrder.getOrderStatus())) {
             PageParameters parameters = new PageParameters();
             parameters.add("ecommerceOrderId", this.ecommerceOrderId);
             setResponsePage(OrderReviewPage.class, parameters);
@@ -291,7 +291,7 @@ public class OrderReviewPage extends MBaaSPage {
         updateQuery = new UpdateQuery("ecommerce_order");
         updateQuery.addValue("buyer_status = :buyer_status", "Progressing");
         updateQuery.addValue("order_status = :order_status", "Check Stock");
-        updateQuery.addValue("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
+        updateQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 
         List<EcommerceOrderItem> orderItemRecords = getJdbcTemplate().queryForList("select * from ecommerce_order_item where ecommerce_order_id = ?", EcommerceOrderItem.class, this.ecommerceOrderId);
@@ -374,10 +374,10 @@ public class OrderReviewPage extends MBaaSPage {
         selectQuery = new SelectQuery("ecommerce_vendor_order");
         selectQuery.addField("count(*)");
         selectQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
-        selectQuery.addWhere("vendor_status != :ecommerce_order_id", "In Stock");
+        selectQuery.addWhere("vendor_status != :vendor_status", "In Stock");
         int vendorOrders = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), int.class);
 
-        if ("Check Stock".equals(orderStatus) || vendorOrders > 0) {
+        if (!"Check Stock".equals(orderStatus) || vendorOrders > 0) {
             PageParameters parameters = new PageParameters();
             parameters.add("ecommerceOrderId", this.ecommerceOrderId);
             setResponsePage(OrderReviewPage.class, parameters);
@@ -387,12 +387,12 @@ public class OrderReviewPage extends MBaaSPage {
         UpdateQuery updateQuery = null;
         updateQuery = new UpdateQuery("ecommerce_order");
         updateQuery.addValue("order_status = :order_status", "Shipping Request");
-        updateQuery.addValue("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
+        updateQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 
         updateQuery = new UpdateQuery("ecommerce_vendor_order");
         updateQuery.addValue("order_status = :order_status", "Shipping Request");
-        updateQuery.addValue("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
+        updateQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 
         setResponsePage(OrderBrowsePage.class);
@@ -415,7 +415,7 @@ public class OrderReviewPage extends MBaaSPage {
 
         int vendorOrders = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), int.class);
 
-        if (("Shipping Request".equals(orderStatus) && "Packaged & Shipped".equals(orderStatus)) || vendorOrders > 0) {
+        if ((!"Shipping Request".equals(orderStatus) && !"Packaged & Shipped".equals(orderStatus)) || vendorOrders > 0) {
             PageParameters parameters = new PageParameters();
             parameters.add("ecommerceOrderId", this.ecommerceOrderId);
             setResponsePage(OrderReviewPage.class, parameters);

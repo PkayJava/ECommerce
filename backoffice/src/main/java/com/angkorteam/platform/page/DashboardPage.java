@@ -1,6 +1,5 @@
 package com.angkorteam.platform.page;
 
-import com.angkorteam.platform.page.MBaaSPage;
 import org.apache.wicket.markup.html.border.Border;
 
 /**

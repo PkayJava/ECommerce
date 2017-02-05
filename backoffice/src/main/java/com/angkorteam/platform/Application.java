@@ -1,8 +1,9 @@
 package com.angkorteam.platform;
 
-import com.angkorteam.platform.bean.ConnectionRequestCycleBean;
+import com.angkorteam.ecommerce.page.VendorRegisterPage;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.platform.bean.AuthorizationStrategy;
+import com.angkorteam.platform.bean.ConnectionRequestCycleBean;
 import com.angkorteam.platform.bean.LocalizationMessage;
 import com.angkorteam.platform.model.PlatformPage;
 import com.angkorteam.platform.page.DashboardPage;
@@ -66,7 +67,12 @@ public class Application extends AuthenticatedWebApplication {
 
     @Override
     public Class<? extends Page> getHomePage() {
-        return DashboardPage.class;
+        Session session = (Session) Session.get();
+        if (session.isSignedIn()) {
+            return DashboardPage.class;
+        } else {
+            return VendorRegisterPage.class;
+        }
     }
 
     protected void initPageMount() {

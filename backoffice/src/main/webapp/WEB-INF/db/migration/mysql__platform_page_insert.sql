@@ -1,5 +1,6 @@
 INSERT INTO `platform_page` (`platform_page_id`, `platform_layout_id`, `path`, `html_title`, `page_title`, `page_description`, `java_class`, `version`)
 VALUES
+  (169, 1, '/ecommerce/vendor/register', 'eCommerce Vendor Register', 'eCommerce Vendor Register', 'eCommerce Vendor Register', 'com.angkorteam.ecommerce.page.VendorRegisterPage', 1),
   (168, 1, '/ecommerce/vendor/order/review', 'eCommerce Vendor Order Review', 'eCommerce Vendor Order Review', 'eCommerce Vendor Order Review', 'com.angkorteam.ecommerce.page.order.VendorOrderReviewPage', 1),
   (167, 1, '/ecommerce/vendor/order/browse', 'eCommerce Vendor Order Browse', 'eCommerce Vendor Order Browse', 'eCommerce Vendor Order Browse', 'com.angkorteam.ecommerce.page.order.VendorOrderBrowsePage', 1),
   (166, 1, '/ecommerce/customer/order/review', 'eCommerce Customer Order Review', 'eCommerce Customer Order Review', 'eCommerce Customer Order Review', 'com.angkorteam.ecommerce.page.order.CustomerOrderReviewPage', 1),

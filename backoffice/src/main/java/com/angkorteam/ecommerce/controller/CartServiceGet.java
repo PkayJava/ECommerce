@@ -1,8 +1,6 @@
 package com.angkorteam.ecommerce.controller;
 
-import com.angkorteam.ecommerce.mobile.cart.Cart;
-import com.angkorteam.ecommerce.mobile.cart.CartProductItem;
-import com.angkorteam.ecommerce.mobile.cart.CartProductItemVariant;
+import com.angkorteam.ecommerce.mobile.cart.*;
 import com.angkorteam.ecommerce.mobile.product.ProductColor;
 import com.angkorteam.ecommerce.mobile.product.ProductSize;
 import com.angkorteam.ecommerce.model.*;
@@ -141,6 +139,28 @@ public class CartServiceGet {
         }
 
         data.setDiscounts(Lists.newArrayList());
+        selectQuery = new SelectQuery("ecommerce_cart_discount_item");
+        selectQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", cartRecord.getEcommerceCartId());
+        List<EcommerceCartDiscountItem> discountItems = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCartDiscountItem.class);
+        if (discountItems != null && !discountItems.isEmpty()) {
+            for (EcommerceCartDiscountItem discountItem : discountItems) {
+                selectQuery = new SelectQuery("ecommerce_discount");
+                selectQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", discountItem.getEcommerceDiscountId());
+                EcommerceDiscount ecommerceDiscount = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscount.class);
+                CartDiscountItem cartDiscountItem = new CartDiscountItem();
+                cartDiscountItem.setId(discountItem.getEcommerceCartDiscountItemId());
+                cartDiscountItem.setQuantity(1);
+                data.getDiscounts().add(cartDiscountItem);
+                Discount discount = new Discount();
+                cartDiscountItem.setDiscount(discount);
+                discount.setId(ecommerceDiscount.getEcommerceDiscountId());
+                discount.setMinCartAmount(String.valueOf(ecommerceDiscount.getMinCartAmount()));
+                discount.setName(ecommerceDiscount.getName());
+                discount.setType(ecommerceDiscount.getType());
+                discount.setValue(String.valueOf(ecommerceDiscount.getValue()));
+                discount.setValueFormatted(priceFormat.format(ecommerceDiscount.getValue()));
+            }
+        }
 
         data.setProductCount(productCount);
         data.setTotalPrice(totalPrice);

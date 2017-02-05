@@ -15,6 +15,7 @@ import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -139,7 +140,7 @@ public class ProductCreatePage extends MBaaSPage {
         this.discountPriceFeedback = new TextFeedbackPanel("discountPriceFeedback", this.discountPriceField);
         this.form.add(this.discountPriceFeedback);
 
-        this.reference = RandomStringUtils.randomAlphabetic(6);
+        this.reference = StringUtils.upperCase(RandomStringUtils.randomAlphabetic(6));
         this.referenceField = new TextField<>("referenceField", new PropertyModel<>(this, "reference"));
         this.referenceField.add(new UniqueRecordValidator<>("ecommerce_product", "reference"));
         this.referenceField.setRequired(true);
@@ -276,7 +277,7 @@ public class ProductCreatePage extends MBaaSPage {
         insertQuery = new InsertQuery("ecommerce_product_variant");
         insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant", variantId);
         insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", productId);
-        insertQuery.addValue("reference = :reference", RandomStringUtils.randomAlphabetic(6));
+        insertQuery.addValue("reference = :reference", StringUtils.upperCase(RandomStringUtils.randomAlphabetic(6)));
         insertQuery.addValue("ecommerce_color_id = :ecommerce_color_id", this.color.getId());
         insertQuery.addValue("ecommerce_size_id = :ecommerce_size_id", this.size.getId());
         insertQuery.addValue("quantity = :quantity", this.quantity);

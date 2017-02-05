@@ -8,6 +8,7 @@ import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -41,7 +42,7 @@ public class SizeCreatePage extends MBaaSPage {
         this.form = new Form<>("form");
         layout.add(this.form);
 
-        this.reference = RandomStringUtils.randomAlphabetic(6);
+        this.reference = StringUtils.upperCase(RandomStringUtils.randomAlphabetic(6));
         this.referenceField = new TextField<>("referenceField", new PropertyModel<>(this, "reference"));
         this.referenceField.add(new UniqueRecordValidator<>("ecommerce_size", "reference"));
         this.referenceField.setRequired(true);

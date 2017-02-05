@@ -14,6 +14,7 @@ import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -71,7 +72,7 @@ public class ProductVariantCreatePage extends MBaaSPage {
         this.form = new Form<>("form");
         layout.add(this.form);
 
-        this.reference = RandomStringUtils.randomAlphabetic(6);
+        this.reference = StringUtils.upperCase(RandomStringUtils.randomAlphabetic(6));
         this.referenceField = new TextField<>("referenceField", new PropertyModel<>(this, "reference"));
         this.referenceField.setRequired(true);
         this.referenceField.add(new UniqueRecordValidator<>("ecommerce_product_variant", "reference"));

@@ -26,9 +26,11 @@ public class Discount implements Serializable {
     @SerializedName("value")
     private String value;
 
+    @Expose
     @SerializedName("value_formatted")
     private String valueFormatted;
 
+    @Expose
     @SerializedName("min_cart_amount")
     private String minCartAmount;
 

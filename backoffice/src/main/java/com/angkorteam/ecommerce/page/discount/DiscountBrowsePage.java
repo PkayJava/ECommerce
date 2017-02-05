@@ -37,9 +37,8 @@ public class DiscountBrowsePage extends MBaaSPage {
         provider.boardField("ecommerce_discount_id", "ecommerceDiscountId", Long.class);
         provider.boardField("name", "name", String.class);
         provider.boardField("type", "type", String.class);
-        provider.boardField("value", "value", String.class);
-        provider.boardField("value_formatted", "valueFormatted", String.class);
-        provider.boardField("min_cart_amount", "minCartAmount", String.class);
+        provider.boardField("value", "value", Double.class);
+        provider.boardField("min_cart_amount", "minCartAmount", Double.class);
 
         provider.selectField("ecommerceDiscountId", String.class);
 
@@ -50,9 +49,8 @@ public class DiscountBrowsePage extends MBaaSPage {
         columns.add(new TextFilterColumn(provider, ItemClass.Long, Model.of("ID"), "ecommerceDiscountId"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("name"), "name"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("type"), "type"));
-        columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("value"), "value"));
-        columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("value formatted"), "valueFormatted"));
-        columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("min cart amount"), "minCartAmount"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Double, Model.of("value"), "value"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Double, Model.of("min cart amount"), "minCartAmount"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         this.dataTable = new DefaultDataTable<>("table", columns, provider, 20);

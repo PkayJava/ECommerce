@@ -31,16 +31,12 @@ public class DiscountModifyPage extends MBaaSPage {
     private TextField<String> typeField;
     private TextFeedbackPanel typeFeedback;
 
-    private String value;
-    private TextField<String> valueField;
+    private Double value;
+    private TextField<Double> valueField;
     private TextFeedbackPanel valueFeedback;
 
-    private String valueFormatted;
-    private TextField<String> valueFormattedField;
-    private TextFeedbackPanel valueFormattedFeedback;
-
-    private String minCartAmount;
-    private TextField<String> minCartAmountField;
+    private Double minCartAmount;
+    private TextField<Double> minCartAmountField;
     private TextFeedbackPanel minCartAmountFeedback;
 
     private Button saveButton;
@@ -67,28 +63,21 @@ public class DiscountModifyPage extends MBaaSPage {
         this.form.add(this.nameFeedback);
 
         this.type = record.getType();
-        this.typeField = new TextField<>("typeField", new PropertyModel<String>(this, "type"));
+        this.typeField = new TextField<>("typeField", new PropertyModel<>(this, "type"));
         this.typeField.setRequired(true);
         this.form.add(this.typeField);
         this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
         this.form.add(this.typeFeedback);
 
         this.value = record.getValue();
-        this.valueField = new TextField<>("valueField", new PropertyModel<String>(this, "value"));
+        this.valueField = new TextField<>("valueField", new PropertyModel<>(this, "value"));
         this.valueField.setRequired(true);
         this.form.add(this.valueField);
         this.valueFeedback = new TextFeedbackPanel("valueFeedback", this.valueField);
         this.form.add(this.valueFeedback);
 
-        this.valueFormatted = record.getValueFormatted();
-        this.valueFormattedField = new TextField<>("valueFormattedField", new PropertyModel<String>(this, "valueFormatted"));
-        this.valueFormattedField.setRequired(true);
-        this.form.add(this.valueFormattedField);
-        this.valueFormattedFeedback = new TextFeedbackPanel("valueFormattedFeedback", this.valueFormattedField);
-        this.form.add(this.valueFormattedFeedback);
-
         this.minCartAmount = record.getMinCartAmount();
-        this.minCartAmountField = new TextField<>("minCartAmountField", new PropertyModel<String>(this, "minCartAmount"));
+        this.minCartAmountField = new TextField<>("minCartAmountField", new PropertyModel<>(this, "minCartAmount"));
         this.minCartAmountField.setRequired(true);
         this.form.add(this.minCartAmountField);
         this.minCartAmountFeedback = new TextFeedbackPanel("minCartAmountFeedback", this.minCartAmountField);
@@ -107,7 +96,6 @@ public class DiscountModifyPage extends MBaaSPage {
         updateQuery.addValue("name = :name", name);
         updateQuery.addValue("type = :type", this.type);
         updateQuery.addValue("`value` = :value", this.value);
-        updateQuery.addValue("value_formatted = :value_formatted", this.valueFormatted);
         updateQuery.addValue("min_cart_amount = :min_cart_amount", this.minCartAmount);
         updateQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", this.ecommerceDiscountId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());

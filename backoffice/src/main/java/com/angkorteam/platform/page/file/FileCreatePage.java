@@ -81,7 +81,7 @@ public class FileCreatePage extends MBaaSPage {
         String extension = StringUtils.lowerCase(FilenameUtils.getExtension(file.getClientFileName()));
 
 
-        Long fileId = Platform.randomUUIDLong();
+        Long fileId = Platform.randomUUIDLong("platform_file");
         String name = fileId + "_" + this.name + "." + extension;
         container.mkdirs();
         File fn = new File(container, name);

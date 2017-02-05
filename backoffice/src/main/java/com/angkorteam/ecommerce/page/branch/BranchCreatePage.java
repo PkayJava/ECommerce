@@ -93,7 +93,7 @@ public class BranchCreatePage extends MBaaSPage {
 
     private void saveButtonOnSubmit(Button button) {
         InsertQuery insertQuery = new InsertQuery("ecommerce_branch");
-        insertQuery.addValue("ecommerce_branch_id = :ecommerce_branch_id", Platform.randomUUIDLong());
+        insertQuery.addValue("ecommerce_branch_id = :ecommerce_branch_id", Platform.randomUUIDLong("ecommerce_branch"));
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("address = :address", this.address);
         insertQuery.addValue("note = :note", this.note);

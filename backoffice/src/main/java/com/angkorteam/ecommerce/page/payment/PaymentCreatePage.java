@@ -4,6 +4,7 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.InsertQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -70,7 +71,7 @@ public class PaymentCreatePage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
 
         InsertQuery insertQuery = new InsertQuery("ecommerce_payment");
-        insertQuery.addValue("ecommerce_payment_id = :ecommerce_payment_id", randomUUIDLong());
+        insertQuery.addValue("ecommerce_payment_id = :ecommerce_payment_id", Platform.randomUUIDLong("ecommerce_payment"));
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("description = :description", this.description);
         insertQuery.addValue("price = :price", this.price);

@@ -6,6 +6,7 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.InsertQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
@@ -97,14 +98,14 @@ public class UserCreatePage extends MBaaSPage {
 
     private void saveButtonOnSubmit(Button button) {
         InsertQuery insertQuery = new InsertQuery("platform_user");
-        insertQuery.addValue("platform_user_id = :platform_user_id", randomUUIDLong());
+        insertQuery.addValue("platform_user_id = :platform_user_id", Platform.randomUUIDLong("platform_user"));
         insertQuery.addValue("system = :system", false);
         insertQuery.addValue("status = :status", "ACTIVE");
         insertQuery.addValue("login = :login", this.login);
         insertQuery.addValue("password = MD5(:password)", this.password);
         insertQuery.addValue("full_name =:full_name", this.fullName);
         insertQuery.addValue("platform_role_id = :platform_role_id", this.role.getId());
-        insertQuery.addValue("access_token = :access_token", randomUUID());
+        insertQuery.addValue("access_token = :access_token", Platform.randomUUIDString());
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
         setResponsePage(UserBrowsePage.class);
     }

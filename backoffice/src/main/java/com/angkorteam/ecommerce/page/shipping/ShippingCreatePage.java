@@ -7,6 +7,7 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.InsertQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionMultipleChoiceProvider;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
@@ -140,7 +141,7 @@ public class ShippingCreatePage extends MBaaSPage {
             branchId = this.branch.getId();
         }
 
-        Long shippingId = randomUUIDLong();
+        Long shippingId = Platform.randomUUIDLong("ecommerce_shipping");
         InsertQuery insertQuery = null;
         insertQuery = new InsertQuery("ecommerce_shipping");
         insertQuery.addValue("ecommerce_shipping_id = :ecommerce_shipping_id", shippingId);
@@ -157,7 +158,7 @@ public class ShippingCreatePage extends MBaaSPage {
         if (this.payment != null && !this.payment.isEmpty()) {
             for (Option payment : this.payment) {
                 insertQuery = new InsertQuery("ecommerce_shipping_payment");
-                insertQuery.addValue("ecommerce_shipping_payment_id = :ecommerce_shipping_payment_id", randomUUIDLong());
+                insertQuery.addValue("ecommerce_shipping_payment_id = :ecommerce_shipping_payment_id", Platform.randomUUIDLong("ecommerce_shipping_payment"));
                 insertQuery.addValue("ecommerce_payment_id = :ecommerce_payment_id", payment.getId());
                 insertQuery.addValue("ecommerce_shipping_id = :ecommerce_shipping_id", shippingId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());

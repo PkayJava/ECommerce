@@ -9,6 +9,7 @@ import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.model.PlatformRest;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionMultipleChoiceProvider;
@@ -108,7 +109,7 @@ public class RestModifyPage extends MBaaSPage {
         if (this.role != null) {
             for (Option role : this.role) {
                 InsertQuery insertQuery = new InsertQuery("platform_rest_role");
-                insertQuery.addValue("platform_rest_role_id = :rest_role", randomUUIDLong());
+                insertQuery.addValue("platform_rest_role_id = :rest_role", Platform.randomUUIDLong("platform_rest_role"));
                 insertQuery.addValue("platform_role_id = :role_id", role.getId());
                 insertQuery.addValue("platform_rest_id = :rest_id", this.restId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());

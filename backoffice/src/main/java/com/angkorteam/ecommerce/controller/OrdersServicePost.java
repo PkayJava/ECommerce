@@ -152,7 +152,7 @@ public class OrdersServicePost {
 
         Double shippingPriceAddon = 0d;
 
-        Long orderId = Platform.randomUUIDLong();
+        Long orderId = Platform.randomUUIDLong("ecommerce_order");
         insertQuery.addValue("ecommerce_order_id = :ecommerce_order_id", orderId);
         insertQuery.addValue("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
         insertQuery.addValue("ecommerce_shipping_id = :ecommerce_shipping_id", shippingRecord.getEcommerceShippingId());
@@ -223,7 +223,7 @@ public class OrdersServicePost {
                 String img = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
 
                 insertQuery = new InsertQuery("ecommerce_order_item");
-                insertQuery.addValue("ecommerce_order_item_id = :ecommerce_order_item_id", Platform.randomUUIDLong());
+                insertQuery.addValue("ecommerce_order_item_id = :ecommerce_order_item_id", Platform.randomUUIDLong("ecommerce_order_item"));
                 insertQuery.addValue("ecommerce_order_id = :ecommerce_order_id", orderId);
                 insertQuery.addValue("quantity = :quantity", cartItemRecord.getQuantity());
                 insertQuery.addValue("total_price = :total_price", quantity * price);
@@ -293,7 +293,7 @@ public class OrdersServicePost {
         named.update(updateQuery.toSQL(), updateQuery.getParam());
 
         insertQuery = new InsertQuery("ecommerce_cart");
-        insertQuery.addValue("ecommerce_cart_id = :ecommerce_cart_id", Platform.randomUUIDLong());
+        insertQuery.addValue("ecommerce_cart_id = :ecommerce_cart_id", Platform.randomUUIDLong("ecommerce_cart"));
         insertQuery.addValue("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
         named.update(insertQuery.toSQL(), insertQuery.getParam());
 

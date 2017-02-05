@@ -14,6 +14,7 @@ import com.angkorteam.platform.provider.OptionMultipleChoiceProvider;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -138,7 +139,7 @@ public class ProductCreatePage extends MBaaSPage {
         this.discountPriceFeedback = new TextFeedbackPanel("discountPriceFeedback", this.discountPriceField);
         this.form.add(this.discountPriceFeedback);
 
-        this.reference = randomUUIDLong() + "";
+        this.reference = RandomStringUtils.randomAlphabetic(6);
         this.referenceField = new TextField<>("referenceField", new PropertyModel<>(this, "reference"));
         this.referenceField.add(new UniqueRecordValidator<>("ecommerce_product", "reference"));
         this.referenceField.setRequired(true);
@@ -201,7 +202,7 @@ public class ProductCreatePage extends MBaaSPage {
 
         Long mainImageFileId = null;
         if (this.mainImage != null && !this.mainImage.isEmpty()) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.mainImage.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.mainImage.get(0).getClientFileName());
             try {
                 this.mainImage.get(0).writeTo(file);
             } catch (Exception e) {
@@ -213,7 +214,7 @@ public class ProductCreatePage extends MBaaSPage {
 
         Long mainImageHighResFileId = null;
         if (this.mainImageHighRes != null && !this.mainImageHighRes.isEmpty()) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.mainImageHighRes.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.mainImageHighRes.get(0).getClientFileName());
             try {
                 this.mainImageHighRes.get(0).writeTo(file);
             } catch (Exception e) {
@@ -223,7 +224,7 @@ public class ProductCreatePage extends MBaaSPage {
             file.delete();
         }
 
-        Long productId = randomUUIDLong();
+        Long productId = Platform.randomUUIDLong("ecommerce_product");
         InsertQuery insertQuery = null;
         insertQuery = new InsertQuery("ecommerce_product");
         insertQuery.addValue("ecommerce_product_id = :ecommerce_product", productId);
@@ -261,7 +262,7 @@ public class ProductCreatePage extends MBaaSPage {
         if (this.relatedProduct != null && !this.relatedProduct.isEmpty()) {
             for (Option option : this.relatedProduct) {
                 insertQuery = new InsertQuery("ecommerce_product_related");
-                insertQuery.addValue("ecommerce_product_related_id = :ecommerce_product_related_id", randomUUIDLong());
+                insertQuery.addValue("ecommerce_product_related_id = :ecommerce_product_related_id", Platform.randomUUIDLong("ecommerce_product_related"));
                 insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", productId);
                 insertQuery.addValue("related_ecommerce_product_id = :related_ecommerce_product_id", option.getId());
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
@@ -271,11 +272,11 @@ public class ProductCreatePage extends MBaaSPage {
 
         // insert variant
 
-        Long variantId = randomUUIDLong();
+        Long variantId = Platform.randomUUIDLong("ecommerce_product_variant");
         insertQuery = new InsertQuery("ecommerce_product_variant");
         insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant", variantId);
         insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", productId);
-        insertQuery.addValue("reference = :reference", randomUUIDLong());
+        insertQuery.addValue("reference = :reference", RandomStringUtils.randomAlphabetic(6));
         insertQuery.addValue("ecommerce_color_id = :ecommerce_color_id", this.color.getId());
         insertQuery.addValue("ecommerce_size_id = :ecommerce_size_id", this.size.getId());
         insertQuery.addValue("quantity = :quantity", this.quantity);
@@ -291,7 +292,7 @@ public class ProductCreatePage extends MBaaSPage {
             for (FileUpload tmp : this.variantImage) {
                 Long imageFileId = null;
 
-                File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + tmp.getClientFileName());
+                File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + tmp.getClientFileName());
                 try {
                     tmp.writeTo(file);
                 } catch (Exception e) {
@@ -301,9 +302,9 @@ public class ProductCreatePage extends MBaaSPage {
                 file.delete();
 
                 insertQuery = new InsertQuery("ecommerce_product_variant_image");
-                insertQuery.addValue("ecommerce_product_variant_image_id = :ecommerce_product_variant_image", randomUUIDLong());
+                insertQuery.addValue("ecommerce_product_variant_image_id = :ecommerce_product_variant_image", Platform.randomUUIDLong("ecommerce_product_variant_image"));
                 insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant_id", variantId);
-                insertQuery.addValue("name = :name", randomUUIDLong());
+                insertQuery.addValue("name = :name", Platform.randomUUIDString());
                 insertQuery.addValue("platform_file_id = :platform_file_id", imageFileId);
                 insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", productId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());

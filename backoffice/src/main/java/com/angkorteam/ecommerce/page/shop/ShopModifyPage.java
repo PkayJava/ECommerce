@@ -136,7 +136,7 @@ public class ShopModifyPage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         Long flagIconFileId = null;
         if (this.flagIcon != null && !this.flagIcon.isEmpty()) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.flagIcon.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.flagIcon.get(0).getClientFileName());
             try {
                 this.flagIcon.get(0).writeTo(file);
             } catch (Exception e) {
@@ -148,7 +148,7 @@ public class ShopModifyPage extends MBaaSPage {
 
         Long logoFileId = null;
         if (this.logo != null && !this.logo.isEmpty() && this.logo.get(0).getSize() > 0) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.logo.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.logo.get(0).getClientFileName());
             try {
                 this.logo.get(0).writeTo(file);
             } catch (Exception e) {

@@ -5,6 +5,7 @@ import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
+import com.angkorteam.platform.bean.TransactionManager;
 import com.angkorteam.platform.mobile.Links;
 import com.angkorteam.platform.model.PlatformRole;
 import com.angkorteam.platform.model.PlatformUser;
@@ -195,7 +196,7 @@ public abstract class Platform {
             jdbcTemplate.update("update platform_setting set value = ? where `key` = ?", value, key);
         } else {
             InsertQuery insertQuery = new InsertQuery("platform_setting");
-            insertQuery.addValue("platform_setting_id = :setting_id", randomUUIDLong());
+            insertQuery.addValue("platform_setting_id = :setting_id", randomUUIDLong("platform_setting"));
             insertQuery.addValue("description = :description", "");
             insertQuery.addValue("version = :version", 1);
             insertQuery.addValue("`key` = :key", key);
@@ -204,18 +205,19 @@ public abstract class Platform {
         }
     }
 
-    public static Integer randomUUIDInteger(String tableName) {
-        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
-        int value = jdbcTemplate.queryForObject("select value from `platform_uuid` where table_name = ? for update", Integer.class, tableName);
+    public static Long randomUUIDLong(String tableName) {
+        TransactionManager transactionManager = Platform.getBean(TransactionManager.class);
+        JdbcTemplate jdbcTemplate = transactionManager.createJdbcTemplate();
+        Integer value = jdbcTemplate.queryForObject("select value from `platform_uuid` where table_name = ? for update", Integer.class, tableName);
         value = value + 1;
         jdbcTemplate.update("update `platform_uuid` set value = ? where table_name = ?", value, tableName);
-        return value;
+        return value.longValue();
     }
 
-    public static Long randomUUIDLong() {
-        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
-        return jdbcTemplate.queryForObject("select uuid_short() from dual", Long.class);
-    }
+//    public static Long randomUUIDLong() {
+//        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+//        return jdbcTemplate.queryForObject("select uuid_short() from dual", Long.class);
+//    }
 
     public static String randomUUIDString() {
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
@@ -236,7 +238,7 @@ public abstract class Platform {
         String extension = StringUtils.lowerCase(FilenameUtils.getExtension(file.getName()));
 
 
-        Long uuid = randomUUIDLong();
+        String uuid = Platform.randomUUIDString();
         String name = uuid + "." + extension;
         container.mkdirs();
         try {
@@ -249,7 +251,7 @@ public abstract class Platform {
         String mime = parseMimeType(file.getName());
         String label = file.getName();
 
-        Long fileId = randomUUIDLong();
+        Long fileId = Platform.randomUUIDLong("platform_file");
         InsertQuery insertQuery = new InsertQuery("platform_file");
         insertQuery.addValue("platform_file_id = :file_id", fileId);
         insertQuery.addValue("path = :path", path);

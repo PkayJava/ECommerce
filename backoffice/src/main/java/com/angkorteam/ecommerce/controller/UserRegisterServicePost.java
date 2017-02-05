@@ -72,7 +72,7 @@ public class UserRegisterServicePost {
         selectQuery.addWhere("name = :name", "ecommerce_user");
         PlatformRole roleRecord = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), PlatformRole.class);
 
-        long userId = Platform.randomUUIDLong();
+        Long userId = Platform.randomUUIDLong("platform_user");
 
         InsertQuery insertQuery = null;
 
@@ -89,7 +89,7 @@ public class UserRegisterServicePost {
         named.update(insertQuery.toSQL(), insertQuery.getParam());
 
         insertQuery = new InsertQuery("ecommerce_cart");
-        insertQuery.addValue("ecommerce_cart_id = :ecommerce_cart", Platform.randomUUIDLong());
+        insertQuery.addValue("ecommerce_cart_id = :ecommerce_cart", Platform.randomUUIDLong("ecommerce_cart"));
         insertQuery.addValue("platform_user_id = :platform_user_id", userId);
         named.update(insertQuery.toSQL(), insertQuery.getParam());
 

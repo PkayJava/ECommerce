@@ -189,7 +189,7 @@ public class ProductModifyPage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         Long mainImageFileId = null;
         if (this.mainImage != null && !this.mainImage.isEmpty()) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.mainImage.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.mainImage.get(0).getClientFileName());
             try {
                 this.mainImage.get(0).writeTo(file);
             } catch (Exception e) {
@@ -201,7 +201,7 @@ public class ProductModifyPage extends MBaaSPage {
 
         Long mainImageHighResFileId = null;
         if (this.mainImageHighRes != null && !this.mainImageHighRes.isEmpty()) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.mainImageHighRes.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.mainImageHighRes.get(0).getClientFileName());
             try {
                 this.mainImageHighRes.get(0).writeTo(file);
             } catch (Exception e) {
@@ -243,7 +243,7 @@ public class ProductModifyPage extends MBaaSPage {
         if (this.relatedProduct != null && !this.relatedProduct.isEmpty()) {
             for (Option item : this.relatedProduct) {
                 InsertQuery insertQuery = new InsertQuery("ecommerce_product_related");
-                insertQuery.addValue("ecommerce_product_related_id = :ecommerce_product_related_id", randomUUIDLong());
+                insertQuery.addValue("ecommerce_product_related_id = :ecommerce_product_related_id", Platform.randomUUIDLong("ecommerce_product_related"));
                 insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
                 insertQuery.addValue("related_ecommerce_product_id = :related_ecommerce_product_id", item.getId());
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());

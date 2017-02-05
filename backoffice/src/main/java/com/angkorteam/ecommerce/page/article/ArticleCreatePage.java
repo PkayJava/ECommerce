@@ -4,6 +4,7 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.InsertQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.wicket.markup.html.border.Border;
@@ -73,7 +74,7 @@ public class ArticleCreatePage extends MBaaSPage {
 
     private void saveButtonOnSubmit(Button button) {
         InsertQuery insertQuery = new InsertQuery("ecommerce_page");
-        insertQuery.addValue("`ecommerce_page_id` = :ecommerce_page_id", randomUUIDInteger("ecommerce_page"));
+        insertQuery.addValue("`ecommerce_page_id` = :ecommerce_page_id", Platform.randomUUIDLong("ecommerce_page"));
         insertQuery.addValue("`order` = :order", this.order);
         insertQuery.addValue("`title` = :title", this.articleTitle);
         insertQuery.addValue("`text` = :text", this.articleText);

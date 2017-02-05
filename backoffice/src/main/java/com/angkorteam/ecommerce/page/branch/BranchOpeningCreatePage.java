@@ -67,7 +67,7 @@ public class BranchOpeningCreatePage extends MBaaSPage {
 
     private void saveButtonOnSubmit(Button button) {
         InsertQuery insertQuery = new InsertQuery("ecommerce_branch_opening");
-        insertQuery.addValue("ecommerce_branch_opening_id = :ecommerce_branch_opening_id", Platform.randomUUIDLong());
+        insertQuery.addValue("ecommerce_branch_opening_id = :ecommerce_branch_opening_id", Platform.randomUUIDLong("ecommerce_branch_opening"));
         insertQuery.addValue("ecommerce_branch_id = :ecommerce_branch_id", this.ecommerceBranchId);
         insertQuery.addValue("`day` = :day", this.day);
         insertQuery.addValue("opening = :opening", this.opening);

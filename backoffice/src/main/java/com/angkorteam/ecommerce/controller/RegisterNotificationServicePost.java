@@ -52,7 +52,7 @@ public class RegisterNotificationServicePost {
         EcommerceDevice deviceRecord = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDevice.class);
         Long deviceId = 0L;
         if (deviceRecord == null) {
-            deviceId = Platform.randomUUIDLong();
+            deviceId = Platform.randomUUIDLong("ecommerce_device");
             InsertQuery insertQuery = new InsertQuery("ecommerce_device");
             insertQuery.addValue("ecommerce_device_id = :ecommerce_device_id", deviceId);
             insertQuery.addValue("device_token = :device_token", requestBody.get("device_token"));

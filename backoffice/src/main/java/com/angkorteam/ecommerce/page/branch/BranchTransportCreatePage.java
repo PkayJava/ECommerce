@@ -75,7 +75,7 @@ public class BranchTransportCreatePage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         Long iconFileId = null;
         if (this.icon != null && !this.icon.isEmpty()) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.icon.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.icon.get(0).getClientFileName());
             try {
                 this.icon.get(0).writeTo(file);
             } catch (Exception e) {
@@ -86,7 +86,7 @@ public class BranchTransportCreatePage extends MBaaSPage {
         }
 
         InsertQuery insertQuery = new InsertQuery("ecommerce_branch_transport");
-        insertQuery.addValue("ecommerce_branch_transport_id = :ecommerce_branch_transport_id", randomUUIDLong());
+        insertQuery.addValue("ecommerce_branch_transport_id = :ecommerce_branch_transport_id", Platform.randomUUIDLong("ecommerce_branch_transport"));
         insertQuery.addValue("`text` = :text", this.text);
         insertQuery.addValue("ecommerce_branch_id = :ecommerce_branch_id", this.ecommerceBranchId);
         insertQuery.addValue("icon_platform_file_id = :icon_platform_file_id", iconFileId);

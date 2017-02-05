@@ -9,6 +9,7 @@ import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -184,7 +185,7 @@ public class SettingPage extends MBaaSPage {
         int count = getJdbcTemplate().queryForObject("select count(*) from platform_setting where `key` = ?", int.class, key);
         if (count == 0) {
             InsertQuery insertQuery = new InsertQuery("platform_setting");
-            insertQuery.addValue("platform_setting_id = :platform_setting_id", randomUUIDLong());
+            insertQuery.addValue("platform_setting_id = :platform_setting_id", Platform.randomUUIDLong("platform_setting"));
             insertQuery.addValue("`key` = :key", key);
             insertQuery.addValue("`value` = :value", "");
             insertQuery.addValue("`version` = :version", 1);

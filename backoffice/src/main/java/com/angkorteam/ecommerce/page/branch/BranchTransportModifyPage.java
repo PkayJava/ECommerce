@@ -81,7 +81,7 @@ public class BranchTransportModifyPage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         Long iconFileId = null;
         if (this.icon != null && !this.icon.isEmpty()) {
-            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDLong() + this.icon.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.icon.get(0).getClientFileName());
             try {
                 this.icon.get(0).writeTo(file);
             } catch (Exception e) {

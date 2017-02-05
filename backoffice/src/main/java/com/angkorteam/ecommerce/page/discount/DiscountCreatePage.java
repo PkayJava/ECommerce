@@ -4,6 +4,7 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.InsertQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.wicket.markup.html.border.Border;
@@ -92,7 +93,7 @@ public class DiscountCreatePage extends MBaaSPage {
 
     private void saveButtonOnSubmit(Button button) {
         InsertQuery insertQuery = new InsertQuery("ecommerce_discount");
-        insertQuery.addValue("ecommerce_discount_id = :ecommerce_discount_id", randomUUIDLong());
+        insertQuery.addValue("ecommerce_discount_id = :ecommerce_discount_id", Platform.randomUUIDLong("ecommerce_discount"));
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("type = :type", this.type);
         insertQuery.addValue("value = :value", this.value);

@@ -117,7 +117,7 @@ public class BannerCreatePage extends MBaaSPage {
         if (this.image != null && !this.image.isEmpty())
 
         {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.image.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.image.get(0).getClientFileName());
             try {
                 this.image.get(0).writeTo(file);
             } catch (Exception e) {
@@ -138,7 +138,7 @@ public class BannerCreatePage extends MBaaSPage {
         }
 
         InsertQuery insertQuery = new InsertQuery("ecommerce_banner");
-        insertQuery.addValue("ecommerce_banner_id = :ecommerce_banner_id", randomUUIDInteger("ecommerce_banner"));
+        insertQuery.addValue("ecommerce_banner_id = :ecommerce_banner_id", Platform.randomUUIDLong("ecommerce_banner"));
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("`order` = :order", this.order);
         insertQuery.addValue("type = :type", this.type);

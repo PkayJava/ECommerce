@@ -10,6 +10,7 @@ import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.model.PlatformPage;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionMultipleChoiceProvider;
@@ -149,7 +150,7 @@ public class PageModifyPage extends MBaaSPage {
         if (this.role != null) {
             for (Option role : this.role) {
                 InsertQuery insertQuery = new InsertQuery("platform_page_role");
-                insertQuery.addValue("platform_page_role_id = :page_role_id", randomUUIDLong());
+                insertQuery.addValue("platform_page_role_id = :page_role_id", Platform.randomUUIDLong("platform_page_role"));
                 insertQuery.addValue("platform_role_id = :role_id", role.getId());
                 insertQuery.addValue("platform_page_id = :page_id", this.pageId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());

@@ -135,18 +135,6 @@ public abstract class MBaaSPage extends AdminLTEPage {
         return Platform.getBean(JdbcTemplate.class);
     }
 
-    protected Long randomUUIDLong() {
-        return Platform.randomUUIDLong();
-    }
-
-    protected Integer randomUUIDInteger(String tableName) {
-        return Platform.randomUUIDInteger(tableName);
-    }
-
-    protected String randomUUID() {
-        return Platform.randomUUIDString();
-    }
-
     public boolean isMenuWidgetSelected(Long menuId) {
         if (this.breadcrumb == null) {
             this.breadcrumb = initBreadcrumb();

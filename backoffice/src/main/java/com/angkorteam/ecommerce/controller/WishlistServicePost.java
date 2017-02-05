@@ -54,7 +54,7 @@ public class WishlistServicePost {
         EcommerceWishlist wishlist = jdbcTemplate.queryForObject("SELECT * FROM ecommerce_wishlist WHERE platform_user_id = ? AND ecommerce_product_id = ?", EcommerceWishlist.class, currentUser.getPlatformUserId(), variantRecord.getEcommerceProductId());
         Long id = null;
         if (wishlist == null) {
-            id = Platform.randomUUIDLong();
+            id = Platform.randomUUIDLong("ecommerce_wishlist");
             InsertQuery insertQuery = new InsertQuery("ecommerce_wishlist");
             insertQuery.addValue("ecommerce_wishlist_id = :ecommerce_wishlist_id", id);
             insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", variantRecord.getEcommerceProductId());

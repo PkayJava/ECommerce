@@ -6,8 +6,10 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.InsertQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -60,7 +62,7 @@ public class CategoryCreatePage extends MBaaSPage {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        this.code = String.valueOf(randomUUIDLong());
+        this.code = String.valueOf(RandomStringUtils.randomAlphabetic(6));
         this.codeField = new TextField<>("codeField", new PropertyModel<>(this, "code"));
         this.form.add(this.codeField);
         this.codeFeedback = new TextFeedbackPanel("codeFeedback", this.codeField);
@@ -107,7 +109,7 @@ public class CategoryCreatePage extends MBaaSPage {
 
 
         InsertQuery insertQuery = new InsertQuery("ecommerce_category");
-        insertQuery.addValue("ecommerce_category_id = :ecommerce_category_id", randomUUIDInteger("ecommerce_category"));
+        insertQuery.addValue("ecommerce_category_id = :ecommerce_category_id", Platform.randomUUIDLong("ecommerce_category"));
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("`order` = :order", this.order);
         insertQuery.addValue("code = :code", this.code);

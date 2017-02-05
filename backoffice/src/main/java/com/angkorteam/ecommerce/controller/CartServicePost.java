@@ -76,7 +76,7 @@ public class CartServicePost {
         Long id = null;
         EcommerceCartProductItem itemRecord = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCartProductItem.class);
         if (itemRecord == null) {
-            id = Platform.randomUUIDLong();
+            id = Platform.randomUUIDLong("ecommerce_cart_product_item");
             InsertQuery insertQuery = new InsertQuery("ecommerce_cart_product_item");
             insertQuery.addValue("ecommerce_cart_product_item_id = :ecommerce_cart_product_item", id);
             insertQuery.addValue("quantity = :quantity", 1);

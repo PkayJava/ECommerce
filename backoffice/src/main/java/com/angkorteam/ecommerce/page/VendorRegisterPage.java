@@ -90,7 +90,7 @@ public class VendorRegisterPage extends AdminLTEPage {
         PlatformRole roleRecord = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), PlatformRole.class);
 
         InsertQuery insertQuery = new InsertQuery("platform_user");
-        insertQuery.addValue("platform_user_id = :platform_user_id", Platform.randomUUIDLong());
+        insertQuery.addValue("platform_user_id = :platform_user_id", Platform.randomUUIDLong("platform_user"));
         insertQuery.addValue("login = :login", this.login);
         insertQuery.addValue("password = MD5(:password)", "password", this.password);
         insertQuery.addValue("platform_role_id = :platform_role_id", roleRecord.getPlatformRoleId());

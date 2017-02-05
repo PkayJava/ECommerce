@@ -9,6 +9,7 @@ import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -56,7 +57,7 @@ public class ColorCreatePage extends MBaaSPage {
         this.form = new Form<>("form");
         layout.add(this.form);
 
-        this.reference = String.valueOf(randomUUIDLong());
+        this.reference = String.valueOf(RandomStringUtils.randomAlphabetic(6));
         this.referenceField = new TextField<>("referenceField", new PropertyModel<>(this, "reference"));
         this.referenceField.add(new UniqueRecordValidator<>("ecommerce_color", "reference"));
         this.referenceField.setRequired(true);
@@ -91,7 +92,7 @@ public class ColorCreatePage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         Long imgFileId = null;
         if (this.img != null && !this.img.isEmpty() && this.img.get(0).getSize() > 0) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.img.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.img.get(0).getClientFileName());
             try {
                 this.img.get(0).writeTo(file);
             } catch (Exception e) {
@@ -102,7 +103,7 @@ public class ColorCreatePage extends MBaaSPage {
         }
 
         InsertQuery insertQuery = new InsertQuery("ecommerce_color");
-        insertQuery.addValue("ecommerce_color_id = :ecommerce_color_id", Platform.randomUUIDLong());
+        insertQuery.addValue("ecommerce_color_id = :ecommerce_color_id", Platform.randomUUIDLong("ecommerce_color"));
         insertQuery.addValue("code = :code", this.code);
         insertQuery.addValue("reference = :reference", this.reference);
         insertQuery.addValue("value = :value", this.value);

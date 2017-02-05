@@ -127,7 +127,7 @@ public class BannerModifyPage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         Long imageUrlFileId = null;
         if (this.image != null && !this.image.isEmpty()) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.image.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.image.get(0).getClientFileName());
             try {
                 this.image.get(0).writeTo(file);
             } catch (Exception e) {

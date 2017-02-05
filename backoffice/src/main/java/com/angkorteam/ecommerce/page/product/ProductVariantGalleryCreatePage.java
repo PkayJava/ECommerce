@@ -79,7 +79,7 @@ public class ProductVariantGalleryCreatePage extends MBaaSPage {
 
         Long imageFileId = null;
         if (this.image != null && !this.image.isEmpty()) {
-            File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + this.image.get(0).getClientFileName());
+            File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + this.image.get(0).getClientFileName());
             try {
                 this.image.get(0).writeTo(file);
             } catch (Exception e) {
@@ -90,7 +90,7 @@ public class ProductVariantGalleryCreatePage extends MBaaSPage {
         }
 
         InsertQuery insertQuery = new InsertQuery("ecommerce_product_variant_image");
-        insertQuery.addValue("ecommerce_product_variant_image_id = :ecommerce_product_variant_image_id", randomUUIDLong());
+        insertQuery.addValue("ecommerce_product_variant_image_id = :ecommerce_product_variant_image_id", Platform.randomUUIDLong("ecommerce_product_variant_image"));
         insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant_id", this.ecommerceProductVariantId);
         insertQuery.addValue("name = :name", name);
         insertQuery.addValue("platform_file_id = :platform_file_id", imageFileId);

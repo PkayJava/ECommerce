@@ -13,6 +13,7 @@ import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -70,7 +71,7 @@ public class ProductVariantCreatePage extends MBaaSPage {
         this.form = new Form<>("form");
         layout.add(this.form);
 
-        this.reference = randomUUIDLong() + "";
+        this.reference = RandomStringUtils.randomAlphabetic(6);
         this.referenceField = new TextField<>("referenceField", new PropertyModel<>(this, "reference"));
         this.referenceField.setRequired(true);
         this.referenceField.add(new UniqueRecordValidator<>("ecommerce_product_variant", "reference"));
@@ -113,7 +114,7 @@ public class ProductVariantCreatePage extends MBaaSPage {
 
     private void saveButtonOnSubmit(Button button) {
 
-        Long variantId = randomUUIDLong();
+        Long variantId = Platform.randomUUIDLong("ecommerce_product_variant");
         InsertQuery insertQuery = new InsertQuery("ecommerce_product_variant");
         insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant", variantId);
         insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
@@ -133,7 +134,7 @@ public class ProductVariantCreatePage extends MBaaSPage {
             for (FileUpload tmp : this.image) {
                 Long imageFileId = null;
 
-                File file = new File(FileUtils.getTempDirectory(), randomUUIDLong() + tmp.getClientFileName());
+                File file = new File(FileUtils.getTempDirectory(), Platform.randomUUIDString() + tmp.getClientFileName());
                 try {
                     tmp.writeTo(file);
                 } catch (Exception e) {
@@ -143,9 +144,9 @@ public class ProductVariantCreatePage extends MBaaSPage {
                 file.delete();
 
                 insertQuery = new InsertQuery("ecommerce_product_variant_image");
-                insertQuery.addValue("ecommerce_product_variant_image_id = :ecommerce_product_variant_image", randomUUIDLong());
+                insertQuery.addValue("ecommerce_product_variant_image_id = :ecommerce_product_variant_image", Platform.randomUUIDLong("ecommerce_product_variant_image"));
                 insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant_id", variantId);
-                insertQuery.addValue("name = :name", randomUUIDLong());
+                insertQuery.addValue("name = :name", Platform.randomUUIDString());
                 insertQuery.addValue("platform_file_id = :platform_file_id", imageFileId);
                 insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());

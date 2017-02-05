@@ -313,7 +313,7 @@ public class OrderReviewPage extends MBaaSPage {
         for (Map.Entry<Long, List<EcommerceOrderItem>> sellerItems : vendorsOrderItems.entrySet()) {
             Long sellerId = sellerItems.getKey();
             double total = 0;
-            Long vendorOrderId = randomUUIDLong();
+            Long vendorOrderId = Platform.randomUUIDLong("ecommerce_vendor_order");
             Map<String, Object> params = Maps.newHashMap();
             insertQuery = new InsertQuery("ecommerce_vendor_order");
             insertQuery.addValue("ecommerce_vendor_order_id = :ecommerce_vendor_order_id", vendorOrderId);
@@ -326,7 +326,7 @@ public class OrderReviewPage extends MBaaSPage {
             getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
             for (EcommerceOrderItem item : sellerItems.getValue()) {
                 insertQuery = new InsertQuery("ecommerce_vendor_order_item");
-                insertQuery.addValue("ecommerce_vendor_order_item_id = :ecommerce_vendor_order_item_id", randomUUIDLong());
+                insertQuery.addValue("ecommerce_vendor_order_item_id = :ecommerce_vendor_order_item_id", Platform.randomUUIDLong("ecommerce_vendor_order_item"));
                 insertQuery.addValue("ecommerce_vendor_order_id = :ecommerce_vendor_order_id", vendorOrderId);
                 insertQuery.addValue("ecommerce_category_id = :ecommerce_category_id", item.getEcommerceCategoryId());
                 insertQuery.addValue("quantity = :quantity", item.getQuantity());

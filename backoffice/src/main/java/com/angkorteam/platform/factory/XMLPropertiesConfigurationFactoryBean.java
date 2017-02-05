@@ -1,7 +1,6 @@
 package com.angkorteam.platform.factory;
 
 import com.angkorteam.platform.Configuration;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -11,6 +10,7 @@ import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -57,11 +57,11 @@ public class XMLPropertiesConfigurationFactoryBean implements FactoryBean<XMLPro
             file = new File(home, ".xml/" + Configuration.KEY);
         }
         FileInputStream inputStream = FileUtils.openInputStream(file);
-        ByteOutputStream outputStream = new ByteOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         IOUtils.copy(inputStream, outputStream);
         IOUtils.closeQuietly(inputStream);
         this.configuration = new XMLPropertiesConfiguration();
-        this.configuration.load(new ByteArrayInputStream(outputStream.getBytes()));
+        this.configuration.load(new ByteArrayInputStream(outputStream.toByteArray()));
     }
 
 }

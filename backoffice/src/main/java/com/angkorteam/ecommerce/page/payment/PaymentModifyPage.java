@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.payment;
 
-import com.angkorteam.ecommerce.model.ECommercePayment;
+import com.angkorteam.ecommerce.model.EcommercePayment;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
@@ -48,7 +48,7 @@ public class PaymentModifyPage extends MBaaSPage {
         SelectQuery selectQuery = new SelectQuery("ecommerce_payment");
         selectQuery.addWhere("ecommerce_payment_id = :ecommerce_payment_id", this.ecommercePaymentId);
 
-        ECommercePayment record = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommercePayment.class);
+        EcommercePayment record = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommercePayment.class);
 
         this.form = new Form<>("form");
         layout.add(this.form);

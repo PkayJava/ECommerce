@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.banner;
 
-import com.angkorteam.ecommerce.model.ECommerceBanner;
+import com.angkorteam.ecommerce.model.EcommerceBanner;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option;
@@ -71,7 +71,7 @@ public class BannerModifyPage extends MBaaSPage {
 
         this.ecommerceBannerId = getPageParameters().get("ecommerceBannerId").toString("");
 
-        ECommerceBanner ecommerceBanner = getJdbcTemplate().queryForObject("select * from ecommerce_banner where ecommerce_banner_id = ?", ECommerceBanner.class, ecommerceBannerId);
+        EcommerceBanner ecommerceBanner = getJdbcTemplate().queryForObject("select * from ecommerce_banner where ecommerce_banner_id = ?", EcommerceBanner.class, ecommerceBannerId);
 
         this.form = new Form<>("form");
         layout.add(this.form);
@@ -91,13 +91,13 @@ public class BannerModifyPage extends MBaaSPage {
         this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
         this.form.add(this.typeFeedback);
 
-        this.product = getJdbcTemplate().queryForObject("select ecommerce_product_id id, name text from ecommerce_product where ecommerce_product_id = ?", Option.class, ecommerceBanner.getECommerceProductId());
+        this.product = getJdbcTemplate().queryForObject("select ecommerce_product_id id, name text from ecommerce_product where ecommerce_product_id = ?", Option.class, ecommerceBanner.getEcommerceProductId());
         this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "product"), new OptionSingleChoiceProvider("ecommerce_product", "ecommerce_product_id", "name"));
         this.form.add(this.productField);
         this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
         this.form.add(this.productFeedback);
 
-        this.category = getJdbcTemplate().queryForObject("select ecommerce_category_id id, name text from ecommerce_category where ecommerce_category_id = ?", Option.class, ecommerceBanner.getECommerceCategoryId());
+        this.category = getJdbcTemplate().queryForObject("select ecommerce_category_id id, name text from ecommerce_category where ecommerce_category_id = ?", Option.class, ecommerceBanner.getEcommerceCategoryId());
         this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"), new OptionSingleChoiceProvider("ecommerce_category", "ecommerce_category_id", "CONCAT(name, ( IF (parent_path = '', '', CONCAT(' : ', parent_path) )))"));
         this.form.add(this.categoryField);
         this.categoryFeedback = new TextFeedbackPanel("categoryFeedback", this.categoryField);

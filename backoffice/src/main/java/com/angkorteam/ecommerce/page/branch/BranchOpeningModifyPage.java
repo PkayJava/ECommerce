@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.branch;
 
-import com.angkorteam.ecommerce.model.ECommerceBranchOpening;
+import com.angkorteam.ecommerce.model.EcommerceBranchOpening;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
@@ -45,7 +45,7 @@ public class BranchOpeningModifyPage extends MBaaSPage {
         this.ecommerceBranchId = getPageParameters().get("ecommerceBranchId").toString("");
         this.ecommerceBranchOpeningId = getPageParameters().get("branchOpeningId").toString("");
 
-        ECommerceBranchOpening record = getJdbcTemplate().queryForObject("select * from ecommerce_branch_opening where ecommerce_branch_opening_id = ?", ECommerceBranchOpening.class, this.ecommerceBranchOpeningId);
+        EcommerceBranchOpening record = getJdbcTemplate().queryForObject("select * from ecommerce_branch_opening where ecommerce_branch_opening_id = ?", EcommerceBranchOpening.class, this.ecommerceBranchOpeningId);
 
         this.form = new Form<>("form");
         layout.add(this.form);

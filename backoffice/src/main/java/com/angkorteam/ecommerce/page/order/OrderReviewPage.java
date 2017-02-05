@@ -1,12 +1,13 @@
 package com.angkorteam.ecommerce.page.order;
 
-import com.angkorteam.ecommerce.model.ECommerceOrder;
-import com.angkorteam.ecommerce.model.ECommerceOrderItem;
-import com.angkorteam.ecommerce.model.ECommerceProduct;
+import com.angkorteam.ecommerce.model.EcommerceOrder;
+import com.angkorteam.ecommerce.model.EcommerceOrderItem;
+import com.angkorteam.ecommerce.model.EcommerceProduct;
 import com.angkorteam.framework.extension.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -88,17 +89,14 @@ public class OrderReviewPage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        String stringDatetimeForamt = getJdbcTemplate().queryForObject("select value from setting where `key` = ?", String.class, "datetime_format");
-        String stringPriceFormat = getJdbcTemplate().queryForObject("select value from setting where `key` = ?", String.class, "price_format");
-
-        DateFormat datetimeFormat = new SimpleDateFormat(stringDatetimeForamt);
-        DecimalFormat priceFormat = new DecimalFormat(stringPriceFormat);
+        DateFormat datetimeFormat = new SimpleDateFormat(Platform.getSetting("datetime_format"));
+        DecimalFormat priceFormat = new DecimalFormat(Platform.getSetting("price_format"));
 
         this.ecommerceOrderId = getPageParameters().get("ecommerceOrderId").toString("");
 
-        ECommerceOrder orderRecord = getJdbcTemplate().queryForObject("select * from ecommerce_order where ecommerce_order_id = ?", ECommerceOrder.class, this.ecommerceOrderId);
+        EcommerceOrder orderRecord = getJdbcTemplate().queryForObject("select * from ecommerce_order where ecommerce_order_id = ?", EcommerceOrder.class, this.ecommerceOrderId);
 
-        this.orderNo = "Invoice #" + orderRecord.getECommerceOrderId();
+        this.orderNo = "Invoice #" + orderRecord.getEcommerceOrderId();
         this.orderNoLabel = new Label("orderNoLabel", new PropertyModel<>(this, "orderNo"));
         layout.add(this.orderNoLabel);
 
@@ -179,9 +177,9 @@ public class OrderReviewPage extends MBaaSPage {
         RepeatingView view = new RepeatingView("items");
         layout.add(view);
 
-        List<ECommerceOrderItem> items = getJdbcTemplate().queryForList("select * from ecommerce_order_item where ecommerce_order_id = ?", ECommerceOrderItem.class, this.ecommerceOrderId);
+        List<EcommerceOrderItem> items = getJdbcTemplate().queryForList("select * from ecommerce_order_item where ecommerce_order_id = ?", EcommerceOrderItem.class, this.ecommerceOrderId);
         if (items != null && !items.isEmpty()) {
-            for (ECommerceOrderItem item : items) {
+            for (EcommerceOrderItem item : items) {
                 String id = view.newChildId();
                 Double price = item.getProductPrice();
                 Double totalPrice = item.getTotalPrice();
@@ -189,13 +187,13 @@ public class OrderReviewPage extends MBaaSPage {
                 view.add(fragment);
                 Label quantityLabel = new Label("quantityLabel", new PropertyModel<>(item, "quantity"));
                 fragment.add(quantityLabel);
-                Label productLabel = new Label("productLabel", new PropertyModel<>(item, "product_name"));
+                Label productLabel = new Label("productLabel", new PropertyModel<>(item, "productName"));
                 fragment.add(productLabel);
-                Label codeLabel = new Label("codeLabel", new PropertyModel<>(item, "color_value"));
+                Label codeLabel = new Label("codeLabel", new PropertyModel<>(item, "productReference"));
                 fragment.add(codeLabel);
-                Label colorLabel = new Label("colorLabel", new PropertyModel<>(item, "color_value"));
+                Label colorLabel = new Label("colorLabel", new PropertyModel<>(item, "colorValue"));
                 fragment.add(colorLabel);
-                Label sizeLabel = new Label("sizeLabel", new PropertyModel<>(item, "size_value"));
+                Label sizeLabel = new Label("sizeLabel", new PropertyModel<>(item, "sizeValue"));
                 fragment.add(sizeLabel);
                 Label unitPriceLabel = new Label("unitPriceLabel", priceFormat.format(price));
                 fragment.add(unitPriceLabel);
@@ -278,9 +276,9 @@ public class OrderReviewPage extends MBaaSPage {
 
     }
 
-    private void checkStockButtonOnClick(AjaxLink ajaxLink, AjaxRequestTarget target) {
+    private void checkStockButtonOnClick(AjaxLink link, AjaxRequestTarget target) {
 
-        ECommerceOrder ecommerceOrder = getJdbcTemplate().queryForObject("select * from ecommerce_order where ecommerce_order_id = ?", ECommerceOrder.class, this.ecommerceOrderId);
+        EcommerceOrder ecommerceOrder = getJdbcTemplate().queryForObject("select * from ecommerce_order where ecommerce_order_id = ?", EcommerceOrder.class, this.ecommerceOrderId);
 
         if ("New".equals(ecommerceOrder.getOrderStatus())) {
             PageParameters parameters = new PageParameters();
@@ -296,23 +294,23 @@ public class OrderReviewPage extends MBaaSPage {
         updateQuery.addValue("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 
-        List<ECommerceOrderItem> orderItemRecords = getJdbcTemplate().queryForList("select * from ecommerce_order_item where ecommerce_order_id = ?", ECommerceOrderItem.class, this.ecommerceOrderId);
+        List<EcommerceOrderItem> orderItemRecords = getJdbcTemplate().queryForList("select * from ecommerce_order_item where ecommerce_order_id = ?", EcommerceOrderItem.class, this.ecommerceOrderId);
 
-        Map<Long, List<ECommerceOrderItem>> vendorsOrderItems = Maps.newHashMap();
-        for (ECommerceOrderItem orderItemRecord : orderItemRecords) {
+        Map<Long, List<EcommerceOrderItem>> vendorsOrderItems = Maps.newHashMap();
+        for (EcommerceOrderItem orderItemRecord : orderItemRecords) {
             SelectQuery selectQuery = new SelectQuery("ecommerce_product");
-            selectQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", orderItemRecord.getECommerceProductId());
-            ECommerceProduct productRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceProduct.class);
+            selectQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", orderItemRecord.getEcommerceProductId());
+            EcommerceProduct productRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceProduct.class);
             Long userId = productRecord.getPlatformUserId();
             if (!vendorsOrderItems.containsKey(userId)) {
                 vendorsOrderItems.put(userId, Lists.newArrayList());
             }
-            List<ECommerceOrderItem> vendorOrderItems = vendorsOrderItems.get(userId);
+            List<EcommerceOrderItem> vendorOrderItems = vendorsOrderItems.get(userId);
             vendorOrderItems.add(orderItemRecord);
         }
 
         InsertQuery insertQuery = null;
-        for (Map.Entry<Long, List<ECommerceOrderItem>> sellerItems : vendorsOrderItems.entrySet()) {
+        for (Map.Entry<Long, List<EcommerceOrderItem>> sellerItems : vendorsOrderItems.entrySet()) {
             Long sellerId = sellerItems.getKey();
             double total = 0;
             Long vendorOrderId = randomUUIDLong();
@@ -326,15 +324,15 @@ public class OrderReviewPage extends MBaaSPage {
             insertQuery.addValue("platform_user_id = :user_id", sellerId);
             insertQuery.addValue("total = :total", total);
             getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
-            for (ECommerceOrderItem item : sellerItems.getValue()) {
+            for (EcommerceOrderItem item : sellerItems.getValue()) {
                 insertQuery = new InsertQuery("ecommerce_vendor_order_item");
                 insertQuery.addValue("ecommerce_vendor_order_item_id = :ecommerce_vendor_order_item_id", randomUUIDLong());
                 insertQuery.addValue("ecommerce_vendor_order_id = :ecommerce_vendor_order_id", vendorOrderId);
-                insertQuery.addValue("ecommerce_category_id = :ecommerce_category_id", item.getECommerceCategoryId());
+                insertQuery.addValue("ecommerce_category_id = :ecommerce_category_id", item.getEcommerceCategoryId());
                 insertQuery.addValue("quantity = :quantity", item.getQuantity());
                 insertQuery.addValue("total_price = :total_price", item.getTotalPrice());
-                insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", item.getECommerceProductId());
-                insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant_id", item.getECommerceProductVariantId());
+                insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", item.getEcommerceProductId());
+                insertQuery.addValue("ecommerce_product_variant_id = :ecommerce_product_variant_id", item.getEcommerceProductVariantId());
                 insertQuery.addValue("product_url = :product_url", item.getProductUrl());
                 insertQuery.addValue("product_name = :product_name", item.getProductName());
                 insertQuery.addValue("product_price = :product_price", item.getProductPrice());
@@ -344,13 +342,13 @@ public class OrderReviewPage extends MBaaSPage {
                 insertQuery.addValue("product_main_image = :product_main_image", item.getProductMainImage());
                 insertQuery.addValue("product_main_image_platform_file_id = :product_main_image_file_id", item.getProductMainImagePlatformFileId());
                 insertQuery.addValue("variant_reference = :variant_reference", item.getVariantReference());
-                insertQuery.addValue("ecommerce_color_id = :ecommerce_color_id", item.getECommerceColorId());
+                insertQuery.addValue("ecommerce_color_id = :ecommerce_color_id", item.getEcommerceColorId());
                 insertQuery.addValue("color_value = :color_value", item.getColorValue());
                 insertQuery.addValue("color_code = :color_code", item.getColorCode());
                 insertQuery.addValue("color_img = :color_img", item.getColorImg());
                 insertQuery.addValue("color_reference = :color_reference", item.getColorReference());
                 insertQuery.addValue("color_img_platform_file_id = :color_img_file_id", item.getColorImgPlatformFileId());
-                insertQuery.addValue("ecommerce_size_id = :ecommerce_size_id", item.getECommerceSizeId());
+                insertQuery.addValue("ecommerce_size_id = :ecommerce_size_id", item.getEcommerceSizeId());
                 insertQuery.addValue("size_value = :size_value", item.getSizeValue());
                 insertQuery.addValue("size_reference = :size_reference", item.getSizeReference());
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
@@ -369,7 +367,7 @@ public class OrderReviewPage extends MBaaSPage {
         SelectQuery selectQuery = null;
         selectQuery = new SelectQuery("ecommerce_order");
         selectQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
-        ECommerceOrder ecommerceOrder = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceOrder.class);
+        EcommerceOrder ecommerceOrder = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceOrder.class);
 
         String orderStatus = ecommerceOrder.getOrderStatus();
 
@@ -406,7 +404,7 @@ public class OrderReviewPage extends MBaaSPage {
         selectQuery = new SelectQuery("ecommerce_order");
         selectQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", this.ecommerceOrderId);
 
-        ECommerceOrder orderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceOrder.class);
+        EcommerceOrder orderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceOrder.class);
 
         String orderStatus = orderRecord.getOrderStatus();
 

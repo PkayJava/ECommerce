@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.product;
 
-import com.angkorteam.ecommerce.model.ECommerceProduct;
+import com.angkorteam.ecommerce.model.EcommerceProduct;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option;
@@ -94,7 +94,7 @@ public class ProductModifyPage extends MBaaSPage {
         SelectQuery selectQuery = null;
         selectQuery = new SelectQuery("ecommerce_product");
         selectQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
-        ECommerceProduct ecommerceProduct = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceProduct.class);
+        EcommerceProduct ecommerceProduct = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceProduct.class);
 
         this.form = new Form<>("form");
         layout.add(this.form);
@@ -124,7 +124,7 @@ public class ProductModifyPage extends MBaaSPage {
         selectQuery = new SelectQuery("ecommerce_category");
         selectQuery.addField("ecommerce_category_id AS id");
         selectQuery.addField("name AS text");
-        selectQuery.addWhere("ecommerce_category_id = :ecommerce_category_id", ecommerceProduct.getECommerceCategoryId());
+        selectQuery.addWhere("ecommerce_category_id = :ecommerce_category_id", ecommerceProduct.getEcommerceCategoryId());
         this.category = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
         this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"), new OptionSingleChoiceProvider("ecommerce_category", "ecommerce_category_id", "name", "path"));
         this.categoryField.setRequired(true);
@@ -135,7 +135,7 @@ public class ProductModifyPage extends MBaaSPage {
         selectQuery = new SelectQuery("ecommerce_brand");
         selectQuery.addField("ecommerce_brand_id AS id");
         selectQuery.addField("name AS text");
-        selectQuery.addWhere("ecommerce_brand_id = :ecommerce_brand_id", ecommerceProduct.getECommerceBrandId());
+        selectQuery.addWhere("ecommerce_brand_id = :ecommerce_brand_id", ecommerceProduct.getEcommerceBrandId());
         this.brand = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
         this.brandField = new Select2SingleChoice<>("brandField", new PropertyModel<>(this, "brand"), new OptionSingleChoiceProvider("ecommerce_brand", "ecommerce_brand_id", "name"));
         this.form.add(this.brandField);

@@ -65,6 +65,18 @@
                         <span wicket:id="currencyFeedback" class="help-block"/>
                     </div>
                     <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label wicket:for="smtpUserField">SMTP User (GMail Only)</label>
+                        <input type="text" wicket:id="smtpUserField" class="form-control"/>
+                        <span wicket:id="smtpUserFeedback" class="help-block"/>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label wicket:for="smtpPasswordField">SMTP Password (GMail Only)</label>
+                        <input type="text" wicket:id="smtpPasswordField" class="form-control"/>
+                        <span wicket:id="smtpPasswordFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="box-footer">
                     <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>

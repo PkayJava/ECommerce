@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.category;
 
-import com.angkorteam.ecommerce.model.ECommerceCategory;
+import com.angkorteam.ecommerce.model.EcommerceCategory;
 import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.filter.*;
@@ -89,10 +89,10 @@ public class CategoryBrowsePage extends MBaaSPage {
     private void deleteChildCategory(Long categoryId) {
         SelectQuery selectQuery = new SelectQuery("ecommerce_category");
         selectQuery.addWhere("parent_ecommerce_category_id = :parent_ecommerce_category_id", categoryId);
-        List<ECommerceCategory> childrenRecords = getNamed().queryForList(selectQuery.toSQL(), selectQuery.getParam(), ECommerceCategory.class);
+        List<EcommerceCategory> childrenRecords = getNamed().queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCategory.class);
         if (childrenRecords != null && !childrenRecords.isEmpty()) {
-            for (ECommerceCategory childrenRecord : childrenRecords) {
-                Long id = childrenRecord.getECommerceCategoryId();
+            for (EcommerceCategory childrenRecord : childrenRecords) {
+                Long id = childrenRecord.getEcommerceCategoryId();
                 deleteChildCategory(id);
                 getJdbcTemplate().update("delete from ecommerce_category where ecommerce_category_id = ?", id);
             }

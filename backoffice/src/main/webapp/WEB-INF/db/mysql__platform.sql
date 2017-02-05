@@ -403,7 +403,24 @@ CREATE TABLE `platform_rest` (
 -- ################################################################
 INSERT INTO platform_rest (platform_rest_id, name, description, java_class, version)
 VALUES
-  (1, 'System Controller', 'System Controller', 'com.angkorteam.ecommerce.controller.SystemController', 1);
+  (18, 'Orders Single Service Get', 'Orders Single Service Get', 'com.angkorteam.ecommerce.controller.OrdersSingleServiceGet', 1),
+  (17, 'Orders Service Get', 'Orders Service Get', 'com.angkorteam.ecommerce.controller.OrdersServiceGet', 1),
+  (16, 'Orders Service Post', 'Orders Service Post', 'com.angkorteam.ecommerce.controller.OrdersServicePost', 1),
+  (15, 'Cart Discounts Service Post', 'Cart Discounts Service Post', 'com.angkorteam.ecommerce.controller.CartDiscountsServicePost', 1),
+  (14, 'Cart Discounts Single Service Delete', 'Cart Discounts Single Service Delete', 'com.angkorteam.ecommerce.controller.CartDiscountsSingleServiceDelete', 1),
+  (13, 'Cart Item Service Delete', 'Cart Item Service Delete', 'com.angkorteam.ecommerce.controller.CartItemServiceDelete', 1),
+  (12, 'Cart Item Service Put', 'Cart Item Service Put', 'com.angkorteam.ecommerce.controller.CartItemServicePut', 1),
+  (11, 'Cart Service Post', 'Cart Service Post', 'com.angkorteam.ecommerce.controller.CartServicePost', 1),
+  (10, 'Cart Info Service Get', 'Cart Info Service Get', 'com.angkorteam.ecommerce.controller.CartInfoServiceGet', 1),
+  (9, 'Cart Service Get', 'Cart Service Get', 'com.angkorteam.ecommerce.controller.CartServiceGet', 1),
+  (8, 'Wishlist Single Service Delete', 'Wishlist Single Service Delete', 'com.angkorteam.ecommerce.controller.WishlistSingleServiceDelete', 1),
+  (7, 'Wishlist Service Post', 'Wishlist Service Post', 'com.angkorteam.ecommerce.controller.WishlistServicePost', 1),
+  (6, 'Wishlist Is In Wishlist Service Get', 'Wishlist Is In Wishlist Service Get', 'com.angkorteam.ecommerce.controller.WishlistIsInWishlistServiceGet', 1),
+  (5, 'User Change Password Service Put', 'User Change Password Service Put', 'com.angkorteam.ecommerce.controller.UserChangePasswordServicePut', 1),
+  (4, 'User Single Service Put', 'User Single Service Put', 'com.angkorteam.ecommerce.controller.UserSingleServicePut', 1),
+  (1, 'System Controller', 'System Controller', 'com.angkorteam.ecommerce.controller.SystemController', 1),
+  (2, 'Wishlist Service Get', 'Wishlist Service Get', 'com.angkorteam.ecommerce.controller.WishlistServiceGet', 1),
+  (3, 'User Single Service Get', 'User Single Service Get', 'com.angkorteam.ecommerce.controller.UserSingleServiceGet', 1);
 
 
 -- # mysql__platform_rest_role_ddl.sql
@@ -417,6 +434,29 @@ CREATE TABLE `platform_rest_role` (
   UNIQUE KEY (`platform_rest_id`, `platform_role_id`),
   PRIMARY KEY (`platform_rest_role_id`)
 );
+
+
+-- # mysql__platform_rest_role_insert.sql
+-- ################################################################
+INSERT INTO platform_rest_role (platform_rest_role_id, platform_role_id, platform_rest_id)
+VALUES
+  (uuid_short(), 5, 18),
+  (uuid_short(), 5, 17),
+  (uuid_short(), 5, 16),
+  (uuid_short(), 5, 15),
+  (uuid_short(), 5, 14),
+  (uuid_short(), 5, 13),
+  (uuid_short(), 5, 12),
+  (uuid_short(), 5, 11),
+  (uuid_short(), 5, 10),
+  (uuid_short(), 5, 9),
+  (uuid_short(), 5, 8),
+  (uuid_short(), 5, 7),
+  (uuid_short(), 5, 6),
+  (uuid_short(), 5, 5),
+  (uuid_short(), 5, 4),
+  (uuid_short(), 5, 2),
+  (uuid_short(), 5, 3);
 
 
 -- # mysql__platform_role_ddl.sql
@@ -493,7 +533,16 @@ CREATE TABLE `platform_setting` (
 -- ################################################################
 INSERT INTO `platform_setting` (`platform_setting_id`, `key`, `value`, `description`, `version`)
 VALUES
-  (1, 'home_page', 'Home Page', 'Home Page', 1);
+  (10, 'smtp_user', 'SMTP User', 'SMTP User', 1),
+  (9, 'smtp_password', 'SMTP Password', 'SMTP Password', 1),
+  (1, 'home_page', 'Home Page', 'Home Page', 1),
+  (2, 'google_api_key', '', 'Google Api Key', 1),
+  (3, 'asset', 'http://192.168.0.114:8080', 'Asset', 1),
+  (4, 'price_format', '$#,###,##0.00', 'Price Format', 1),
+  (5, 'currency', 'USD', 'Currency', 1),
+  (6, 'time_format', 'hh:mm a', 'Time Format', 1),
+  (7, 'date_format', 'yyyy-MM-dd', 'Date Format', 1),
+  (8, 'datetime_format', 'dd.MM.yyyy hh:mm a', 'Datetime Format', 1);
 
 
 -- # mysql__platform_user_ddl.sql

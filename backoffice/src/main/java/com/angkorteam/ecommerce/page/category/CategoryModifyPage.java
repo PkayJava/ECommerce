@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.category;
 
-import com.angkorteam.ecommerce.model.ECommerceCategory;
+import com.angkorteam.ecommerce.model.EcommerceCategory;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
@@ -52,11 +52,11 @@ public class CategoryModifyPage extends MBaaSPage {
 
         this.ecommerceCategoryId = getPageParameters().get("ecommerceCategoryId").toString("");
 
-        ECommerceCategory categoryRecord = getJdbcTemplate().queryForObject("select * from ecommerce_category where ecommerce_category_id = ?", ECommerceCategory.class, this.ecommerceCategoryId);
+        EcommerceCategory categoryRecord = getJdbcTemplate().queryForObject("select * from ecommerce_category where ecommerce_category_id = ?", EcommerceCategory.class, this.ecommerceCategoryId);
 
-        ECommerceCategory parentCategory = null;
-        if (categoryRecord.getParentECommerceCategoryId() != null) {
-            parentCategory = getJdbcTemplate().queryForObject("select * from ecommerce_category where ecommerce_category_id = ?", ECommerceCategory.class, categoryRecord.getParentECommerceCategoryId());
+        EcommerceCategory parentCategory = null;
+        if (categoryRecord.getParentEcommerceCategoryId() != null) {
+            parentCategory = getJdbcTemplate().queryForObject("select * from ecommerce_category where ecommerce_category_id = ?", EcommerceCategory.class, categoryRecord.getParentEcommerceCategoryId());
         }
         if (parentCategory != null) {
             this.parentEntity = parentCategory.getPath();

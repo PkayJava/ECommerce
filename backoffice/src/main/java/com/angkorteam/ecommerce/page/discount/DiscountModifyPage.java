@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.discount;
 
-import com.angkorteam.ecommerce.model.ECommerceDiscount;
+import com.angkorteam.ecommerce.model.EcommerceDiscount;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
@@ -53,7 +53,7 @@ public class DiscountModifyPage extends MBaaSPage {
 
         this.ecommerceDiscountId = getPageParameters().get("ecommerceDiscountId").toString("");
 
-        ECommerceDiscount record = getJdbcTemplate().queryForObject("select * from ecommerce_discount where ecommerce_discount_id = ?", ECommerceDiscount.class, this.ecommerceDiscountId);
+        EcommerceDiscount record = getJdbcTemplate().queryForObject("select * from ecommerce_discount where ecommerce_discount_id = ?", EcommerceDiscount.class, this.ecommerceDiscountId);
 
         this.form = new Form<>("form");
         layout.add(this.form);

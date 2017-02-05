@@ -90,19 +90,19 @@ public class ProductReviewPage extends MBaaSPage {
         productQuery.addField("ecommerce_product.normal_price AS normalPrice");
         productQuery.addField("ecommerce_category.path AS category");
         productQuery.addField("ecommerce_brand.name AS brand");
-        productQuery.addField("user.login AS login");
-        productQuery.addField("user.full_name AS fullName");
+        productQuery.addField("platform_user.login AS login");
+        productQuery.addField("platform_user.full_name AS fullName");
         productQuery.addField("ecommerce_product.price AS discountPrice");
         productQuery.addField("ecommerce_product.shipping_price AS shippingPrice");
         productQuery.addField("ecommerce_product.reference AS reference");
         productQuery.addField("ecommerce_product.description AS description");
         productQuery.addField("CONCAT('" + asset + "','/api/resource', main_image.path, '/', main_image.name) AS mainImage");
         productQuery.addField("CONCAT('" + asset + "','/api/resource', main_image_high_res.path, '/', main_image_high_res.name) AS mainImageHighRes");
-        productQuery.addJoin(JoinType.LeftJoin, "file AS main_image", "ecommerce_product.main_image_platform_file_id = main_image.platform_file_id");
-        productQuery.addJoin(JoinType.LeftJoin, "file AS main_image_high_res", "ecommerce_product.main_image_high_res_platform_file_id = main_image_high_res.platform_file_id");
+        productQuery.addJoin(JoinType.LeftJoin, "platform_file AS main_image", "ecommerce_product.main_image_platform_file_id = main_image.platform_file_id");
+        productQuery.addJoin(JoinType.LeftJoin, "platform_file AS main_image_high_res", "ecommerce_product.main_image_high_res_platform_file_id = main_image_high_res.platform_file_id");
         productQuery.addJoin(JoinType.LeftJoin, "ecommerce_category", "ecommerce_product.ecommerce_category_id = ecommerce_category.ecommerce_category_id");
         productQuery.addJoin(JoinType.LeftJoin, "ecommerce_brand", "ecommerce_product.ecommerce_brand_id = ecommerce_brand.ecommerce_brand_id");
-        productQuery.addJoin(JoinType.InnerJoin, "user", "ecommerce_product.user_id = user.user_id");
+        productQuery.addJoin(JoinType.InnerJoin, "platform_user", "ecommerce_product.platform_user_id = platform_user.platform_user_id");
         productQuery.addWhere("ecommerce_product.ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
         ProductReviewVO productRecord = getNamed().queryForObject(productQuery.toSQL(), productQuery.getParam(), ProductReviewVO.class);
 

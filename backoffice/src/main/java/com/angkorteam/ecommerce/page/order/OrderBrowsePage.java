@@ -55,7 +55,7 @@ public class OrderBrowsePage extends MBaaSPage {
         layout.add(filterForm);
 
         List<IColumn<Map<String, Object>, String>> columns = new ArrayList<>();
-        columns.add(new TextFilterColumn(provider, ItemClass.Integer, Model.of("ID"), "orderId"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Integer, Model.of("ID"), "ecommerceOrderId"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("name"), "name"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("email"), "email"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("shipping"), "shippingName"));

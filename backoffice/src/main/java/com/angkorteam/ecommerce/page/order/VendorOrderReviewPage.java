@@ -1,7 +1,7 @@
 package com.angkorteam.ecommerce.page.order;
 
-import com.angkorteam.ecommerce.model.ECommerceVendorOrder;
-import com.angkorteam.ecommerce.model.ECommerceVendorOrderItem;
+import com.angkorteam.ecommerce.model.EcommerceVendorOrder;
+import com.angkorteam.ecommerce.model.EcommerceVendorOrderItem;
 import com.angkorteam.framework.extension.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
@@ -58,7 +58,7 @@ public class VendorOrderReviewPage extends MBaaSPage {
         SelectQuery selectQuery = null;
         selectQuery = new SelectQuery("ecommerce_vendor_order");
         selectQuery.addWhere("ecommerce_vendor_order_id = :ecommerce_vendor_order_id", this.ecommerceVendorOrderId);
-        ECommerceVendorOrder vendorOrderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceVendorOrder.class);
+        EcommerceVendorOrder vendorOrderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceVendorOrder.class);
 
         this.orderNo = "Invoice " + StringUtils.upperCase(this.ecommerceVendorOrderId);
         this.orderNoLabel = new Label("orderNoLabel", new PropertyModel<>(this, "orderNo"));
@@ -77,10 +77,10 @@ public class VendorOrderReviewPage extends MBaaSPage {
 
         selectQuery = new SelectQuery("ecommerce_vendor_order_item");
         selectQuery.addWhere("ecommerce_vendor_order_id = :ecommerce_vendor_order_id", this.ecommerceVendorOrderId);
-        List<ECommerceVendorOrderItem> items = getNamed().queryForList(selectQuery.toSQL(), selectQuery.getParam(), ECommerceVendorOrderItem.class);
+        List<EcommerceVendorOrderItem> items = getNamed().queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceVendorOrderItem.class);
 
         if (items != null && !items.isEmpty()) {
-            for (ECommerceVendorOrderItem item : items) {
+            for (EcommerceVendorOrderItem item : items) {
                 String id = view.newChildId();
 
                 Double price = item.getProductPrice();
@@ -90,13 +90,13 @@ public class VendorOrderReviewPage extends MBaaSPage {
                 view.add(fragment);
                 Label quantityLabel = new Label("quantityLabel", new PropertyModel<>(item, "quantity"));
                 fragment.add(quantityLabel);
-                Label productLabel = new Label("productLabel", new PropertyModel<>(item, "product_name"));
+                Label productLabel = new Label("productLabel", new PropertyModel<>(item, "productName"));
                 fragment.add(productLabel);
-                Label codeLabel = new Label("codeLabel", new PropertyModel<>(item, "color_value"));
+                Label codeLabel = new Label("codeLabel", new PropertyModel<>(item, "productReference"));
                 fragment.add(codeLabel);
-                Label colorLabel = new Label("colorLabel", new PropertyModel<>(item, "color_value"));
+                Label colorLabel = new Label("colorLabel", new PropertyModel<>(item, "colorValue"));
                 fragment.add(colorLabel);
-                Label sizeLabel = new Label("sizeLabel", new PropertyModel<>(item, "size_value"));
+                Label sizeLabel = new Label("sizeLabel", new PropertyModel<>(item, "sizeValue"));
                 fragment.add(sizeLabel);
                 Label unitPriceLabel = new Label("unitPriceLabel", priceFormat.format(price));
                 fragment.add(unitPriceLabel);
@@ -158,7 +158,7 @@ public class VendorOrderReviewPage extends MBaaSPage {
     private void confirmStockButtonOnClick(AjaxLink ajaxLink, AjaxRequestTarget target) {
         SelectQuery selectQuery = new SelectQuery("ecommerce_vendor_order");
         selectQuery.addWhere("ecommerce_vendor_order_id = :ecommerce_vendor_order_id?", this.ecommerceVendorOrderId);
-        ECommerceVendorOrder vendorOrderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceVendorOrder.class);
+        EcommerceVendorOrder vendorOrderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceVendorOrder.class);
         String vendorOrderStatus = vendorOrderRecord.getVendorStatus();
         if (!"New".equals(vendorOrderStatus)) {
             PageParameters parameters = new PageParameters();
@@ -178,7 +178,7 @@ public class VendorOrderReviewPage extends MBaaSPage {
     private void packageAndDeliveryButtonOnClick(AjaxLink ajax, AjaxRequestTarget target) {
         SelectQuery selectQuery = new SelectQuery("ecommerce_vendor_order");
         selectQuery.addWhere("ecommerce_vendor_order_id = :ecommerce_vendor_order_id", this.ecommerceVendorOrderId);
-        ECommerceVendorOrder vendorOrderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceVendorOrder.class);
+        EcommerceVendorOrder vendorOrderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceVendorOrder.class);
         String orderStatus = vendorOrderRecord.getOrderStatus();
         if (!"Shipping Request".equals(orderStatus)) {
             PageParameters parameters = new PageParameters();
@@ -199,9 +199,9 @@ public class VendorOrderReviewPage extends MBaaSPage {
     private void cancelButtonOnClick(AjaxLink ajaxLink, AjaxRequestTarget target) {
         SelectQuery selectQuery = new SelectQuery("ecommerce_vendor_order");
         selectQuery.addWhere("ecommerce_vendor_order_id = :ecommerce_vendor_order_id", this.ecommerceVendorOrderId);
-        ECommerceVendorOrder vendorOrderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceVendorOrder.class);
+        EcommerceVendorOrder vendorOrderRecord = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceVendorOrder.class);
 
-        Long orderId = vendorOrderRecord.getECommerceOrderId();
+        Long orderId = vendorOrderRecord.getEcommerceOrderId();
 
         UpdateQuery updateQuery = null;
 

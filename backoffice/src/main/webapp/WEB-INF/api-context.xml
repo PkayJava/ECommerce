@@ -52,7 +52,7 @@
         </property>
     </bean>
 
-    <bean id="gson" class="org.springframework.http.converter.json.GsonFactoryBean">
+    <bean id="gson" class="com.angkorteam.platform.factory.GsonFactoryBean">
         <property name="base64EncodeByteArrays" value="false"/>
         <property name="dateFormatPattern" value="${pattern.datetime}"/>
         <property name="disableHtmlEscaping" value="true"/>

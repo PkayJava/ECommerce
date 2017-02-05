@@ -1,7 +1,7 @@
 package com.angkorteam.ecommerce.page.order;
 
-import com.angkorteam.ecommerce.model.ECommerceOrder;
-import com.angkorteam.ecommerce.model.ECommerceOrderItem;
+import com.angkorteam.ecommerce.model.EcommerceOrder;
+import com.angkorteam.ecommerce.model.EcommerceOrderItem;
 import com.angkorteam.framework.extension.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.jdbc.UpdateQuery;
 import com.angkorteam.platform.page.MBaaSPage;
@@ -84,9 +84,9 @@ public class CustomerOrderReviewPage extends MBaaSPage {
 
         this.ecommerceOrderId = getPageParameters().get("ecommerceOrderId").toString("");
 
-        ECommerceOrder orderRecord = getJdbcTemplate().queryForObject("select * from ecommerce_order where ecommerce_order_id = ?", ECommerceOrder.class, this.ecommerceOrderId);
+        EcommerceOrder orderRecord = getJdbcTemplate().queryForObject("select * from ecommerce_order where ecommerce_order_id = ?", EcommerceOrder.class, this.ecommerceOrderId);
 
-        this.orderNo = "Invoice #" + orderRecord.getECommerceOrderId();
+        this.orderNo = "Invoice #" + orderRecord.getEcommerceOrderId();
         this.orderNoLabel = new Label("orderNoLabel", new PropertyModel<>(this, "orderNo"));
         layout.add(this.orderNoLabel);
 
@@ -167,9 +167,9 @@ public class CustomerOrderReviewPage extends MBaaSPage {
         RepeatingView view = new RepeatingView("items");
         layout.add(view);
 
-        List<ECommerceOrderItem> items = getJdbcTemplate().queryForList("select * from ecommerce_order_item where ecommerce_order_id = ?", ECommerceOrderItem.class, this.ecommerceOrderId);
+        List<EcommerceOrderItem> items = getJdbcTemplate().queryForList("select * from ecommerce_order_item where ecommerce_order_id = ?", EcommerceOrderItem.class, this.ecommerceOrderId);
         if (items != null && !items.isEmpty()) {
-            for (ECommerceOrderItem item : items) {
+            for (EcommerceOrderItem item : items) {
                 String id = view.newChildId();
 
                 Double price = item.getProductPrice();
@@ -179,13 +179,13 @@ public class CustomerOrderReviewPage extends MBaaSPage {
                 view.add(fragment);
                 Label quantityLabel = new Label("quantityLabel", new PropertyModel<>(item, "quantity"));
                 fragment.add(quantityLabel);
-                Label productLabel = new Label("productLabel", new PropertyModel<>(item, "product_name"));
+                Label productLabel = new Label("productLabel", new PropertyModel<>(item, "productName"));
                 fragment.add(productLabel);
-                Label codeLabel = new Label("codeLabel", new PropertyModel<>(item, "color_value"));
+                Label codeLabel = new Label("codeLabel", new PropertyModel<>(item, "productReference"));
                 fragment.add(codeLabel);
-                Label colorLabel = new Label("colorLabel", new PropertyModel<>(item, "color_value"));
+                Label colorLabel = new Label("colorLabel", new PropertyModel<>(item, "colorValue"));
                 fragment.add(colorLabel);
-                Label sizeLabel = new Label("sizeLabel", new PropertyModel<>(item, "size_value"));
+                Label sizeLabel = new Label("sizeLabel", new PropertyModel<>(item, "sizeValue"));
                 fragment.add(sizeLabel);
                 Label unitPriceLabel = new Label("unitPriceLabel", priceFormat.format(price));
                 fragment.add(unitPriceLabel);

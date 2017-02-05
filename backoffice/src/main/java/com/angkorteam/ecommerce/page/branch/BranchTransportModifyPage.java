@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.branch;
 
-import com.angkorteam.ecommerce.model.ECommerceBranchTransport;
+import com.angkorteam.ecommerce.model.EcommerceBranchTransport;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
@@ -51,7 +51,7 @@ public class BranchTransportModifyPage extends MBaaSPage {
         this.ecommerceBranchId = getPageParameters().get("ecommerceBranchId").toString("");
         this.ecommerceBranchTransportId = getPageParameters().get("ecommerceBranchTransportId").toString("");
 
-        ECommerceBranchTransport record = getJdbcTemplate().queryForObject("select * from ecommerce_branch_transport where ecommerce_branch_transport_id = ?", ECommerceBranchTransport.class, this.ecommerceBranchTransportId);
+        EcommerceBranchTransport record = getJdbcTemplate().queryForObject("select * from ecommerce_branch_transport where ecommerce_branch_transport_id = ?", EcommerceBranchTransport.class, this.ecommerceBranchTransportId);
 
         this.form = new Form<>("form");
         layout.add(this.form);

@@ -164,13 +164,6 @@ public class ProductCreatePage extends MBaaSPage {
         this.sizeFeedback = new TextFeedbackPanel("sizeFeedback", this.sizeField);
         this.form.add(this.sizeFeedback);
 
-        this.quantityField = new TextField<>("quantityField", new PropertyModel<>(this, "quantity"));
-        this.quantityField.setRequired(true);
-        this.quantityField.add(RangeValidator.<Integer>minimum(1));
-        this.form.add(this.quantityField);
-        this.quantityFeedback = new TextFeedbackPanel("quantityFeedback", this.quantityField);
-        this.form.add(this.quantityFeedback);
-
         this.mainImageHighResField = new FileUploadField("mainImageHighResField", new PropertyModel<>(this, "mainImageHighRes"));
         this.mainImageHighResField.setRequired(true);
         this.form.add(this.mainImageHighResField);

@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.shipping;
 
-import com.angkorteam.ecommerce.model.ECommerceShipping;
+import com.angkorteam.ecommerce.model.EcommerceShipping;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option;
@@ -85,7 +85,7 @@ public class ShippingModifyPage extends MBaaSPage {
         selectQuery = new SelectQuery("ecommerce_shipping");
         selectQuery.addWhere("ecommerce_shipping_id = :ecommerce_shipping_id", this.ecommerceShippingId);
 
-        ECommerceShipping ecommerceShipping = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceShipping.class);
+        EcommerceShipping ecommerceShipping = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceShipping.class);
 
         this.form = new Form<>("form");
         layout.add(this.form);
@@ -138,7 +138,7 @@ public class ShippingModifyPage extends MBaaSPage {
 
         selectQuery = new SelectQuery("ecommerce_branch");
         selectQuery.addField("ecommerce_branch_id AS id", "name AS text");
-        selectQuery.addWhere("ecommerce_branch_id = :ecommerce_branch_id", ecommerceShipping.getECommerceBranchId());
+        selectQuery.addWhere("ecommerce_branch_id = :ecommerce_branch_id", ecommerceShipping.getEcommerceBranchId());
         this.branch = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
         this.branchField = new Select2SingleChoice<>("branchField", new PropertyModel<>(this, "branch"), new OptionSingleChoiceProvider("ecommerce_branch", "ecommerce_branch_id", "name"));
         this.form.add(this.branchField);

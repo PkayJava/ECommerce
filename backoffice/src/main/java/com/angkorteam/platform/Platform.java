@@ -1,11 +1,11 @@
 package com.angkorteam.platform;
 
-import com.angkorteam.ecommerce.vo.LinksVO;
 import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
+import com.angkorteam.platform.mobile.Links;
 import com.angkorteam.platform.model.PlatformRole;
 import com.angkorteam.platform.model.PlatformUser;
 import com.google.common.base.Strings;
@@ -38,37 +38,40 @@ public abstract class Platform {
 
     public static PlatformUser getCurrentUser(HttpServletRequest request) throws UnsupportedEncodingException {
         String authorization = request.getHeader("Authorization");
-        byte[] base64Token = authorization.substring(6).getBytes("UTF-8");
-        byte[] decoded = Base64.decodeBase64(base64Token);
-        String token = new String(decoded, "UTF-8");
-        Integer delim = token.indexOf(":");
-        String accessToken = token.substring(0, delim);
-        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
-        return jdbcTemplate.queryForObject("select * from platform_user where access_token = ?", PlatformUser.class, accessToken);
+        if (!Strings.isNullOrEmpty(authorization)) {
+            byte[] base64Token = authorization.substring(6).getBytes("UTF-8");
+            byte[] decoded = Base64.decodeBase64(base64Token);
+            String token = new String(decoded, "UTF-8");
+            Integer delim = token.indexOf(":");
+            String accessToken = token.substring(0, delim);
+            JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+            return jdbcTemplate.queryForObject("select * from platform_user where access_token = ?", PlatformUser.class, accessToken);
+        }
+        return null;
     }
 
-    public static LinksVO buildLinks(HttpServletRequest request, long total, long limit) {
+    public static Links buildLinks(HttpServletRequest request, long total, long limit) {
         String queryString = request.getQueryString();
         List<String> params = Lists.newArrayList();
         if (!Strings.isNullOrEmpty(queryString)) {
             String[] temps = StringUtils.split(queryString, '&');
             for (String temp : temps) {
-                if (!StringUtils.startsWithIgnoreCase(temp, "page=")) {
+                if (!StringUtils.startsWithIgnoreCase(temp, "offset=")) {
                     params.add(temp);
                 }
             }
         }
         String url = request.getRequestURL().toString();
-        long page = ServletRequestUtils.getLongParameter(request, "page", 1L);
+        long page = ServletRequestUtils.getLongParameter(request, "offset", 1L);
         if (page < 1) {
             page = 1;
         }
-        LinksVO linksVO = new LinksVO();
+        Links linksVO = new Links();
         {
             // first page
             long currentPage = 1L;
             List<String> actions = new ArrayList<>(params);
-            actions.add("page=" + currentPage);
+            actions.add("offset=" + currentPage);
             linksVO.setFirst(url + "?" + StringUtils.join(actions, '&'));
         }
         {
@@ -80,14 +83,14 @@ public abstract class Platform {
                 currentPage = (total / limit) + 1L;
             }
             List<String> actions = new ArrayList<>(params);
-            actions.add("page=" + currentPage);
+            actions.add("offset=" + currentPage);
             linksVO.setLast(url + "?" + StringUtils.join(actions, '&'));
         }
         {
             // current page
             long currentPage = page;
             List<String> actions = new ArrayList<>(params);
-            actions.add("page=" + currentPage);
+            actions.add("offset=" + currentPage);
             linksVO.setSelf(url + "?" + StringUtils.join(actions, '&'));
         }
         {
@@ -97,7 +100,7 @@ public abstract class Platform {
                 if (currentPage < (total / limit)) {
                     currentPage = currentPage + 1;
                     List<String> actions = new ArrayList<>(params);
-                    actions.add("page=" + currentPage);
+                    actions.add("offset=" + currentPage);
                     linksVO.setNext(url + "?" + StringUtils.join(actions, '&'));
                 } else {
                     linksVO.setNext(null);
@@ -106,7 +109,7 @@ public abstract class Platform {
                 if (currentPage <= (total / limit)) {
                     currentPage = currentPage + 1;
                     List<String> actions = new ArrayList<>(params);
-                    actions.add("page=" + currentPage);
+                    actions.add("offset=" + currentPage);
                     linksVO.setNext(url + "?" + StringUtils.join(actions, '&'));
                 } else {
                     linksVO.setNext(null);
@@ -120,7 +123,7 @@ public abstract class Platform {
             if (currentPage > 1) {
                 currentPage = currentPage - 1;
                 List<String> actions = new ArrayList<>(params);
-                actions.add("page=" + currentPage);
+                actions.add("offset=" + currentPage);
                 linksVO.setPrevious(url + "?" + StringUtils.join(actions, '&'));
             } else {
                 linksVO.setPrevious(null);

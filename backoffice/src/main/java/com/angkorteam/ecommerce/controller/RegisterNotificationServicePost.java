@@ -1,109 +1,80 @@
-//package com.angkorteam.ecommerce.controller;
-//
-//import com.angkorteam.framework.spring.JdbcTemplate;
-//import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
-//import com.angkorteam.platform.Spring;
-//import com.google.gson.Gson;
-//import com.google.gson.annotations.Expose;
-//import com.google.gson.annotations.SerializedName;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Qualifier;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//
-//import javax.servlet.http.HttpServletRequest;
-//
-///**
-// * Created by socheatkhauv on 28/1/17.
-// */
-//@Controller
-//public class RegisterNotificationServicePost {
-//
-//    private static final Logger LOGGER = LoggerFactory.getLogger(RegisterNotificationServicePost.class);
-//
-//    @Autowired
-//    @Qualifier("gson")
-//    private Gson gson;
-//
-//    @RequestMapping(path = "/{shop}/devices", method = RequestMethod.POST)
-//    public ResponseEntity<?> service(HttpServletRequest request) throws Throwable {
-//        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
-//        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
-////        InputStreamReader stream = new InputStreamReader(request.getInputStream());
-////        RequestBody requestBody = this.gson.fromJson(stream, RequestBody.class);
-////        User userRecord = null;
-////
-////        SelectQuery selectQuery = null;
-////        String authorization = request.getHeader("Authorization");
-////        if (!Strings.isNullOrEmpty(authorization)) {
-////            byte[] base64Token = authorization.substring(6).getBytes("UTF-8");
-////            byte[] decoded = Base64.decodeBase64(base64Token);
-////            String token = new String(decoded, "UTF-8");
-////            Integer delim = token.indexOf(":");
-////            String accessToken = token.substring(0, delim);
-////            selectQuery = new SelectQuery("user");
-////            selectQuery.addWhere("access_token = ?", accessToken);
-////            userRecord = selectQuery.queryForObject(connection, new UserMapper());
-////        }
-////
-////        selectQuery = new SelectQuery("ecommerce_device");
-////        selectQuery.addWhere("device_token = ?", requestBody.deviceToken);
-////        selectQuery.addWhere("platform = ?", requestBody.platform);
-////
-////        ECommerceDevice deviceRecord = selectQuery.queryForObject(connection, new ECommerceDeviceMapper());
-////        if (deviceRecord == null) {
-////            InsertQuery insertQuery = new InsertQuery("ecommerce_device");
-////            insertQuery.addField("device_token", "?", requestBody.deviceToken);
-////            insertQuery.addField("platform", "?", requestBody.platform);
-////            deviceRecord = insertQuery.executeUpdate(connection, new ECommerceDeviceMapper());
-////        }
-////
-////        if (userRecord != null) {
-////            UpdateQuery updateQuery = new UpdateQuery("ecommerce_device");
-////            updateQuery.addField("user_id = ?", userRecord.getUserId());
-////            updateQuery.addWhere("ecommerce_device_id = ?", deviceRecord.getECommerceDeviceId());
-////            updateQuery.executeUpdate(connection);
-////        }
-////
-////        ResponseBody responseBody = new ResponseBody();
-////        responseBody.id = deviceRecord.getECommerceDeviceId();
-////        responseBody.deviceToken = requestBody.deviceToken;
-////        responseBody.platform = requestBody.platform;
-////
-////        return ResponseEntity.ok(responseBody);
-//        return null;
-//    }
-//
-//    public static class RequestBody {
-//
-//        @Expose
-//        @SerializedName("device_token")
-//        String deviceToken;
-//
-//        @Expose
-//        @SerializedName("platform")
-//        String platform;
-//
-//    }
-//
-//    public static class ResponseBody {
-//
-//        @Expose
-//        @SerializedName("id")
-//        Long id;
-//
-//        @Expose
-//        @SerializedName("device_token")
-//        String deviceToken;
-//
-//        @Expose
-//        @SerializedName("platform")
-//        String platform;
-//
-//    }
-//
-//}
+package com.angkorteam.ecommerce.controller;
+
+import com.angkorteam.ecommerce.model.EcommerceDevice;
+import com.angkorteam.framework.jdbc.InsertQuery;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
+import com.angkorteam.platform.Platform;
+import com.angkorteam.platform.model.PlatformUser;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by socheatkhauv on 28/1/17.
+ */
+@Controller
+public class RegisterNotificationServicePost {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegisterNotificationServicePost.class);
+
+    @Autowired
+    @Qualifier("gson")
+    private Gson gson;
+
+    @RequestMapping(path = "/{shop}/devices", method = RequestMethod.POST)
+    public ResponseEntity<?> service(HttpServletRequest request) throws Throwable {
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
+        Map<String, String> requestBody = this.gson.fromJson(request.getReader(), type);
+
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery("ecommerce_device");
+        selectQuery.addWhere("device_token = :device_token", requestBody.get("device_token"));
+        selectQuery.addWhere("platform = :platform", requestBody.get("platform"));
+
+        EcommerceDevice deviceRecord = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDevice.class);
+        Long deviceId = 0L;
+        if (deviceRecord == null) {
+            deviceId = Platform.randomUUIDLong();
+            InsertQuery insertQuery = new InsertQuery("ecommerce_device");
+            insertQuery.addValue("ecommerce_device_id = :ecommerce_device_id", deviceId);
+            insertQuery.addValue("device_token = :device_token", requestBody.get("device_token"));
+            insertQuery.addValue("platform = :platform", requestBody.get("platform"));
+            named.update(insertQuery.toSQL(), insertQuery.getParam());
+        } else {
+            deviceId = deviceRecord.getEcommerceDeviceId();
+        }
+
+        PlatformUser currentUser = Platform.getCurrentUser(request);
+        if (currentUser != null) {
+            UpdateQuery updateQuery = new UpdateQuery("ecommerce_device");
+            updateQuery.addValue("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
+            updateQuery.addWhere("ecommerce_device_id = :ecommerce_device_id", deviceId);
+            named.update(updateQuery.toSQL(), updateQuery.getParam());
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", deviceId);
+        data.put("device_token", requestBody.get("device_token"));
+        data.put("platform", requestBody.get("platform"));
+        return ResponseEntity.ok(data);
+    }
+
+}

@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.shop;
 
-import com.angkorteam.ecommerce.model.ECommerceShop;
+import com.angkorteam.ecommerce.model.EcommerceShop;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
@@ -74,7 +74,7 @@ public class ShopModifyPage extends MBaaSPage {
         selectQuery = new SelectQuery("ecommerce_shop");
         selectQuery.addWhere("ecommerce_shop_id = :ecommerce_shop_id", this.ecommerceShopId);
 
-        ECommerceShop ecommerceShop = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceShop.class);
+        EcommerceShop ecommerceShop = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceShop.class);
 
         this.form = new Form<>("form");
         layout.add(this.form);

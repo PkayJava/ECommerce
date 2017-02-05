@@ -1,158 +1,93 @@
-//package com.angkorteam.ecommerce.controller;
-//
-//import com.angkorteam.framework.spring.JdbcTemplate;
-//import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
-//import com.angkorteam.platform.Spring;
-//import com.google.gson.Gson;
-//import com.google.gson.annotations.Expose;
-//import com.google.gson.annotations.SerializedName;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Qualifier;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//
-//import javax.servlet.http.HttpServletRequest;
-//
-///**
-// * Created by socheatkhauv on 28/1/17.
-// */
-//@Controller
-//class UserSingleServicePut {
-//
-//    private static final Logger LOGGER = LoggerFactory.getLogger(UserSingleServicePut.class);
-//
-//    @Autowired
-//    @Qualifier("gson")
-//    private Gson gson;
-//
-//    @RequestMapping(path = "/{shop}/users/{id}", method = RequestMethod.PUT)
-//    public ResponseEntity<?> service(HttpServletRequest request, @PathVariable("id") Long id) throws Throwable {
-//        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
-//        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
-////        Connection connection = (Connection) request.getAttribute(ConnectionRequestListener.CONNECTION);
-////        if (!ECommerce.hasAccess(connection, request, CartDeliveryInfoServiceGet.class)) {
-////            throw new ServletException(String.valueOf(HttpStatus.FORBIDDEN.getReasonPhrase()));
-////        }
-////
-////        InputStreamReader stream = new InputStreamReader(request.getInputStream());
-////        RequestBody requestBody = this.gson.fromJson(stream, RequestBody.class);
-////
-////        UpdateQuery updateQuery = null;
-////        updateQuery = new UpdateQuery("user");
-////        Map<String, Object> params = Maps.newHashMap();
-////        updateQuery.addField("street = ?", requestBody.street);
-////        updateQuery.addField("house_number = ?", requestBody.houseNumber);
-////        updateQuery.addField("zip = ?", requestBody.zip);
-////        updateQuery.addField("phone = ?", requestBody.phone);
-////        updateQuery.addField("city = ?", requestBody.city);
-////        updateQuery.addField("full_name = ?", requestBody.name);
-////        updateQuery.addWhere("user_id = ?", id);
-////
-////        updateQuery.executeUpdate(connection);
-////
-////        BeanPropertyRowMapper<ResponseBody> mapper = new BeanPropertyRowMapper<>(ResponseBody.class);
-////
-////        SelectQuery selectQuery = new SelectQuery("user");
-////        selectQuery.addField("access_token accessToken");
-////        selectQuery.addField("entity_id id");
-////        selectQuery.addField("full_name name");
-////        selectQuery.addField("street");
-////        selectQuery.addField("country");
-////        selectQuery.addField("city");
-////        selectQuery.addField("house_number");
-////        selectQuery.addField("houseNumber");
-////        selectQuery.addField("zip");
-////        selectQuery.addField("login email");
-////        selectQuery.addField("phone");
-////        selectQuery.addField("gender");
-////        selectQuery.addWhere("user_id = ?", id);
-////        ResponseBody responseBody = selectQuery.queryForObject(connection, mapper);
-////        return ResponseEntity.ok(responseBody);
-//        return null;
-//    }
-//
-//    public static class RequestBody {
-//
-//        @Expose
-//        @SerializedName("name")
-//        String name;
-//
-//        @Expose
-//        @SerializedName("street")
-//        String street;
-//
-//        @Expose
-//        @SerializedName("house_number")
-//        String houseNumber;
-//
-//        @Expose
-//        @SerializedName("city")
-//        String city;
-//
-//        @Expose
-//        @SerializedName("zip")
-//        String zip;
-//
-//        @Expose
-//        @SerializedName("email")
-//        String email;
-//
-//        @Expose
-//        @SerializedName("phone")
-//        String phone;
-//
-//    }
-//
-//    public static class ResponseBody {
-//
-//        @Expose
-//        @SerializedName("id")
-//        long id;
-//
-//        @Expose
-//        @SerializedName("name")
-//        String name;
-//
-//        @Expose
-//        @SerializedName("street")
-//        String street;
-//
-//        @Expose
-//        @SerializedName("city")
-//        String city;
-//
-//        @Expose
-//        @SerializedName("house_number")
-//        String houseNumber;
-//
-//        @Expose
-//        @SerializedName("zip")
-//        String zip;
-//
-//        @Expose
-//        @SerializedName("email")
-//        String email;
-//
-//        @Expose
-//        @SerializedName("phone")
-//        String phone;
-//
-//        @Expose
-//        @SerializedName("gender")
-//        String gender;
-//
-//        @Expose
-//        @SerializedName("country")
-//        String country;
-//
-//        @Expose
-//        @SerializedName("access_token")
-//        String accessToken;
-//    }
-//
-//}
+package com.angkorteam.ecommerce.controller;
+
+import com.angkorteam.ecommerce.mobile.User;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
+import com.angkorteam.platform.Platform;
+import com.angkorteam.platform.model.PlatformUser;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Type;
+import java.util.Map;
+
+/**
+ * Created by socheatkhauv on 28/1/17.
+ */
+@Controller
+public class UserSingleServicePut {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserSingleServicePut.class);
+
+    @Autowired
+    @Qualifier("gson")
+    private Gson gson;
+
+    @RequestMapping(path = "/{shop}/users/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> service(HttpServletRequest request, @PathVariable("id") Long id) throws Throwable {
+        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
+        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
+        if (!Platform.hasAccess(request, UserSingleServicePut.class)) {
+            throw new ServletException(String.valueOf(HttpStatus.FORBIDDEN.getReasonPhrase()));
+        }
+
+        PlatformUser platformUser = Platform.getCurrentUser(request);
+        if (!platformUser.getPlatformUserId().equals(id)) {
+            throw new ServletException(String.valueOf(HttpStatus.FORBIDDEN.getReasonPhrase()));
+        }
+
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
+        Map<String, String> requestBody = this.gson.fromJson(request.getReader(), type);
+
+        String name = requestBody.get("name");
+        String street = requestBody.get("street");
+        String houseNumber = requestBody.get("house_number");
+        String city = requestBody.get("city");
+        String zip = requestBody.get("zip");
+        String phone = requestBody.get("phone");
+
+
+        UpdateQuery updateQuery = new UpdateQuery("platform_user");
+        updateQuery.addValue("street = :street", street);
+        updateQuery.addValue("house_number = :house_number", houseNumber);
+        updateQuery.addValue("zip = :zip", zip);
+        updateQuery.addValue("phone = :phone", phone);
+        updateQuery.addValue("city = :city", city);
+        updateQuery.addValue("full_name = :name", name);
+        updateQuery.addWhere("platform_user_id = :platform_user_id", id);
+        named.update(updateQuery.toSQL(), updateQuery.getParam());
+
+        SelectQuery selectQuery = new SelectQuery("platform_user");
+        selectQuery.addField("access_token accessToken");
+        selectQuery.addField("platform_user_id id");
+        selectQuery.addField("full_name name");
+        selectQuery.addField("street");
+        selectQuery.addField("country");
+        selectQuery.addField("city");
+        selectQuery.addField("house_number houseNumber");
+        selectQuery.addField("zip");
+        selectQuery.addField("login email");
+        selectQuery.addField("phone");
+        selectQuery.addField("gender");
+        selectQuery.addWhere("platform_user_id = :platform_user_id", id);
+
+        User data = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), User.class);
+        return ResponseEntity.ok(data);
+    }
+
+}

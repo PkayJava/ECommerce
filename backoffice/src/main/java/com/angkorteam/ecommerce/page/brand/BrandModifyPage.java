@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.brand;
 
-import com.angkorteam.ecommerce.model.ECommerceBrand;
+import com.angkorteam.ecommerce.model.EcommerceBrand;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
@@ -41,7 +41,7 @@ public class BrandModifyPage extends MBaaSPage {
 
         this.ecommerceBrandId = getPageParameters().get("ecommerceBrandId").toString("");
 
-        ECommerceBrand record = getJdbcTemplate().queryForObject("select * from ecommerce_brand where ecommerce_brand_id = ?", ECommerceBrand.class, this.ecommerceBrandId);
+        EcommerceBrand record = getJdbcTemplate().queryForObject("select * from ecommerce_brand where ecommerce_brand_id = ?", EcommerceBrand.class, this.ecommerceBrandId);
 
         this.form = new Form<>("form");
         layout.add(this.form);

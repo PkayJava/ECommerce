@@ -66,6 +66,33 @@ public class UpdateQuery extends WhereQuery {
         }
     }
 
+    public void addValue(String criteria, String param, Object value) {
+        if (value != null) {
+            if (value instanceof Boolean
+                    || value instanceof Byte
+                    || value instanceof Short
+                    || value instanceof Integer
+                    || value instanceof Long
+                    || value instanceof Float
+                    || value instanceof Double
+                    || value instanceof Date
+                    || value instanceof Character
+                    || value instanceof String) {
+            } else {
+                throw new RuntimeException(value.getClass().getName() + " instanceof not support");
+            }
+        }
+        int index = criteria.indexOf("=");
+        if (index == -1) {
+            throw new RuntimeException("= instanceof not found");
+        }
+        String name = criteria.substring(0, index).trim();
+        String temp = criteria.substring(index + 1).trim();
+        this.field.put(name, temp);
+        this.param.put(param, value);
+        this.dirty = true;
+    }
+
     public String toSQL() {
         if (!this.dirty) {
             return this.cached;

@@ -55,6 +55,14 @@ public class SettingPage extends MBaaSPage {
     private TextField<String> timeFormatField;
     private TextFeedbackPanel timeFormatFeedback;
 
+    private String smtpUser;
+    private TextField<String> smtpUserField;
+    private TextFeedbackPanel smtpUserFeedback;
+
+    private String smtpPassword;
+    private TextField<String> smtpPasswordField;
+    private TextFeedbackPanel smtpPasswordFeedback;
+
     private Button saveButton;
     private Form<Void> form;
 
@@ -73,6 +81,10 @@ public class SettingPage extends MBaaSPage {
     public final String DATETIME_FORMAT = "datetime_format";
 
     public final String TIME_FORMAT = "time_format";
+
+    public final String SMTP_USER = "smtp_user";
+
+    public final String SMTP_PASSWORD = "smtp_password";
 
     @Override
     protected void doInitialize(Border layout) {
@@ -130,6 +142,18 @@ public class SettingPage extends MBaaSPage {
         this.datetimeFormatFeedback = new TextFeedbackPanel("datetimeFormatFeedback", this.datetimeFormatField);
         this.form.add(this.datetimeFormatFeedback);
 
+        this.smtpUserField = new TextField<>("smtpUserField", new PropertyModel<>(this, "smtpUser"));
+        this.smtpUserField.setRequired(true);
+        this.form.add(this.smtpUserField);
+        this.smtpUserFeedback = new TextFeedbackPanel("smtpUserFeedback", this.smtpUserField);
+        this.form.add(this.smtpUserFeedback);
+
+        this.smtpPasswordField = new TextField<>("smtpPasswordField", new PropertyModel<>(this, "smtpPassword"));
+        this.smtpPasswordField.setRequired(true);
+        this.form.add(this.smtpPasswordField);
+        this.smtpPasswordFeedback = new TextFeedbackPanel("smtpPasswordFeedback", this.smtpPasswordField);
+        this.form.add(this.smtpPasswordFeedback);
+
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
@@ -146,6 +170,8 @@ public class SettingPage extends MBaaSPage {
         loadSetting(TIME_FORMAT, new PropertyModel<>(this, "timeFormat"));
         loadSetting(DATE_FORMAT, new PropertyModel<>(this, "dateFormat"));
         loadSetting(DATETIME_FORMAT, new PropertyModel<>(this, "datetimeFormat"));
+        loadSetting(SMTP_USER, new PropertyModel<>(this, "smtpUser"));
+        loadSetting(SMTP_PASSWORD, new PropertyModel<>(this, "smtpPassword"));
     }
 
     void loadSetting(String key, PropertyModel<String> model) {
@@ -186,6 +212,8 @@ public class SettingPage extends MBaaSPage {
         saveSetting(TIME_FORMAT, this.timeFormat);
         saveSetting(DATE_FORMAT, this.dateFormat);
         saveSetting(DATETIME_FORMAT, this.datetimeFormat);
+        saveSetting(SMTP_USER, this.smtpUser);
+        saveSetting(SMTP_PASSWORD, this.smtpPassword);
 
         setResponsePage(SettingPage.class);
     }

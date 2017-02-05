@@ -141,7 +141,7 @@ public class ShopCreatePage extends MBaaSPage {
         }
 
         InsertQuery insertQuery = new InsertQuery("ecommerce_shop");
-        insertQuery.addValue("ecommerce_shop_id = ?", randomUUIDLong());
+        insertQuery.addValue("ecommerce_shop_id = :ecommerce_shop_id", randomUUIDLong());
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("description = :description", this.description);
         insertQuery.addValue("language = :language", this.language);

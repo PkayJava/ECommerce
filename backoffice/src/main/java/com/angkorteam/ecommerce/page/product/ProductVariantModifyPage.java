@@ -1,6 +1,6 @@
 package com.angkorteam.ecommerce.page.product;
 
-import com.angkorteam.ecommerce.model.ECommerceProductVariant;
+import com.angkorteam.ecommerce.model.EcommerceProductVariant;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option;
@@ -60,7 +60,7 @@ public class ProductVariantModifyPage extends MBaaSPage {
         selectQuery = new SelectQuery("ecommerce_product_variant");
         selectQuery.addWhere("ecommerce_product_variant_id = :ecommerce_product_variant_id", this.ecommerceProductVariantId);
 
-        ECommerceProductVariant record = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), ECommerceProductVariant.class);
+        EcommerceProductVariant record = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceProductVariant.class);
 
         this.form = new Form<>("form");
         layout.add(this.form);
@@ -71,7 +71,7 @@ public class ProductVariantModifyPage extends MBaaSPage {
 
         selectQuery = new SelectQuery("ecommerce_size");
         selectQuery.addField("ecommerce_size_id AS id", "CONCAT(value, ' -> ', reference) AS text");
-        selectQuery.addWhere("ecommerce_size_id = :ecommerce_size_id", record.getECommerceSizeId());
+        selectQuery.addWhere("ecommerce_size_id = :ecommerce_size_id", record.getEcommerceSizeId());
         this.size = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
 
         this.colorField = new Select2SingleChoice<>("colorField", new PropertyModel<>(this, "color"), new OptionSingleChoiceProvider("ecommerce_color", "ecommerce_color_id", "CONCAT(value, ' -> ', reference)"));
@@ -82,7 +82,7 @@ public class ProductVariantModifyPage extends MBaaSPage {
 
         selectQuery = new SelectQuery("ecommerce_color");
         selectQuery.addField("ecommerce_color_id AS id", "CONCAT(value, ' -> ', reference) AS text");
-        selectQuery.addWhere("ecommerce_color_id = :ecommerce_color_id", record.getECommerceColorId());
+        selectQuery.addWhere("ecommerce_color_id = :ecommerce_color_id", record.getEcommerceColorId());
         this.color = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
 
         this.sizeField = new Select2SingleChoice<>("sizeField", new PropertyModel<>(this, "size"), new OptionSingleChoiceProvider("ecommerce_size", "ecommerce_size_id", "CONCAT(value, ' -> ', reference)"));

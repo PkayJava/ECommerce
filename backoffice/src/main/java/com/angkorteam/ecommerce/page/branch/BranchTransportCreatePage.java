@@ -89,7 +89,7 @@ public class BranchTransportCreatePage extends MBaaSPage {
         insertQuery.addValue("ecommerce_branch_transport_id = :ecommerce_branch_transport_id", randomUUIDLong());
         insertQuery.addValue("`text` = :text", this.text);
         insertQuery.addValue("ecommerce_branch_id = :ecommerce_branch_id", this.ecommerceBranchId);
-        insertQuery.addValue("icon_file_id = :icon_file_id", iconFileId);
+        insertQuery.addValue("icon_platform_file_id = :icon_platform_file_id", iconFileId);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 
         PageParameters parameters = new PageParameters();

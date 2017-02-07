@@ -7,6 +7,8 @@ import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackP
 import com.angkorteam.framework.jdbc.UpdateQuery;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -28,12 +30,16 @@ public class DiscountModifyPage extends MBaaSPage {
     private TextFeedbackPanel nameFeedback;
 
     private String type;
-    private TextField<String> typeField;
-    private TextFeedbackPanel typeFeedback;
+    private Label typeLabel;
 
-    private Double value;
-    private TextField<Double> valueField;
-    private TextFeedbackPanel valueFeedback;
+    private String value;
+    private Label valueLabel;
+
+    private String startDate;
+    private Label startDateLabel;
+
+    private String endDate;
+    private Label endDateLabel;
 
     private Double minCartAmount;
     private TextField<Double> minCartAmountField;
@@ -63,18 +69,20 @@ public class DiscountModifyPage extends MBaaSPage {
         this.form.add(this.nameFeedback);
 
         this.type = record.getType();
-        this.typeField = new TextField<>("typeField", new PropertyModel<>(this, "type"));
-        this.typeField.setRequired(true);
-        this.form.add(this.typeField);
-        this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
-        this.form.add(this.typeFeedback);
+        this.typeLabel = new Label("typeLabel", new PropertyModel<>(this, "type"));
+        this.form.add(typeLabel);
 
-        this.value = record.getValue();
-        this.valueField = new TextField<>("valueField", new PropertyModel<>(this, "value"));
-        this.valueField.setRequired(true);
-        this.form.add(this.valueField);
-        this.valueFeedback = new TextFeedbackPanel("valueFeedback", this.valueField);
-        this.form.add(this.valueFeedback);
+        this.startDate = DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(record.getStartDate());
+        this.startDateLabel = new Label("startDateLabel", new PropertyModel<>(this, "startDate"));
+        this.form.add(this.startDateLabel);
+
+        this.endDate = DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(record.getEndDate());
+        this.endDateLabel = new Label("endDateLabel", new PropertyModel<>(this, "endDate"));
+        this.form.add(this.endDateLabel);
+
+        this.value = String.valueOf(record.getValue());
+        this.valueLabel = new Label("valueLabel", new PropertyModel<>(this, "value"));
+        this.form.add(this.valueLabel);
 
         this.minCartAmount = record.getMinCartAmount();
         this.minCartAmountField = new TextField<>("minCartAmountField", new PropertyModel<>(this, "minCartAmount"));
@@ -94,8 +102,6 @@ public class DiscountModifyPage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         UpdateQuery updateQuery = new UpdateQuery("ecommerce_discount");
         updateQuery.addValue("name = :name", name);
-        updateQuery.addValue("type = :type", this.type);
-        updateQuery.addValue("`value` = :value", this.value);
         updateQuery.addValue("min_cart_amount = :min_cart_amount", this.minCartAmount);
         updateQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", this.ecommerceDiscountId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());

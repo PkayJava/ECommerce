@@ -1,6 +1,7 @@
 package com.angkorteam.ecommerce.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by socheatkhauv on 31/1/17.
@@ -12,6 +13,9 @@ public class EcommerceDiscount implements Serializable {
     private String type;
     private Double value;
     private Double minCartAmount;
+    private Date startDate;
+    private Date endDate;
+    private Boolean enabled;
 
     public Long getEcommerceDiscountId() {
         return ecommerceDiscountId;
@@ -52,4 +56,29 @@ public class EcommerceDiscount implements Serializable {
     public void setMinCartAmount(Double minCartAmount) {
         this.minCartAmount = minCartAmount;
     }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
 }

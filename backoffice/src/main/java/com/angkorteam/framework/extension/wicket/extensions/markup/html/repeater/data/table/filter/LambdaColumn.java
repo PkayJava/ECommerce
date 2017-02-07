@@ -4,6 +4,7 @@ import com.angkorteam.framework.extension.share.provider.TableProvider;
 import com.angkorteam.framework.extension.wicket.WicketBiFunction;
 import com.angkorteam.framework.extension.wicket.WicketTriConsumer;
 import com.angkorteam.framework.extension.wicket.WicketTriFunction;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
@@ -12,6 +13,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.export.IExpo
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -175,11 +177,37 @@ public class LambdaColumn extends AbstractColumn<Map<String, Object>, String>
             @Override
             public Object getObject() {
                 Map<String, Object> before = rowModel.getObject();
-
                 if (before == null) {
                     return null;
                 } else {
-                    return function.apply(identity, before);
+                    Object value = function.apply(identity, before);
+                    if (itemClass == ItemClass.Date) {
+                        if (value instanceof Date) {
+                            return DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format((Date) value);
+                        } else {
+                            return value;
+                        }
+                    } else if (itemClass == ItemClass.DateTime) {
+                        if (value instanceof Date) {
+                            return DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format((Date) value);
+                        } else {
+                            return value;
+                        }
+                    } else if (itemClass == ItemClass.Time) {
+                        if (value instanceof Date) {
+                            return DateFormatUtils.ISO_8601_EXTENDED_TIME_TIME_ZONE_FORMAT.format((Date) value);
+                        } else {
+                            return value;
+                        }
+                    } else if (itemClass == ItemClass.Boolean) {
+                        if (value instanceof Boolean) {
+                            return (Boolean) value ? "Yes" : "No";
+                        } else {
+                            return value;
+                        }
+                    } else {
+                        return value;
+                    }
                 }
             }
 

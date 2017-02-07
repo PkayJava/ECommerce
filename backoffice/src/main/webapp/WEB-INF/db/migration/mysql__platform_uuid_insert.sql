@@ -1,5 +1,6 @@
 INSERT INTO `platform_uuid` (table_name, value)
   VALUE
+  ('ecommerce_discount_coupon', 1000),
   ('ecommerce_cart_discount_item', 1000),
   ('ecommerce_banner', 1000),
   ('ecommerce_brand', 1000),

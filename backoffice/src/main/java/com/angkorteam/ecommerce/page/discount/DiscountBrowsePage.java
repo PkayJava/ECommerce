@@ -35,7 +35,10 @@ public class DiscountBrowsePage extends MBaaSPage {
 
         JdbcProvider provider = new JdbcProvider("ecommerce_discount");
         provider.boardField("ecommerce_discount_id", "ecommerceDiscountId", Long.class);
+        provider.boardField("start_date", "startDate", Calendar.Date);
+        provider.boardField("end_date", "endDate", Calendar.Date);
         provider.boardField("name", "name", String.class);
+        provider.boardField("enabled", "enabled", Boolean.class);
         provider.boardField("type", "type", String.class);
         provider.boardField("value", "value", Double.class);
         provider.boardField("min_cart_amount", "minCartAmount", Double.class);
@@ -48,9 +51,12 @@ public class DiscountBrowsePage extends MBaaSPage {
         List<IColumn<Map<String, Object>, String>> columns = new ArrayList<>();
         columns.add(new TextFilterColumn(provider, ItemClass.Long, Model.of("ID"), "ecommerceDiscountId"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("name"), "name"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Date, Model.of("start"), "startDate"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Date, Model.of("end"), "endDate"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("type"), "type"));
         columns.add(new TextFilterColumn(provider, ItemClass.Double, Model.of("value"), "value"));
         columns.add(new TextFilterColumn(provider, ItemClass.Double, Model.of("min cart amount"), "minCartAmount"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("enabled"), "enabled"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         this.dataTable = new DefaultDataTable<>("table", columns, provider, 20);
@@ -66,20 +72,33 @@ public class DiscountBrowsePage extends MBaaSPage {
 
     private List<ActionItem> actions(String name, Map<String, Object> object) {
         List<ActionItem> actionItems = Lists.newArrayList();
+        Boolean enabled = (Boolean) object.get("enabled");
         actionItems.add(new ActionItem("Edit", Model.of("Edit")));
-        actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
+        actionItems.add(new ActionItem("Coupon", Model.of("Coupon"), ItemCss.INFO));
+        if (enabled) {
+            actionItems.add(new ActionItem("Disable", Model.of("Disable"), ItemCss.DANGER));
+        } else {
+            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.DANGER));
+        }
         return actionItems;
     }
 
     private void itemClick(String link, Map<String, Object> object, AjaxRequestTarget target) {
         Long ecommerceDiscountId = (Long) object.get("ecommerceDiscountId");
-        if ("Delete".equals(link)) {
-            getJdbcTemplate().update("delete from ecommerce_discount where ecommerce_discount_id = ?", ecommerceDiscountId);
-            target.add(this.dataTable);
-        } else if ("Edit".equals(link)) {
+        if ("Edit".equals(link)) {
             PageParameters parameters = new PageParameters();
             parameters.add("ecommerceDiscountId", ecommerceDiscountId);
             setResponsePage(DiscountModifyPage.class, parameters);
+        } else if ("Enable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_discount set enabled = true where ecommerce_discount_id = ?", ecommerceDiscountId);
+            target.add(this.dataTable);
+        } else if ("Disable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_discount set enabled = false where ecommerce_discount_id = ?", ecommerceDiscountId);
+            target.add(this.dataTable);
+        } else if ("Coupon".equals(link)) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("ecommerceDiscountId", ecommerceDiscountId);
+            setResponsePage(DiscountCouponBrowsePage.class, parameters);
         }
     }
 

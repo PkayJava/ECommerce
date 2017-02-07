@@ -1,6 +1,8 @@
 package com.angkorteam.ecommerce.page.discount;
 
+import com.angkorteam.ecommerce.validator.StartEndDateValidator;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
+import com.angkorteam.framework.extension.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.InsertQuery;
@@ -10,11 +12,16 @@ import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by socheatkhauv on 25/1/17.
@@ -28,7 +35,7 @@ public class DiscountCreatePage extends MBaaSPage {
     private TextFeedbackPanel nameFeedback;
 
     private String type;
-    private TextField<String> typeField;
+    private DropDownChoice<String> typeField;
     private TextFeedbackPanel typeFeedback;
 
     private Double value;
@@ -38,6 +45,14 @@ public class DiscountCreatePage extends MBaaSPage {
     private Double minCartAmount = 0d;
     private TextField<Double> minCartAmountField;
     private TextFeedbackPanel minCartAmountFeedback;
+
+    private Date startDate;
+    private DateTextField startDateField;
+    private TextFeedbackPanel startDateFeedback;
+
+    private Date endDate;
+    private DateTextField endDateField;
+    private TextFeedbackPanel endDateFeedback;
 
     private Button saveButton;
     private BookmarkablePageLink<Void> closeButton;
@@ -58,7 +73,8 @@ public class DiscountCreatePage extends MBaaSPage {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        this.typeField = new TextField<>("typeField", new PropertyModel<>(this, "type"));
+        List<String> types = Arrays.asList("Percentage", "Fixed");
+        this.typeField = new DropDownChoice<>("typeField", new PropertyModel<>(this, "type"), types);
         this.typeField.setRequired(true);
         this.form.add(this.typeField);
         this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
@@ -76,6 +92,20 @@ public class DiscountCreatePage extends MBaaSPage {
         this.minCartAmountFeedback = new TextFeedbackPanel("minCartAmountFeedback", this.minCartAmountField);
         this.form.add(this.minCartAmountFeedback);
 
+        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDate"));
+        this.startDateField.setRequired(true);
+        this.form.add(this.startDateField);
+        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
+        this.form.add(this.startDateFeedback);
+
+        this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this, "endDate"));
+        this.endDateField.setRequired(true);
+        this.form.add(this.endDateField);
+        this.endDateFeedback = new TextFeedbackPanel("endDateFeedback", this.endDateField);
+        this.form.add(this.endDateFeedback);
+
+        this.form.add(new StartEndDateValidator(this.startDateField, this.endDateField));
+
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonOnSubmit);
         this.form.add(this.saveButton);
@@ -90,6 +120,9 @@ public class DiscountCreatePage extends MBaaSPage {
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("type = :type", this.type);
         insertQuery.addValue("value = :value", this.value);
+        insertQuery.addValue("start_date = :start_date", this.startDate);
+        insertQuery.addValue("end_date = :end_date", this.endDate);
+        insertQuery.addValue("enabled = :enabled", true);
         insertQuery.addValue("min_cart_amount = :min_cart_amount", this.minCartAmount);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
         setResponsePage(DiscountBrowsePage.class);

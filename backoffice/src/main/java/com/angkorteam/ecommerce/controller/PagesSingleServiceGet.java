@@ -32,6 +32,7 @@ public class PagesSingleServiceGet {
 
     @RequestMapping(path = "/{shop}/pages/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> service(HttpServletRequest request, @PathVariable("shop") String shop, @PathVariable("id") Long id) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
 

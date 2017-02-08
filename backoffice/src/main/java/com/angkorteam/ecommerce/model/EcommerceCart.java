@@ -9,6 +9,8 @@ public class EcommerceCart implements Serializable {
 
     private Long ecommerceCartId;
     private Long platformUserId;
+    private Long ecommerceDiscountId;
+    private Long ecommerceDiscountCouponId;
 
     public Long getEcommerceCartId() {
         return ecommerceCartId;
@@ -26,22 +28,20 @@ public class EcommerceCart implements Serializable {
         this.platformUserId = platformUserId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        EcommerceCart that = (EcommerceCart) o;
-
-        if (ecommerceCartId != null ? !ecommerceCartId.equals(that.ecommerceCartId) : that.ecommerceCartId != null)
-            return false;
-        return platformUserId != null ? platformUserId.equals(that.platformUserId) : that.platformUserId == null;
+    public Long getEcommerceDiscountId() {
+        return ecommerceDiscountId;
     }
 
-    @Override
-    public int hashCode() {
-        int result = ecommerceCartId != null ? ecommerceCartId.hashCode() : 0;
-        result = 31 * result + (platformUserId != null ? platformUserId.hashCode() : 0);
-        return result;
+    public void setEcommerceDiscountId(Long ecommerceDiscountId) {
+        this.ecommerceDiscountId = ecommerceDiscountId;
     }
+
+    public Long getEcommerceDiscountCouponId() {
+        return ecommerceDiscountCouponId;
+    }
+
+    public void setEcommerceDiscountCouponId(Long ecommerceDiscountCouponId) {
+        this.ecommerceDiscountCouponId = ecommerceDiscountCouponId;
+    }
+
 }

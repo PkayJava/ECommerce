@@ -48,6 +48,7 @@ public class OrdersServicePost {
 
     @RequestMapping(path = "/{shop}/orders", method = RequestMethod.POST)
     public ResponseEntity<?> service(HttpServletRequest request) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
 
@@ -84,23 +85,23 @@ public class OrdersServicePost {
 
         selectQuery = new SelectQuery("ecommerce_cart");
         selectQuery.addWhere("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
-        EcommerceCart cartRecord = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCart.class);
+        EcommerceCart ecommerceCart = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCart.class);
 
         Integer totalProductCount = 0;
         Double totalPrice = 0d;
 
         selectQuery = new SelectQuery("ecommerce_cart_product_item");
-        selectQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", cartRecord.getEcommerceCartId());
-        List<EcommerceCartProductItem> cartItemRecords = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCartProductItem.class);
+        selectQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", ecommerceCart.getEcommerceCartId());
+        List<EcommerceCartProductItem> cartItems = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCartProductItem.class);
 
         Map<Long, Integer> requestVariants = Maps.newHashMap();
-        if (cartItemRecords != null && !cartItemRecords.isEmpty()) {
-            for (EcommerceCartProductItem cartItemRecord : cartItemRecords) {
-                Long variantId = cartItemRecord.getEcommerceProductVariantId();
+        if (cartItems != null && !cartItems.isEmpty()) {
+            for (EcommerceCartProductItem cartItem : cartItems) {
+                Long variantId = cartItem.getEcommerceProductVariantId();
                 if (!requestVariants.containsKey(variantId)) {
                     requestVariants.put(variantId, 0);
                 }
-                Integer quantity = cartItemRecord.getQuantity();
+                Integer quantity = cartItem.getQuantity();
                 quantity = quantity + requestVariants.get(variantId);
                 requestVariants.put(variantId, quantity);
             }
@@ -174,12 +175,34 @@ public class OrdersServicePost {
         insertQuery.addValue("payment_name = :payment_name", paymentRecord.getName());
         insertQuery.addValue("payment_price = :payment_price", paymentRecord.getPrice());
 
+        Date now = new Date();
+        if (ecommerceCart.getEcommerceDiscountCouponId() != null) {
+
+            selectQuery = new SelectQuery("ecommerce_discount");
+            selectQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", ecommerceCart.getEcommerceDiscountId());
+            EcommerceDiscount ecommerceDiscount = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscount.class);
+
+            selectQuery = new SelectQuery("ecommerce_discount_coupon");
+            selectQuery.addWhere("ecommerce_discount_coupon_id = :ecommerce_discount_coupon_id", ecommerceCart.getEcommerceDiscountCouponId());
+            EcommerceDiscountCoupon ecommerceDiscountCoupon = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscountCoupon.class);
+
+            if (ecommerceDiscountCoupon == null || ecommerceDiscountCoupon.getUsed() || ecommerceDiscount == null || !ecommerceDiscount.getEnabled() || now.before(ecommerceDiscount.getStartDate()) || now.after(ecommerceDiscount.getEndDate())) {
+            } else {
+                insertQuery.addValue("ecommerce_discount_coupon_id = :ecommerce_discount_coupon_id", ecommerceCart.getEcommerceDiscountCouponId());
+                insertQuery.addValue("ecommerce_discount_id = :ecommerce_discount_id", ecommerceCart.getEcommerceDiscountId());
+                insertQuery.addValue("coupon_type = :coupon_type", ecommerceDiscount.getType());
+                insertQuery.addValue("coupon_value = :coupon_value", ecommerceDiscount.getValue());
+                jdbcTemplate.update("update ecommerce_discount_coupon set used = true, used_date = now(), platform_user_id = ?, ecommerce_order_id = ? where ecommerce_discount_coupon_id = ?", currentUser.getPlatformUserId(), orderId, ecommerceDiscountCoupon.getEcommerceDiscountCouponId());
+            }
+
+        }
+
         shippingPriceAddon = shippingRecord.getPrice();
 
         named.update(insertQuery.toSQL(), insertQuery.getParam());
 
-        if (cartItemRecords != null && !cartItemRecords.isEmpty()) {
-            for (EcommerceCartProductItem cartItemRecord : cartItemRecords) {
+        if (cartItems != null && !cartItems.isEmpty()) {
+            for (EcommerceCartProductItem cartItemRecord : cartItems) {
 
                 // create master order detail
 
@@ -292,20 +315,20 @@ public class OrdersServicePost {
         updateQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", orderId);
         named.update(updateQuery.toSQL(), updateQuery.getParam());
 
+        DeleteQuery deleteQuery = null;
+
+        deleteQuery = new DeleteQuery("ecommerce_cart");
+        deleteQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", ecommerceCart.getEcommerceCartId());
+        named.update(deleteQuery.toSQL(), deleteQuery.getParam());
+
+        deleteQuery = new DeleteQuery("ecommerce_cart_product_item");
+        deleteQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", ecommerceCart.getEcommerceCartId());
+        named.update(deleteQuery.toSQL(), deleteQuery.getParam());
+
         insertQuery = new InsertQuery("ecommerce_cart");
         insertQuery.addValue("ecommerce_cart_id = :ecommerce_cart_id", Platform.randomUUIDLong("ecommerce_cart"));
         insertQuery.addValue("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
         named.update(insertQuery.toSQL(), insertQuery.getParam());
-
-        DeleteQuery deleteQuery = null;
-
-        deleteQuery = new DeleteQuery("ecommerce_cart");
-        deleteQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", cartRecord.getEcommerceCartId());
-        named.update(deleteQuery.toSQL(), deleteQuery.getParam());
-
-        deleteQuery = new DeleteQuery("ecommerce_cart_product_item");
-        deleteQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", cartRecord.getEcommerceCartId());
-        named.update(deleteQuery.toSQL(), deleteQuery.getParam());
 
         Order data = new Order();
 

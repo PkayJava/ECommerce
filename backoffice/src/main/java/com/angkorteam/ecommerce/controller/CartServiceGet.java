@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +42,7 @@ public class CartServiceGet {
 
     @RequestMapping(path = "/{shop}/cart", method = RequestMethod.GET)
     public ResponseEntity<?> service(HttpServletRequest request) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         if (!Platform.hasAccess(request, CartServiceGet.class)) {
@@ -53,7 +55,7 @@ public class CartServiceGet {
 
         selectQuery = new SelectQuery("ecommerce_cart");
         selectQuery.addWhere("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
-        EcommerceCart cartRecord = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCart.class);
+        EcommerceCart ecommerceCart = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCart.class);
 
 
         String asset = Platform.getSetting("asset");
@@ -61,14 +63,14 @@ public class CartServiceGet {
         DecimalFormat priceFormat = new DecimalFormat(Platform.getSetting("price_format"));
 
         Cart data = new Cart();
-        data.setId(cartRecord.getEcommerceCartId());
+        data.setId(ecommerceCart.getEcommerceCartId());
         data.setCurrency(currency);
 
         Integer productCount = 0;
         Double totalPrice = 0d;
 
         selectQuery = new SelectQuery("ecommerce_cart_product_item");
-        selectQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", cartRecord.getEcommerceCartId());
+        selectQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", ecommerceCart.getEcommerceCartId());
         List<EcommerceCartProductItem> itemRecords = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCartProductItem.class);
 
         if (itemRecords != null && !itemRecords.isEmpty()) {
@@ -139,29 +141,44 @@ public class CartServiceGet {
         }
 
         data.setDiscounts(Lists.newArrayList());
-        selectQuery = new SelectQuery("ecommerce_cart_discount_item");
-        selectQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", cartRecord.getEcommerceCartId());
-        List<EcommerceCartDiscountItem> discountItems = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCartDiscountItem.class);
-        if (discountItems != null && !discountItems.isEmpty()) {
-            for (EcommerceCartDiscountItem discountItem : discountItems) {
-                selectQuery = new SelectQuery("ecommerce_discount");
-                selectQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", discountItem.getEcommerceDiscountId());
-                EcommerceDiscount ecommerceDiscount = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscount.class);
+
+        Date now = new Date();
+        Double couponValue = 0d;
+        if (ecommerceCart.getEcommerceDiscountCouponId() != null) {
+
+            selectQuery = new SelectQuery("ecommerce_discount");
+            selectQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", ecommerceCart.getEcommerceDiscountId());
+            EcommerceDiscount ecommerceDiscount = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscount.class);
+
+            selectQuery = new SelectQuery("ecommerce_discount_coupon");
+            selectQuery.addWhere("ecommerce_discount_coupon_id = :ecommerce_discount_coupon_id", ecommerceCart.getEcommerceDiscountCouponId());
+            EcommerceDiscountCoupon ecommerceDiscountCoupon = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscountCoupon.class);
+
+            if (ecommerceDiscountCoupon == null || ecommerceDiscountCoupon.getUsed() || ecommerceDiscount == null || !ecommerceDiscount.getEnabled() || now.before(ecommerceDiscount.getStartDate()) || now.after(ecommerceDiscount.getEndDate())) {
+            } else {
                 CartDiscountItem cartDiscountItem = new CartDiscountItem();
-                cartDiscountItem.setId(discountItem.getEcommerceCartDiscountItemId());
+                cartDiscountItem.setId(ecommerceDiscountCoupon.getEcommerceDiscountCouponId());
                 cartDiscountItem.setQuantity(1);
                 data.getDiscounts().add(cartDiscountItem);
                 Discount discount = new Discount();
                 cartDiscountItem.setDiscount(discount);
-                discount.setId(ecommerceDiscount.getEcommerceDiscountId());
+                discount.setId(ecommerceDiscountCoupon.getEcommerceDiscountCouponId());
                 discount.setMinCartAmount(String.valueOf(ecommerceDiscount.getMinCartAmount()));
-                discount.setName(ecommerceDiscount.getName());
+                discount.setName("Discount");
                 discount.setType(ecommerceDiscount.getType());
-                discount.setValue(String.valueOf(ecommerceDiscount.getValue()));
-                discount.setValueFormatted(priceFormat.format(ecommerceDiscount.getValue()));
+                if (ecommerceDiscount.getType().equals(Discount.TYPE_PERCENTAGE)) {
+                    couponValue = totalPrice * (ecommerceDiscount.getValue() / 100D);
+                } else if (ecommerceDiscount.getType().equals(Discount.TYPE_FIXED)) {
+                    couponValue = ecommerceDiscount.getValue();
+                }
+                discount.setValue(String.valueOf(couponValue));
+                discount.setValueFormatted(priceFormat.format(couponValue));
             }
         }
-
+        totalPrice = totalPrice - couponValue;
+        if (totalPrice < 0) {
+            totalPrice = 0D;
+        }
         data.setProductCount(productCount);
         data.setTotalPrice(totalPrice);
         data.setTotalPriceFormatted(priceFormat.format(totalPrice));

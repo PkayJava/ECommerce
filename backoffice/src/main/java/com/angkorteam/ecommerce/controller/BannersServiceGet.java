@@ -38,6 +38,7 @@ public class BannersServiceGet {
 
     @RequestMapping(path = "/{shop}/banners", method = RequestMethod.GET)
     public ResponseEntity<?> service(HttpServletRequest request) {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         long limit = 4L;

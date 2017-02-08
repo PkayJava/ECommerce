@@ -37,6 +37,7 @@ public class NavigationDrawerServiceGet {
 
     @RequestMapping(path = "/{shop}/navigation_drawer", method = RequestMethod.GET)
     public ResponseEntity<?> menu(HttpServletRequest request) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
 

@@ -32,8 +32,8 @@ public class StartEndDateValidator extends AbstractFormValidator {
 
     @Override
     public void validate(Form<?> form) {
-        Date startDate = this.startDateField.getModelObject();
-        Date endDate = this.endDateField.getModelObject();
+        Date startDate = this.startDateField.getConvertedInput();
+        Date endDate = this.endDateField.getConvertedInput();
         if (startDate != null && endDate != null) {
             if (startDate.after(endDate)) {
                 {

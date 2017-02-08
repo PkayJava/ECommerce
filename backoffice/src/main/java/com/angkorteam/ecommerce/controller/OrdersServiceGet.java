@@ -2,6 +2,7 @@ package com.angkorteam.ecommerce.controller;
 
 import com.angkorteam.ecommerce.mobile.cart.CartProductItem;
 import com.angkorteam.ecommerce.mobile.cart.CartProductItemVariant;
+import com.angkorteam.ecommerce.mobile.cart.Discount;
 import com.angkorteam.ecommerce.mobile.order.Order;
 import com.angkorteam.ecommerce.mobile.order.OrderResponse;
 import com.angkorteam.ecommerce.mobile.product.ProductColor;
@@ -39,6 +40,7 @@ public class OrdersServiceGet {
 
     @RequestMapping(path = "/{shop}/orders", method = RequestMethod.GET)
     public ResponseEntity<?> service(HttpServletRequest request) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
 
@@ -65,34 +67,57 @@ public class OrdersServiceGet {
         if (orderRecords != null && !orderRecords.isEmpty()) {
             List<Order> orders = Lists.newArrayList();
             data.setRecords(orders);
-            for (EcommerceOrder orderRecord : orderRecords) {
+            for (EcommerceOrder ecommerceOrder : orderRecords) {
+                Double shippingPrice = ecommerceOrder.getShippingPrice() == null ? 0d : ecommerceOrder.getShippingPrice();
+                Double paymentPrice = ecommerceOrder.getPaymentPrice() == null ? 0d : ecommerceOrder.getPaymentPrice();
+
                 Order order = new Order();
-                order.setId(orderRecord.getEcommerceOrderId());
+                order.setId(ecommerceOrder.getEcommerceOrderId());
                 order.setRemoteId(String.valueOf(order.getId()));
-                order.setDateCreated(datetimeFormat.format(orderRecord.getDateCreated()));
-                order.setStatus(orderRecord.getOrderStatus());
-                order.setShippingName(orderRecord.getShippingName());
-                order.setShippingPrice(orderRecord.getShippingPrice());
+                order.setDateCreated(datetimeFormat.format(ecommerceOrder.getDateCreated()));
+                order.setStatus(ecommerceOrder.getOrderStatus());
+                order.setShippingName(ecommerceOrder.getShippingName());
+                order.setShippingPrice(shippingPrice);
                 order.setShippingPriceFormatted(priceFormat.format(order.getShippingPrice()));
                 order.setCurrency(currency);
-                order.setShippingType(orderRecord.getEcommerceShippingId());
-                order.setPaymentType(orderRecord.getEcommercePaymentId());
-                order.setName(orderRecord.getName());
-                order.setStreet(orderRecord.getStreet());
-                order.setHouseNumber(orderRecord.getHouseNumber());
-                order.setCity(orderRecord.getCity());
-                order.setZip(orderRecord.getZip());
-                order.setEmail(orderRecord.getEmail());
-                order.setPhone(orderRecord.getPhone());
-                order.setNote(orderRecord.getNote());
-                order.setTotal((orderRecord.getTotal() == null ? 0d : orderRecord.getTotal()) + (order.getShippingPrice() == null ? 0d : order.getShippingPrice()) + (orderRecord.getPaymentPrice() == null ? 0d : orderRecord.getPaymentPrice()));
+                order.setShippingType(ecommerceOrder.getEcommerceShippingId());
+                order.setPaymentType(ecommerceOrder.getEcommercePaymentId());
+                order.setName(ecommerceOrder.getName());
+                order.setStreet(ecommerceOrder.getStreet());
+                order.setHouseNumber(ecommerceOrder.getHouseNumber());
+                order.setCity(ecommerceOrder.getCity());
+                order.setZip(ecommerceOrder.getZip());
+                order.setEmail(ecommerceOrder.getEmail());
+                order.setPhone(ecommerceOrder.getPhone());
+                Double total = ecommerceOrder.getTotal() == null ? 0D : ecommerceOrder.getTotal();
+                Double couponValue = 0D;
+                if (ecommerceOrder.getEcommerceDiscountCouponId() != null) {
+                    if (Discount.TYPE_PERCENTAGE.equals(ecommerceOrder.getCouponType())) {
+                        couponValue = total * (ecommerceOrder.getCouponValue() / 100D);
+                    } else if (Discount.TYPE_FIXED.equals(ecommerceOrder.getCouponType())) {
+                        couponValue = ecommerceOrder.getCouponValue();
+                    }
+                    total = total - couponValue;
+                    if (total < 0) {
+                        total = 0D;
+                    }
+                }
+
+
+                order.setTotal(total + shippingPrice + paymentPrice);
                 order.setTotalFormatted(priceFormat.format(order.getTotal()));
+
+                if (couponValue > 0) {
+                    order.setNote(ecommerceOrder.getNote());
+                } else {
+                    order.setNote(ecommerceOrder.getNote() + " \n Discount " + priceFormat.format(couponValue));
+                }
 
                 List<CartProductItem> products = Lists.newArrayList();
                 order.setProducts(products);
 
                 selectQuery = new SelectQuery("ecommerce_order_item");
-                selectQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", orderRecord.getEcommerceOrderId());
+                selectQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", ecommerceOrder.getEcommerceOrderId());
 
                 List<EcommerceOrderItem> orderItemRecords = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceOrderItem.class);
                 for (EcommerceOrderItem orderItemRecord : orderItemRecords) {

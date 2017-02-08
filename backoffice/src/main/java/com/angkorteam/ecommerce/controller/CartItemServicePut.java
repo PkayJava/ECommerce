@@ -36,6 +36,7 @@ public class CartItemServicePut {
 
     @RequestMapping(path = "/{shop}/cart/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> service(HttpServletRequest request, @PathVariable("id") Long id) throws ServletException, IOException {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         if (!Platform.hasAccess(request, CartItemServicePut.class)) {

@@ -1,5 +1,6 @@
 package com.angkorteam.ecommerce.page.discount;
 
+import com.angkorteam.ecommerce.mobile.cart.Discount;
 import com.angkorteam.ecommerce.validator.StartEndDateValidator;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.DateTextField;
@@ -73,7 +74,7 @@ public class DiscountCreatePage extends MBaaSPage {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        List<String> types = Arrays.asList("Percentage", "Fixed");
+        List<String> types = Arrays.asList(Discount.TYPE_PERCENTAGE, Discount.TYPE_FIXED);
         this.typeField = new DropDownChoice<>("typeField", new PropertyModel<>(this, "type"), types);
         this.typeField.setRequired(true);
         this.form.add(this.typeField);

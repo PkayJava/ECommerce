@@ -28,7 +28,7 @@ public class UserLoginFacebookServicePost {
 
     @RequestMapping(value = "/{shop}/login/facebook", method = RequestMethod.POST)
     public ResponseEntity<?> service(HttpServletRequest request) throws Throwable {
-        System.out.println(this.getClass().getName());
+        LOGGER.info("{}", this.getClass().getName());
         throw new UnsupportedOperationException(this.getClass().getName());
 //        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 //        NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);

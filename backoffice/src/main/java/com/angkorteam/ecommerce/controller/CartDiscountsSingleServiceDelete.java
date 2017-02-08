@@ -27,6 +27,7 @@ public class CartDiscountsSingleServiceDelete {
 
     @RequestMapping(path = "/{shop}/cart/discounts/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> service(HttpServletRequest request, @PathVariable("id") Long id) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
 
@@ -34,9 +35,11 @@ public class CartDiscountsSingleServiceDelete {
             throw new ServletException(String.valueOf(HttpStatus.FORBIDDEN.getReasonPhrase()));
         }
 
+        jdbcTemplate.update("delete from ecommerce_cart_discount_item where ecommerce_cart_discount_item_id = ?", id);
+
         Map<String, Object> error = Maps.newHashMap();
-        error.put("body", new String[]{"discount is not available"});
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        error.put("body", new String[]{"OK"});
+        return new ResponseEntity<>(error, HttpStatus.OK);
     }
 
 }

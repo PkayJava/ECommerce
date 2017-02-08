@@ -2,7 +2,7 @@ package com.angkorteam.ecommerce.controller;
 
 import com.angkorteam.ecommerce.model.EcommerceCart;
 import com.angkorteam.ecommerce.model.EcommerceDiscount;
-import com.angkorteam.framework.jdbc.InsertQuery;
+import com.angkorteam.ecommerce.model.EcommerceDiscountCoupon;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -41,6 +42,7 @@ public class CartDiscountsServicePost {
 
     @RequestMapping(path = "/{shop}/cart/discounts", method = RequestMethod.POST)
     public ResponseEntity<?> service(HttpServletRequest request, @PathVariable("shop") String shop) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
 
@@ -57,10 +59,27 @@ public class CartDiscountsServicePost {
         String code = requestBody.get("code");
 
         SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery("ecommerce_discount_coupon");
+        selectQuery.addWhere("code = :code", code);
+        EcommerceDiscountCoupon ecommerceDiscountCoupon = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscountCoupon.class);
+        if (ecommerceDiscountCoupon == null || ecommerceDiscountCoupon.getUsed()) {
+            Map<String, Object> data = Maps.newHashMap();
+            data.put("body", new String[]{"discount is not available"});
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
         selectQuery = new SelectQuery("ecommerce_discount");
-        selectQuery.addWhere("lower(name) = lower(:name)", "name", code);
+        selectQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", ecommerceDiscountCoupon.getEcommerceDiscountId());
         EcommerceDiscount ecommerceDiscount = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscount.class);
-        if (ecommerceDiscount == null) {
+        if (!ecommerceDiscount.getEnabled()) {
+            Map<String, Object> data = Maps.newHashMap();
+            data.put("body", new String[]{"discount is not available"});
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Date now = new Date();
+        if (now.before(ecommerceDiscount.getStartDate()) || now.after(ecommerceDiscount.getEndDate())) {
             Map<String, Object> data = Maps.newHashMap();
             data.put("body", new String[]{"discount is not available"});
             return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
@@ -69,21 +88,8 @@ public class CartDiscountsServicePost {
         selectQuery = new SelectQuery("ecommerce_cart");
         selectQuery.addWhere("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
         EcommerceCart ecommerceCart = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCart.class);
+        jdbcTemplate.update("update ecommerce_cart set ecommerce_discount_id = ?, ecommerce_discount_coupon_id = ? where ecommerce_cart_id = ?", ecommerceDiscountCoupon.getEcommerceDiscountId(), ecommerceDiscountCoupon.getEcommerceDiscountCouponId(), ecommerceCart.getEcommerceCartId());
 
-        selectQuery = new SelectQuery("ecommerce_cart_discount_item");
-        selectQuery.addField("count(*)");
-        selectQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", ecommerceCart.getEcommerceCartId());
-        selectQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", ecommerceDiscount.getEcommerceDiscountId());
-
-        int count = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), int.class);
-        if (count == 0) {
-            InsertQuery insertQuery = new InsertQuery("ecommerce_cart_discount_item");
-            insertQuery.addValue("ecommerce_cart_discount_item_id = :ecommerce_cart_discount_item_id", Platform.randomUUIDLong("ecommerce_cart_discount_item"));
-            insertQuery.addValue("ecommerce_cart_id = :ecommerce_cart_id", ecommerceCart.getEcommerceCartId());
-            insertQuery.addValue("ecommerce_discount_id = :ecommerce_discount_id", ecommerceDiscount.getEcommerceDiscountId());
-            insertQuery.addValue("quantity = :quantity", 1);
-            named.update(insertQuery.toSQL(), insertQuery.getParam());
-        }
         Map<String, Object> data = Maps.newHashMap();
         data.put("body", new String[]{"your discount is applied"});
         return new ResponseEntity<>(data, HttpStatus.OK);

@@ -35,6 +35,7 @@ public class BranchesServiceGet {
 
     @RequestMapping(path = "/{shop}/branches", method = RequestMethod.GET)
     public ResponseEntity<?> service(HttpServletRequest request) {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
 

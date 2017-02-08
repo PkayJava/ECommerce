@@ -39,6 +39,7 @@ public class UserSingleServicePut {
 
     @RequestMapping(path = "/{shop}/users/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> service(HttpServletRequest request, @PathVariable("id") Long id) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         if (!Platform.hasAccess(request, UserSingleServicePut.class)) {

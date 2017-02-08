@@ -10,6 +10,9 @@ import java.io.Serializable;
  */
 public class Discount implements Serializable {
 
+    public static final String TYPE_PERCENTAGE = "Percentage";
+    public static final String TYPE_FIXED = "Fixed";
+
     @Expose
     @SerializedName("id")
     private long id;

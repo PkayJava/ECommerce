@@ -41,6 +41,7 @@ public class UserResetPasswordServicePost {
 
     @RequestMapping(path = "/{shop}/users/reset-password", method = RequestMethod.POST)
     public ResponseEntity<?> service(HttpServletRequest request) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 

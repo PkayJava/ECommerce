@@ -43,6 +43,7 @@ public class CartServicePost {
 
     @RequestMapping(path = "/{shop}/cart", method = RequestMethod.POST)
     public ResponseEntity<?> service(HttpServletRequest request) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         if (!Platform.hasAccess(request, CartServicePost.class)) {

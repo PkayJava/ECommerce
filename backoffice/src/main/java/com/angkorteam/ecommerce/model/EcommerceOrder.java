@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by socheatkhauv on 31/1/17.
  */
-public class EcommerceOrder implements Serializable{
+public class EcommerceOrder implements Serializable {
 
     private Long ecommerceOrderId;
     private Long ecommerceShippingId;
@@ -29,6 +29,42 @@ public class EcommerceOrder implements Serializable{
     private String paymentName;
     private Double paymentPrice;
     private Long ecommerceRegionId;
+    private Long ecommerceDiscountCouponId;
+    private Long ecommerceDiscountId;
+    private String couponType;
+    private Double couponValue;
+
+    public Long getEcommerceDiscountCouponId() {
+        return ecommerceDiscountCouponId;
+    }
+
+    public void setEcommerceDiscountCouponId(Long ecommerceDiscountCouponId) {
+        this.ecommerceDiscountCouponId = ecommerceDiscountCouponId;
+    }
+
+    public Long getEcommerceDiscountId() {
+        return ecommerceDiscountId;
+    }
+
+    public void setEcommerceDiscountId(Long ecommerceDiscountId) {
+        this.ecommerceDiscountId = ecommerceDiscountId;
+    }
+
+    public String getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(String couponType) {
+        this.couponType = couponType;
+    }
+
+    public Double getCouponValue() {
+        return couponValue;
+    }
+
+    public void setCouponValue(Double couponValue) {
+        this.couponValue = couponValue;
+    }
 
     public Long getEcommerceOrderId() {
         return ecommerceOrderId;
@@ -211,7 +247,8 @@ public class EcommerceOrder implements Serializable{
             return false;
         if (ecommercePaymentId != null ? !ecommercePaymentId.equals(that.ecommercePaymentId) : that.ecommercePaymentId != null)
             return false;
-        if (platformUserId != null ? !platformUserId.equals(that.platformUserId) : that.platformUserId != null) return false;
+        if (platformUserId != null ? !platformUserId.equals(that.platformUserId) : that.platformUserId != null)
+            return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (street != null ? !street.equals(that.street) : that.street != null) return false;
         if (houseNumber != null ? !houseNumber.equals(that.houseNumber) : that.houseNumber != null) return false;

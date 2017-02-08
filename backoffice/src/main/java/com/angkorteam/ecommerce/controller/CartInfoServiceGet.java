@@ -32,6 +32,7 @@ public class CartInfoServiceGet {
 
     @RequestMapping(path = "/{shop}/cart/info", method = RequestMethod.GET)
     public ResponseEntity<?> service(HttpServletRequest request) throws Throwable {
+        LOGGER.info("{}", this.getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         if (!Platform.hasAccess(request, CartInfoServiceGet.class)) {

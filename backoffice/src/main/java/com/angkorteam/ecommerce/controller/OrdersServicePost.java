@@ -12,6 +12,7 @@ import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.model.PlatformUser;
+import com.braintreegateway.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -355,40 +357,44 @@ public class OrdersServicePost {
         named.update(insertQuery.toSQL(), insertQuery.getParam());
 
         if (Payment.TYPE_PAYPAL.equals(paymentRecord.getType())) {
-            //    @RequestMapping("/paypal/nonce")
-//    public ResponseEntity<?> paypalNonce(HttpServletRequest request, @RequestParam("id") String id) {
-//
-//        TransactionRequest transactionRequest = new TransactionRequest().
-//                amount(request.queryParams("amount")).
-//                merchantAccountId("USD").
-//                paymentMethodNonce(request.queryParams("paymentMethodNonce")).
-//                orderId("Mapped to PayPal Invoice Number").
-//                descriptor().
-//                name("Descriptor displayed in customer CC statements. 22 char max").
-//                done();
-//        shippingAddress().
-//        .firstName("Jen")
-//                .lastName("Smith")
-//                .company("Braintree")
-//                .streetAddress("1 E 1st St")
-//                .extendedAddress("Suite 403")
-//                .locality("Bartlett")
-//                .region("IL")
-//                .postalCode("60103")
-//                .countryCodeAlpha2("US")
-//                .done();
-//        options().
-//                paypal().
-//                customField("PayPal custom field").
-//                description("Description for PayPal email receipt").
-//                done();
-//        storeInVaultOnSuccess(true).
-//                done();
-//
-//        Result<Transaction> saleResult = gateway.transaction().sale(request);
-//
-//        return null;
-//    }
+            TransactionRequest transactionRequest = new TransactionRequest();
+            transactionRequest.amount(new BigDecimal(grandTotalAmount));
+            transactionRequest.merchantAccountId("USD");
+            transactionRequest.paymentMethodNonce(requestBody.getParam1());
+            transactionRequest.orderId(String.valueOf(orderId));
+
+            TransactionDescriptorRequest transactionDescriptorRequest = transactionRequest.descriptor();
+            transactionDescriptorRequest.name(requestBody.getName());
+            transactionDescriptorRequest.done();
+
+            TransactionAddressRequest transactionAddressRequest = transactionRequest.shippingAddress();
+            transactionAddressRequest.firstName(requestBody.getName());
+            transactionAddressRequest.lastName(requestBody.getName());
+            transactionAddressRequest.company("N/A");
+            transactionAddressRequest.streetAddress(requestBody.getStreet());
+            transactionAddressRequest.locality(requestBody.getCity());
+            transactionAddressRequest.postalCode(requestBody.getZip());
+            transactionAddressRequest.countryCodeAlpha2("KH");
+            transactionAddressRequest.done();
+
+            TransactionOptionsRequest transactionOptionsRequest = transactionRequest.options();
+            TransactionOptionsPayPalRequest transactionOptionsPayPalRequest = transactionOptionsRequest.paypal();
+            transactionOptionsPayPalRequest.customField("PayPal custom field");
+            transactionOptionsPayPalRequest.description("Description for PayPal email receipt");
+            transactionOptionsPayPalRequest.done();
+            transactionOptionsRequest.storeInVaultOnSuccess(true);
+            transactionOptionsRequest.done();
+
+            BraintreeGateway gateway = new BraintreeGateway(paymentRecord.getServerParam1());
+
+            Result<Transaction> result = gateway.transaction().sale(transactionRequest);
+
+            if (result.isSuccess()) {
+                Transaction transaction = result.getTarget();
+                System.out.println("Success ID: " + transaction.getId());
+            } else {
+                throw new ServletException("payment error");
+            }
         } else if (Payment.TYPE_CASH.equals(paymentRecord.getType())) {
         }
 

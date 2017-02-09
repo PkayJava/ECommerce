@@ -10,6 +10,7 @@ import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -62,7 +63,7 @@ public class CategoryCreatePage extends MBaaSPage {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        this.code = String.valueOf(RandomStringUtils.randomAlphabetic(6));
+        this.code = StringUtils.upperCase(RandomStringUtils.randomAlphabetic(6));
         this.codeField = new TextField<>("codeField", new PropertyModel<>(this, "code"));
         this.form.add(this.codeField);
         this.codeFeedback = new TextFeedbackPanel("codeFeedback", this.codeField);

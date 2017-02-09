@@ -4,6 +4,7 @@ import com.angkorteam.ecommerce.model.EcommerceOrder;
 import com.angkorteam.ecommerce.model.EcommerceOrderItem;
 import com.angkorteam.framework.extension.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -88,8 +89,8 @@ public class CustomerOrderReviewPage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        DateFormat datetimeFormat = new SimpleDateFormat(getJdbcTemplate().queryForObject("select `value` from setting where `key` = ?", String.class, "datetime_format"));
-        DecimalFormat priceFormat = new DecimalFormat(getJdbcTemplate().queryForObject("select `value` from setting where `key` = ?", String.class, "price_format"));
+        DateFormat datetimeFormat = new SimpleDateFormat(Platform.getSetting("datetime_format"));
+        DecimalFormat priceFormat = new DecimalFormat(Platform.getSetting("price_format"));
 
         this.ecommerceOrderId = getPageParameters().get("ecommerceOrderId").toString("");
 

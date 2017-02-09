@@ -39,7 +39,7 @@ public class CustomerOrderBrowsePage extends MBaaSPage {
         provider.boardField("shipping_name", "shippingName", String.class);
         provider.boardField("payment_name", "paymentName", String.class);
         provider.boardField("buyer_status", "status", String.class);
-        provider.boardField("(total + shipping_price + payment_price)", "total", Double.class);
+        provider.boardField("grand_total_amount", "total", Double.class);
         provider.boardField("date_created", "dateCreated", Calendar.DateTime);
 
         provider.addWhere("platform_user_id = '" + getSession().getPlatformUserId() + "'");

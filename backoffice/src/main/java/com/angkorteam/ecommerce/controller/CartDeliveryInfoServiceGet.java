@@ -139,7 +139,7 @@ public class CartDeliveryInfoServiceGet {
         if (pickupShippings != null && !pickupShippings.isEmpty()) {
             List<Shipping> personalPickup = Lists.newArrayList();
             for (EcommerceShipping shipping : pickupShippings) {
-                Shipping shippingVO = lookupShipping(asset, currency, priceFormat, totalPrice, 0d, shipping, payments, branches);
+                Shipping shippingVO = lookupShipping("Pickup", asset, currency, priceFormat, totalPrice, 0d, shipping, payments, branches);
                 personalPickup.add(shippingVO);
             }
             delivery.setPersonalPickup(personalPickup);
@@ -148,7 +148,7 @@ public class CartDeliveryInfoServiceGet {
         if (deliveryShippings != null && !deliveryShippings.isEmpty()) {
             List<Shipping> shippingPickup = Lists.newArrayList();
             for (EcommerceShipping shipping : deliveryShippings) {
-                Shipping shippingVO = lookupShipping(asset, currency, priceFormat, totalPrice, shippingPriceAddon, shipping, payments, branches);
+                Shipping shippingVO = lookupShipping("Delivery", asset, currency, priceFormat, totalPrice, shippingPriceAddon, shipping, payments, branches);
                 shippingPickup.add(shippingVO);
             }
             delivery.setShipping(shippingPickup);
@@ -159,9 +159,8 @@ public class CartDeliveryInfoServiceGet {
         return ResponseEntity.ok(deliveryRequest);
     }
 
-    protected Shipping lookupShipping(String asset, String currency, DecimalFormat priceFormat, Double totalPrice, Double shippingAddonPrice, EcommerceShipping shippingRecord, Map<Long, EcommercePayment> paymentRecords, Map<Long, EcommerceBranch> branchRecords) {
+    protected Shipping lookupShipping(String deliveryType, String asset, String currency, DecimalFormat priceFormat, Double totalPrice, Double shippingAddonPrice, EcommerceShipping shippingRecord, Map<Long, EcommercePayment> paymentRecords, Map<Long, EcommerceBranch> branchRecords) {
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
-
         SelectQuery selectQuery = null;
         Shipping shipping = new Shipping();
         shipping.setId(shippingRecord.getEcommerceShippingId());
@@ -179,33 +178,38 @@ public class CartDeliveryInfoServiceGet {
             EcommerceBranch branchRecord = branchRecords.get(shippingRecord.getEcommerceBranchId());
             if (branchRecord != null) {
                 Branch branchVO = new Branch();
-                branchVO.setId(branchRecord.getEcommerceBranchId());
-                branchVO.setAddress(branchRecord.getAddress());
-                branchVO.setName(branchRecord.getName());
-                branchVO.setNote(branchRecord.getNote());
-                Coordinates coordinatesVO = new Coordinates();
-                coordinatesVO.setLongitude(branchRecord.getLongitude());
-                coordinatesVO.setLatitude(branchRecord.getLatitude());
-                branchVO.setCoordinates(coordinatesVO);
-
-                selectQuery = new SelectQuery("ecommerce_branch_opening");
-                selectQuery.addField("day");
-                selectQuery.addField("opening");
-                selectQuery.addWhere("ecommerce_branch_id = :ecommerce_branch_id", branchRecord.getEcommerceBranchId());
-                List<OpeningHours> openingRecords = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), OpeningHours.class);
-                if (openingRecords != null && !openingRecords.isEmpty()) {
-                    branchVO.setOpeningHoursList(openingRecords);
-                }
-                selectQuery = new SelectQuery("ecommerce_branch_transport");
-                selectQuery.addField("ecommerce_branch_transport.text AS text");
-                selectQuery.addField("CONCAT('" + asset + "', '/api/resource', platform_file.path, '/', platform_file.name) AS icon");
-                selectQuery.addJoin(JoinType.InnerJoin, "platform_file", "ecommerce_branch_transport.icon_platform_file_id = platform_file.platform_file_id");
-                selectQuery.addWhere("ecommerce_branch_transport.ecommerce_branch_id = :ecommerce_branch_id", branchRecord.getEcommerceBranchId());
-                List<Transport> transportRecords = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), Transport.class);
-                if (transportRecords != null && !transportRecords.isEmpty()) {
-                    branchVO.setTransports(transportRecords);
-                }
                 shipping.setBranch(branchVO);
+                branchVO.setId(branchRecord.getEcommerceBranchId());
+                if (deliveryType.equals("Pickup")) {
+                    branchVO.setName(branchRecord.getName());
+                    branchVO.setAddress(branchRecord.getAddress());
+                    branchVO.setNote(branchRecord.getNote());
+                    Coordinates coordinatesVO = new Coordinates();
+                    coordinatesVO.setLongitude(branchRecord.getLongitude());
+                    coordinatesVO.setLatitude(branchRecord.getLatitude());
+                    branchVO.setCoordinates(coordinatesVO);
+
+                    selectQuery = new SelectQuery("ecommerce_branch_opening");
+                    selectQuery.addField("day");
+                    selectQuery.addField("opening");
+                    selectQuery.addWhere("ecommerce_branch_id = :ecommerce_branch_id", branchRecord.getEcommerceBranchId());
+                    List<OpeningHours> openingRecords = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), OpeningHours.class);
+                    if (openingRecords != null && !openingRecords.isEmpty()) {
+                        branchVO.setOpeningHoursList(openingRecords);
+                    }
+                    selectQuery = new SelectQuery("ecommerce_branch_transport");
+                    selectQuery.addField("ecommerce_branch_transport.text AS text");
+                    selectQuery.addField("CONCAT('" + asset + "', '/api/resource', platform_file.path, '/', platform_file.name) AS icon");
+                    selectQuery.addJoin(JoinType.InnerJoin, "platform_file", "ecommerce_branch_transport.icon_platform_file_id = platform_file.platform_file_id");
+                    selectQuery.addWhere("ecommerce_branch_transport.ecommerce_branch_id = :ecommerce_branch_id", branchRecord.getEcommerceBranchId());
+                    List<Transport> transportRecords = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), Transport.class);
+                    if (transportRecords != null && !transportRecords.isEmpty()) {
+                        branchVO.setTransports(transportRecords);
+                    }
+                } else if (deliveryType.equals("Delivery")) {
+                    branchVO.setName(shippingRecord.getName());
+                    branchVO.setAddress(shippingRecord.getDescription());
+                }
             }
 
         }

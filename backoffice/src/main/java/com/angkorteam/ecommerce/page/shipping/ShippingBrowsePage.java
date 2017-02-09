@@ -42,7 +42,7 @@ public class ShippingBrowsePage extends MBaaSPage {
         provider.boardField("ecommerce_shipping.min_cart_amount", "minCartAmount", Double.class);
         provider.boardField("ecommerce_shipping.type", "type", String.class);
         provider.boardField("ecommerce_branch.name", "branch", String.class);
-        provider.boardField("enabled", "enabled", Boolean.class);
+        provider.boardField("ecommerce_shipping.enabled", "enabled", Boolean.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);

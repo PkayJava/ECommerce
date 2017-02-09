@@ -90,27 +90,15 @@ CREATE TABLE `ecommerce_brand` (
 -- ################################################################
 CREATE TABLE `ecommerce_cart` (
 
-  `ecommerce_cart_id` BIGINT(19) NOT NULL,
-  `platform_user_id`  BIGINT(19) NOT NULL,
+  `ecommerce_cart_id`            BIGINT(19) NOT NULL,
+  `platform_user_id`             BIGINT(19) NOT NULL,
+  `ecommerce_discount_id`        BIGINT(19),
+  `ecommerce_discount_coupon_id` BIGINT(19),
 
   KEY (`platform_user_id`),
-  PRIMARY KEY (`ecommerce_cart_id`)
-);
-
-
--- # mysql__ecommerce_cart_discount_item_ddl.sql
--- ################################################################
-CREATE TABLE `ecommerce_cart_discount_item` (
-
-  `ecommerce_cart_discount_item_id` BIGINT(19) NOT NULL,
-  `ecommerce_cart_id`               BIGINT(19) NOT NULL,
-  `ecommerce_discount_id`           BIGINT(19) NOT NULL,
-  `quantity`                        INT(11)    NOT NULL,
-
-  KEY (`ecommerce_cart_id`),
-  KEY (`quantity`),
   KEY (`ecommerce_discount_id`),
-  PRIMARY KEY (`ecommerce_cart_discount_item_id`)
+  KEY (`ecommerce_discount_coupon_id`),
+  PRIMARY KEY (`ecommerce_cart_id`)
 );
 
 
@@ -191,16 +179,44 @@ CREATE TABLE `ecommerce_device` (
 );
 
 
+-- # mysql__ecommerce_discount_coupon_ddl.sql
+-- ################################################################
+CREATE TABLE `ecommerce_discount_coupon` (
+
+  `ecommerce_discount_coupon_id` BIGINT(19)   NOT NULL,
+  `ecommerce_discount_id`        BIGINT(19)   NOT NULL,
+  `code`                         VARCHAR(255) NOT NULL,
+  `used`                         BIT(1)       NOT NULL,
+  `used_date`                    DATETIME,
+  `platform_user_id`             BIGINT(19),
+  `ecommerce_order_id`           BIGINT(19),
+
+  KEY (`ecommerce_discount_id`),
+  KEY (`ecommerce_order_id`),
+  KEY (`platform_user_id`),
+  KEY (`used`),
+  KEY (`used_date`),
+  UNIQUE KEY (`code`),
+  PRIMARY KEY (`ecommerce_discount_coupon_id`)
+);
+
+
 -- # mysql__ecommerce_discount_ddl.sql
 -- ################################################################
 CREATE TABLE `ecommerce_discount` (
 
   `ecommerce_discount_id` BIGINT(19)     NOT NULL,
   `name`                  VARCHAR(255)   NOT NULL,
-  `type`                  VARCHAR(255)   NOT NULL,
+  `type`                  VARCHAR(20)    NOT NULL,
   `value`                 DECIMAL(15, 4) NOT NULL,
   `min_cart_amount`       DECIMAL(15, 4) NOT NULL,
+  `start_date`            DATETIME       NOT NULL,
+  `end_date`              DATETIME       NOT NULL,
+  `enabled`               BIT(1)         NOT NULL,
 
+  KEY (`enabled`),
+  KEY (`start_date`),
+  KEY (`end_date`),
   KEY (`type`),
   KEY (`value`),
   KEY (`min_cart_amount`),
@@ -213,28 +229,40 @@ CREATE TABLE `ecommerce_discount` (
 -- ################################################################
 CREATE TABLE `ecommerce_order` (
 
-  `ecommerce_order_id`    BIGINT(19)     NOT NULL,
-  `ecommerce_shipping_id` BIGINT(19)     NOT NULL,
-  `ecommerce_payment_id`  BIGINT(19)     NOT NULL,
-  `platform_user_id`      BIGINT(19)     NOT NULL,
-  `name`                  VARCHAR(255),
-  `street`                VARCHAR(255),
-  `house_number`          VARCHAR(255),
-  `city`                  VARCHAR(255),
-  `zip`                   VARCHAR(255),
-  `email`                 VARCHAR(255),
-  `phone`                 VARCHAR(255),
-  `note`                  VARCHAR(255),
-  `date_created`          DATETIME       NOT NULL,
-  `buyer_status`          VARCHAR(255)   NOT NULL,
-  `order_status`          VARCHAR(255)   NOT NULL,
-  `total`                 DECIMAL(15, 4) NOT NULL,
-  `shipping_name`         VARCHAR(255)   NOT NULL,
-  `shipping_price`        DECIMAL(15, 4) NOT NULL,
-  `payment_name`          VARCHAR(255)   NOT NULL,
-  `payment_price`         DECIMAL(15, 4) NOT NULL,
-  `ecommerce_region_id`   BIGINT(19),
+  `ecommerce_order_id`           BIGINT(19) NOT NULL,
+  `ecommerce_shipping_id`        BIGINT(19) NOT NULL,
+  `ecommerce_payment_id`         BIGINT(19) NOT NULL,
+  `platform_user_id`             BIGINT(19) NOT NULL,
+  `ecommerce_discount_coupon_id` BIGINT(19),
+  `ecommerce_discount_id`        BIGINT(19),
+  `coupon_type`                  VARCHAR(20),
+  `coupon_value`                 DECIMAL(15, 4),
+  `discount_amount`              DECIMAL(15, 4),
+  `sub_total_amount`             DECIMAL(15, 4),
+  `total_amount`                 DECIMAL(15, 4),
+  `grand_total_amount`           DECIMAL(15, 4),
+  `name`                         VARCHAR(255),
+  `street`                       VARCHAR(255),
+  `house_number`                 VARCHAR(255),
+  `city`                         VARCHAR(255),
+  `zip`                          VARCHAR(255),
+  `email`                        VARCHAR(255),
+  `phone`                        VARCHAR(255),
+  `note`                         VARCHAR(255),
+  `date_created`                 DATETIME,
+  `buyer_status`                 VARCHAR(255),
+  `order_status`                 VARCHAR(255),
+  `ecommerce_region_id`          BIGINT(19),
+  `shipping_name`                VARCHAR(255),
+  `shipping_price`               DECIMAL(15, 4),
+  `shipping_price_addon`         DECIMAL(15, 4),
+  `payment_name`                 VARCHAR(255),
+  `payment_price`                DECIMAL(15, 4),
 
+  KEY (`ecommerce_discount_coupon_id`),
+  KEY (`ecommerce_discount_id`),
+  KEY (`coupon_type`),
+  KEY (`coupon_value`),
   KEY (`ecommerce_shipping_id`),
   KEY (`ecommerce_payment_id`),
   KEY (`ecommerce_region_id`),
@@ -247,7 +275,11 @@ CREATE TABLE `ecommerce_order` (
   KEY (`email`),
   KEY (`date_created`),
   KEY (`phone`),
-  KEY (`total`),
+  KEY (`grand_total_amount`),
+  KEY (`total_amount`),
+  KEY (`sub_total_amount`),
+  KEY (`discount_amount`),
+  KEY (`shipping_price_addon`),
   KEY (`note`),
   KEY (`shipping_name`),
   KEY (`shipping_price`),

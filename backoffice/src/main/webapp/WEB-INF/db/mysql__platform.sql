@@ -200,6 +200,8 @@ CREATE TABLE `platform_page` (
 -- ################################################################
 INSERT INTO `platform_page` (`platform_page_id`, `platform_layout_id`, `path`, `html_title`, `page_title`, `page_description`, `java_class`, `version`)
 VALUES
+  (171, 1, '/ecommerce/discount/coupon/generate', 'eCommerce Discount Coupon Generate', 'eCommerce Discount Coupon Generate', 'eCommerce Discount Coupon Generate', 'com.angkorteam.ecommerce.page.discount.DiscountCouponGeneratePage', 1),
+  (170, 1, '/ecommerce/discount/coupon/browse', 'eCommerce Discount Coupon Browse', 'eCommerce Discount Coupon Browse', 'eCommerce Discount Coupon Browse', 'com.angkorteam.ecommerce.page.discount.DiscountCouponBrowsePage', 1),
   (169, 1, '/ecommerce/vendor/register', 'eCommerce Vendor Register', 'eCommerce Vendor Register', 'eCommerce Vendor Register', 'com.angkorteam.ecommerce.page.VendorRegisterPage', 1),
   (168, 1, '/ecommerce/vendor/order/review', 'eCommerce Vendor Order Review', 'eCommerce Vendor Order Review', 'eCommerce Vendor Order Review', 'com.angkorteam.ecommerce.page.order.VendorOrderReviewPage', 1),
   (167, 1, '/ecommerce/vendor/order/browse', 'eCommerce Vendor Order Browse', 'eCommerce Vendor Order Browse', 'eCommerce Vendor Order Browse', 'com.angkorteam.ecommerce.page.order.VendorOrderBrowsePage', 1),
@@ -301,6 +303,8 @@ CREATE TABLE `platform_page_role` (
 -- ################################################################
 INSERT INTO platform_page_role (platform_page_role_id, platform_role_id, platform_page_id)
 VALUES
+  (94, 1, 171),
+  (95, 1, 170),
   (1, 5, 1),
   (2, 4, 1),
   (3, 4, 155),
@@ -628,6 +632,7 @@ CREATE TABLE `platform_uuid` (
 -- ################################################################
 INSERT INTO `platform_uuid` (table_name, value)
   VALUE
+  ('ecommerce_discount_coupon', 1000),
   ('ecommerce_cart_discount_item', 1000),
   ('ecommerce_banner', 1000),
   ('ecommerce_brand', 1000),

@@ -66,6 +66,7 @@ public class BannersServiceGet {
         selectQuery.addJoin(JoinType.LeftJoin, "ecommerce_product", "ecommerce_banner.ecommerce_product_id = ecommerce_product.ecommerce_product_id");
         selectQuery.addJoin(JoinType.LeftJoin, "ecommerce_category", "ecommerce_banner.ecommerce_category_id = ecommerce_category.ecommerce_category_id");
         selectQuery.addOrderBy("ecommerce_banner.`order`");
+        selectQuery.addWhere("ecommerce_banner.enabled = :enabled", true);
         selectQuery.setLimit((offset - 1) * limit, limit);
         List<Banner> records = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), Banner.class);
         if (records != null && !records.isEmpty()) {

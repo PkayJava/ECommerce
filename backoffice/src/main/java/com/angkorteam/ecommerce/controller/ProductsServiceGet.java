@@ -154,6 +154,8 @@ public class ProductsServiceGet {
             sizeQuery.addWhere("ecommerce_product.name like :name5", "%" + search + "%");
         }
 
+        productQuery.addWhere("ecommerce_product.enabled = :enabled", true);
+
         ProductListResponse data = new ProductListResponse();
 
         Metadata metadata = new Metadata();

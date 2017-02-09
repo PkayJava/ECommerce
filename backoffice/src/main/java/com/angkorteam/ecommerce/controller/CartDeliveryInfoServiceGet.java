@@ -99,9 +99,11 @@ public class CartDeliveryInfoServiceGet {
 
         selectQuery = new SelectQuery("ecommerce_shipping");
         selectQuery.addWhere("type = :type", "Pickup");
+        selectQuery.addWhere("enabled = :enabled", true);
         List<EcommerceShipping> pickupShippings = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceShipping.class);
         selectQuery = new SelectQuery("ecommerce_shipping");
         selectQuery.addWhere("type = :type", "Delivery");
+        selectQuery.addWhere("enabled = :enabled", true);
         List<EcommerceShipping> deliveryShippings = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceShipping.class);
 
         Date now = new Date();

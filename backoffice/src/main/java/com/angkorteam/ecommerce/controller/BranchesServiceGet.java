@@ -41,7 +41,7 @@ public class BranchesServiceGet {
 
         SelectQuery selectQuery = null;
 
-        List<EcommerceBranch> branchRecords = jdbcTemplate.queryForList("select * from ecommerce_branch", EcommerceBranch.class);
+        List<EcommerceBranch> branchRecords = jdbcTemplate.queryForList("select * from ecommerce_branch where enabled = true", EcommerceBranch.class);
 
         List<Branch> branches = Lists.newArrayList();
 

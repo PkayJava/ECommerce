@@ -52,10 +52,11 @@ public class ShopsSingleServiceGet {
         selectQuery.addField("ecommerce_shop.description description");
         selectQuery.addField("ecommerce_shop.name name");
         selectQuery.addField("ecommerce_shop.url url");
+        selectQuery.addField("'" + currency + "' currency");
         selectQuery.addField("CONCAT('" + asset + "', '/api/resource', logo_file.path, '/', logo_file.name) logo");
         selectQuery.addField("ecommerce_shop.google_ua google");
         selectQuery.addField("ecommerce_shop.language language");
-        selectQuery.addField("CONCAT('${asset}', '/api/resource', flag_icon_file.path, '/', flag_icon_file.name) flagIcon");
+        selectQuery.addField("CONCAT('" + asset + "', '/api/resource', flag_icon_file.path, '/', flag_icon_file.name) flagIcon");
         selectQuery.addJoin(JoinType.LeftJoin, "LEFT JOIN platform_file logo_file", "ecommerce_shop.logo_platform_file_id = logo_file.platform_file_id");
         selectQuery.addJoin(JoinType.LeftJoin, "LEFT JOIN platform_file flag_icon_file", "ecommerce_shop.flag_icon_platform_file_id = flag_icon_file.platform_file_id");
         selectQuery.addWhere("ecommerce_shop.ecommerce_shop_id = :ecommerce_shop_id", id);

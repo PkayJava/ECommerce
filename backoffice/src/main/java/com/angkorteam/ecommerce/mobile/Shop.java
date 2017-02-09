@@ -28,8 +28,8 @@ public class Shop implements Serializable {
     private String logo;
 
     @Expose
-    @SerializedName("googleUa")
-    private String googleUa;
+    @SerializedName("google_ua")
+    private String google;
 
     @Expose
     @SerializedName("language")
@@ -39,16 +39,9 @@ public class Shop implements Serializable {
     @SerializedName("currency")
     private String currency;
 
-    @SerializedName("flagIcon")
+    @Expose
+    @SerializedName("flag_icon")
     private String flagIcon;
-
-    public Shop() {
-    }
-
-    public Shop(String name, String googleUa) {
-        this.name = name;
-        this.googleUa = googleUa;
-    }
 
     public long getId() {
         return id;
@@ -90,12 +83,12 @@ public class Shop implements Serializable {
         this.logo = logo;
     }
 
-    public String getGoogleUa() {
-        return googleUa;
+    public String getGoogle() {
+        return google;
     }
 
-    public void setGoogleUa(String googleUa) {
-        this.googleUa = googleUa;
+    public void setGoogle(String google) {
+        this.google = google;
     }
 
     public String getLanguage() {

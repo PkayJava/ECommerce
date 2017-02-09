@@ -52,6 +52,7 @@ public class ShopsServiceGet {
         selectQuery.addField("ecommerce_shop.ecommerce_shop_id id");
         selectQuery.addField("ecommerce_shop.description description");
         selectQuery.addField("ecommerce_shop.name name");
+        selectQuery.addField("'" + currency + "' currency");
         selectQuery.addField("ecommerce_shop.url url");
         selectQuery.addField("CONCAT('" + asset + "', '/api/resource', logo_file.path, '/', logo_file.name) logo");
         selectQuery.addField("ecommerce_shop.google_ua google");

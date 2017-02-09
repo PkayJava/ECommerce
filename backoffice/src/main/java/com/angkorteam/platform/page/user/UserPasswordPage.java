@@ -87,7 +87,7 @@ public class UserPasswordPage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         UpdateQuery updateQuery = new UpdateQuery("platform_user");
         updateQuery.addValue("password = MD5(:password)", "password", this.password);
-        updateQuery.addWhere("user_id = :user_id", this.userId);
+        updateQuery.addWhere("platform_user_id = :platform_user_id", this.userId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
         setResponsePage(UserBrowsePage.class);
     }

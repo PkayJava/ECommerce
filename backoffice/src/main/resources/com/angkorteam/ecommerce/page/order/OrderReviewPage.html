@@ -6,13 +6,27 @@
 <body>
 <wicket:extend>
     <wicket:fragment wicket:id="itemTemplate">
-        <td><wicket:container wicket:id="quantityLabel"/></td>
-        <td><wicket:container wicket:id="productLabel"/></td>
-        <td><wicket:container wicket:id="codeLabel"/></td>
-        <td><wicket:container wicket:id="colorLabel"/></td>
-        <td><wicket:container wicket:id="sizeLabel"/></td>
-        <td><wicket:container wicket:id="unitPriceLabel"/></td>
-        <td><wicket:container wicket:id="amountLabel"/></td>
+        <td>
+            <wicket:container wicket:id="quantityLabel"/>
+        </td>
+        <td>
+            <wicket:container wicket:id="productLabel"/>
+        </td>
+        <td>
+            <wicket:container wicket:id="codeLabel"/>
+        </td>
+        <td>
+            <wicket:container wicket:id="colorLabel"/>
+        </td>
+        <td>
+            <wicket:container wicket:id="sizeLabel"/>
+        </td>
+        <td>
+            <wicket:container wicket:id="unitPriceLabel"/>
+        </td>
+        <td>
+            <wicket:container wicket:id="amountLabel"/>
+        </td>
     </wicket:fragment>
     <wicket:container wicket:id="layout">
         <div class="box box-solid">
@@ -28,11 +42,20 @@
                     <div class="col-sm-4 invoice-col">
                         From
                         <address>
-                            <wicket:enclosure child="fromNameLabel"><strong wicket:id="fromNameLabel"/><br></wicket:enclosure>
-                            <wicket:enclosure child="addressLine1Label"><wicket:container wicket:id="addressLine1Label"/><br></wicket:enclosure>
-                            <wicket:enclosure child="addressLine2Label"><wicket:container wicket:id="addressLine2Label"/><br></wicket:enclosure>
-                            <wicket:enclosure child="phoneLabel">Phone: <wicket:container wicket:id="phoneLabel"/><br></wicket:enclosure>
-                            <wicket:enclosure child="emailLabel">Email: <wicket:container wicket:id="emailLabel"/></wicket:enclosure>
+                            <wicket:enclosure child="fromNameLabel"><strong wicket:id="fromNameLabel"/><br>
+                            </wicket:enclosure>
+                            <wicket:enclosure child="addressLine1Label">
+                                <wicket:container wicket:id="addressLine1Label"/>
+                                <br></wicket:enclosure>
+                            <wicket:enclosure child="addressLine2Label">
+                                <wicket:container wicket:id="addressLine2Label"/>
+                                <br></wicket:enclosure>
+                            <wicket:enclosure child="phoneLabel">Phone:
+                                <wicket:container wicket:id="phoneLabel"/>
+                                <br></wicket:enclosure>
+                            <wicket:enclosure child="emailLabel">Email:
+                                <wicket:container wicket:id="emailLabel"/>
+                            </wicket:enclosure>
                         </address>
                     </div>
                     <!-- /.col -->
@@ -41,8 +64,12 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-sm-4 invoice-col">
-                        <b>Created Date:</b> <wicket:container wicket:id="createdDateLabel"/><br>
-                        <b>Note:</b> <wicket:container wicket:id="noteLabel"/><br>
+                        <b>Created Date:</b>
+                        <wicket:container wicket:id="createdDateLabel"/>
+                        <br>
+                        <b>Note:</b>
+                        <wicket:container wicket:id="noteLabel"/>
+                        <br>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -76,7 +103,8 @@
                     <!-- accepted payments column -->
                     <div class="col-xs-6">
                         <p class="lead">Payment Methods:</p>
-                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;" wicket:id="paymentNameLabel"></p>
+                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;"
+                           wicket:id="paymentNameLabel"></p>
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-6">
@@ -87,19 +115,31 @@
                                 <tbody>
                                 <tr>
                                     <th style="width:50%">Subtotal:</th>
-                                    <td wicket:id="totalLabel"></td>
+                                    <td wicket:id="subTotalLabel"></td>
                                 </tr>
+                                <wicket:enclosure child="discountLabel">
+                                    <tr>
+                                        <th style="width:50%">Discount:</th>
+                                        <td wicket:id="discountLabel"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:50%">Total:</th>
+                                        <td wicket:id="totalAmountLabel"></td>
+                                    </tr>
+                                </wicket:enclosure>
                                 <tr>
                                     <th>Shipping:</th>
                                     <td wicket:id="shippingLabel"></td>
                                 </tr>
+                                <wicket:enclosure child="paymentLabel">
+                                    <tr>
+                                        <th>Payment:</th>
+                                        <td wicket:id="paymentLabel"></td>
+                                    </tr>
+                                </wicket:enclosure>
                                 <tr>
-                                    <th>Payment:</th>
-                                    <td wicket:id="paymentLabel"></td>
-                                </tr>
-                                <tr>
-                                    <th>Total:</th>
-                                    <td wicket:id="totalAmountLabel"></td>
+                                    <th>Grand Total:</th>
+                                    <td wicket:id="grandTotalAmountLabel"></td>
                                 </tr>
                                 </tbody>
                             </table>

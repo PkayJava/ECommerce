@@ -87,19 +87,31 @@
                                 <tbody>
                                 <tr>
                                     <th style="width:50%">Subtotal:</th>
-                                    <td wicket:id="totalLabel"></td>
+                                    <td wicket:id="subTotalLabel"></td>
                                 </tr>
+                                <wicket:enclosure child="discountLabel">
+                                    <tr>
+                                        <th style="width:50%">Discount:</th>
+                                        <td wicket:id="discountLabel"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:50%">Total:</th>
+                                        <td wicket:id="totalAmountLabel"></td>
+                                    </tr>
+                                </wicket:enclosure>
                                 <tr>
                                     <th>Shipping:</th>
                                     <td wicket:id="shippingLabel"></td>
                                 </tr>
+                                <wicket:enclosure child="paymentLabel">
+                                    <tr>
+                                        <th>Payment:</th>
+                                        <td wicket:id="paymentLabel"></td>
+                                    </tr>
+                                </wicket:enclosure>
                                 <tr>
-                                    <th>Payment:</th>
-                                    <td wicket:id="paymentLabel"></td>
-                                </tr>
-                                <tr>
-                                    <th>Total:</th>
-                                    <td wicket:id="totalAmountLabel"></td>
+                                    <th>Grand Total:</th>
+                                    <td wicket:id="grandTotalAmountLabel"></td>
                                 </tr>
                                 </tbody>
                             </table>

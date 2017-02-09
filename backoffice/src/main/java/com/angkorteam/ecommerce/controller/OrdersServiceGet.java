@@ -2,7 +2,6 @@ package com.angkorteam.ecommerce.controller;
 
 import com.angkorteam.ecommerce.mobile.cart.CartProductItem;
 import com.angkorteam.ecommerce.mobile.cart.CartProductItemVariant;
-import com.angkorteam.ecommerce.mobile.cart.Discount;
 import com.angkorteam.ecommerce.mobile.order.Order;
 import com.angkorteam.ecommerce.mobile.order.OrderResponse;
 import com.angkorteam.ecommerce.mobile.product.ProductColor;
@@ -69,7 +68,7 @@ public class OrdersServiceGet {
             data.setRecords(orders);
             for (EcommerceOrder ecommerceOrder : orderRecords) {
                 Double shippingPrice = ecommerceOrder.getShippingPrice() == null ? 0d : ecommerceOrder.getShippingPrice();
-                Double paymentPrice = ecommerceOrder.getPaymentPrice() == null ? 0d : ecommerceOrder.getPaymentPrice();
+                Double shippingPriceAddon = ecommerceOrder.getShippingPriceAddon() == null ? 0d : ecommerceOrder.getShippingPriceAddon();
 
                 Order order = new Order();
                 order.setId(ecommerceOrder.getEcommerceOrderId());
@@ -77,7 +76,7 @@ public class OrdersServiceGet {
                 order.setDateCreated(datetimeFormat.format(ecommerceOrder.getDateCreated()));
                 order.setStatus(ecommerceOrder.getOrderStatus());
                 order.setShippingName(ecommerceOrder.getShippingName());
-                order.setShippingPrice(shippingPrice);
+                order.setShippingPrice(shippingPrice + shippingPriceAddon);
                 order.setShippingPriceFormatted(priceFormat.format(order.getShippingPrice()));
                 order.setCurrency(currency);
                 order.setShippingType(ecommerceOrder.getEcommerceShippingId());
@@ -89,28 +88,13 @@ public class OrdersServiceGet {
                 order.setZip(ecommerceOrder.getZip());
                 order.setEmail(ecommerceOrder.getEmail());
                 order.setPhone(ecommerceOrder.getPhone());
-                Double total = ecommerceOrder.getTotal() == null ? 0D : ecommerceOrder.getTotal();
-                Double couponValue = 0D;
-                if (ecommerceOrder.getEcommerceDiscountCouponId() != null) {
-                    if (Discount.TYPE_PERCENTAGE.equals(ecommerceOrder.getCouponType())) {
-                        couponValue = total * (ecommerceOrder.getCouponValue() / 100D);
-                    } else if (Discount.TYPE_FIXED.equals(ecommerceOrder.getCouponType())) {
-                        couponValue = ecommerceOrder.getCouponValue();
-                    }
-                    total = total - couponValue;
-                    if (total < 0) {
-                        total = 0D;
-                    }
-                }
-
-
-                order.setTotal(total + shippingPrice + paymentPrice);
+                order.setTotal(ecommerceOrder.getGrandTotalAmount());
                 order.setTotalFormatted(priceFormat.format(order.getTotal()));
 
-                if (couponValue > 0) {
+                if (ecommerceOrder.getDiscountAmount() > 0) {
                     order.setNote(ecommerceOrder.getNote());
                 } else {
-                    order.setNote(ecommerceOrder.getNote() + " \n Discount " + priceFormat.format(couponValue));
+                    order.setNote(ecommerceOrder.getNote() + " \n Discount " + priceFormat.format(ecommerceOrder.getDiscountAmount()));
                 }
 
                 List<CartProductItem> products = Lists.newArrayList();

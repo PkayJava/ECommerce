@@ -72,7 +72,9 @@ public class DiscountCouponBrowsePage extends MBaaSPage {
 
     private List<ActionItem> actions(String name, Map<String, Object> object) {
         List<ActionItem> actionItems = Lists.newArrayList();
-        actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
+        if (object.get("login") == null) {
+            actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
+        }
         return actionItems;
     }
 

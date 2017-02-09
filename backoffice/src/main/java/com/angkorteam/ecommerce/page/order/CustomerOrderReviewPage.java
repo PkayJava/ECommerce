@@ -56,8 +56,17 @@ public class CustomerOrderReviewPage extends MBaaSPage {
     private String paymentName;
     private Label paymentNameLabel;
 
+    private String subTotal;
+    private Label subTotalLabel;
+
     private String total;
     private Label totalLabel;
+
+    private String discount;
+    private Label discountLabel;
+
+    private String grandTotalAmount;
+    private Label grandTotalAmountLabel;
 
     private String shipping;
     private Label shippingLabel;
@@ -148,21 +157,32 @@ public class CustomerOrderReviewPage extends MBaaSPage {
         this.paymentNameLabel = new Label("paymentNameLabel", new PropertyModel<>(this, "paymentName"));
         layout.add(this.paymentNameLabel);
 
-        this.total = priceFormat.format(orderRecord.getTotal());
-        this.totalLabel = new Label("totalLabel", new PropertyModel<>(this, "total"));
-        layout.add(this.totalLabel);
+        this.subTotal = priceFormat.format(orderRecord.getSubTotalAmount());
+        this.subTotalLabel = new Label("subTotalLabel", new PropertyModel<>(this, "subTotal"));
+        layout.add(this.subTotalLabel);
 
-        this.shipping = priceFormat.format(orderRecord.getShippingPrice()) + " (" + orderRecord.getShippingName() + ")";
+        this.shipping = priceFormat.format(orderRecord.getShippingPrice() + orderRecord.getShippingPriceAddon()) + " (" + orderRecord.getShippingName() + ")";
         this.shippingLabel = new Label("shippingLabel", new PropertyModel<>(this, "shipping"));
         layout.add(this.shippingLabel);
+        this.shippingLabel.setVisible(orderRecord.getShippingPrice() > 0);
 
-        this.totalAmount = priceFormat.format((orderRecord.getTotal()) + (orderRecord.getShippingPrice()));
+        this.discount = priceFormat.format(orderRecord.getDiscountAmount());
+        this.discountLabel = new Label("discountLabel", new PropertyModel<>(this, "discount"));
+        layout.add(this.discountLabel);
+        this.discountLabel.setVisible(orderRecord.getDiscountAmount() > 0);
+
+        this.totalAmount = priceFormat.format(orderRecord.getTotalAmount());
         this.totalAmountLabel = new Label("totalAmountLabel", new PropertyModel<>(this, "totalAmount"));
         layout.add(this.totalAmountLabel);
+
+        this.grandTotalAmount = priceFormat.format(orderRecord.getGrandTotalAmount());
+        this.grandTotalAmountLabel = new Label("grandTotalAmountLabel", new PropertyModel<>(this, "grandTotalAmount"));
+        layout.add(this.grandTotalAmountLabel);
 
         this.payment = priceFormat.format(orderRecord.getPaymentPrice()) + " (" + orderRecord.getPaymentName() + ")";
         this.paymentLabel = new Label("paymentLabel", new PropertyModel<>(this, "payment"));
         layout.add(this.paymentLabel);
+        this.paymentLabel.setVisible(orderRecord.getPaymentPrice() > 0);
 
         RepeatingView view = new RepeatingView("items");
         layout.add(view);

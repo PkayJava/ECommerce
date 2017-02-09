@@ -23,9 +23,9 @@ public class EcommerceOrder implements Serializable {
     private Date dateCreated;
     private String buyerStatus;
     private String orderStatus;
-    private Double total;
     private String shippingName;
     private Double shippingPrice;
+    private Double shippingPriceAddon;
     private String paymentName;
     private Double paymentPrice;
     private Long ecommerceRegionId;
@@ -33,6 +33,18 @@ public class EcommerceOrder implements Serializable {
     private Long ecommerceDiscountId;
     private String couponType;
     private Double couponValue;
+    private Double discountAmount;
+    private Double subTotalAmount;
+    private Double totalAmount;
+    private Double grandTotalAmount;
+
+    public Double getShippingPriceAddon() {
+        return shippingPriceAddon;
+    }
+
+    public void setShippingPriceAddon(Double shippingPriceAddon) {
+        this.shippingPriceAddon = shippingPriceAddon;
+    }
 
     public Long getEcommerceDiscountCouponId() {
         return ecommerceDiscountCouponId;
@@ -186,14 +198,6 @@ public class EcommerceOrder implements Serializable {
         this.orderStatus = orderStatus;
     }
 
-    public Double getTotal() {
-        return total;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
-    }
-
     public String getShippingName() {
         return shippingName;
     }
@@ -234,64 +238,35 @@ public class EcommerceOrder implements Serializable {
         this.ecommerceRegionId = ecommerceRegionId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        EcommerceOrder that = (EcommerceOrder) o;
-
-        if (ecommerceOrderId != null ? !ecommerceOrderId.equals(that.ecommerceOrderId) : that.ecommerceOrderId != null)
-            return false;
-        if (ecommerceShippingId != null ? !ecommerceShippingId.equals(that.ecommerceShippingId) : that.ecommerceShippingId != null)
-            return false;
-        if (ecommercePaymentId != null ? !ecommercePaymentId.equals(that.ecommercePaymentId) : that.ecommercePaymentId != null)
-            return false;
-        if (platformUserId != null ? !platformUserId.equals(that.platformUserId) : that.platformUserId != null)
-            return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (street != null ? !street.equals(that.street) : that.street != null) return false;
-        if (houseNumber != null ? !houseNumber.equals(that.houseNumber) : that.houseNumber != null) return false;
-        if (city != null ? !city.equals(that.city) : that.city != null) return false;
-        if (zip != null ? !zip.equals(that.zip) : that.zip != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
-        if (note != null ? !note.equals(that.note) : that.note != null) return false;
-        if (dateCreated != null ? !dateCreated.equals(that.dateCreated) : that.dateCreated != null) return false;
-        if (buyerStatus != null ? !buyerStatus.equals(that.buyerStatus) : that.buyerStatus != null) return false;
-        if (orderStatus != null ? !orderStatus.equals(that.orderStatus) : that.orderStatus != null) return false;
-        if (total != null ? !total.equals(that.total) : that.total != null) return false;
-        if (shippingName != null ? !shippingName.equals(that.shippingName) : that.shippingName != null) return false;
-        if (shippingPrice != null ? !shippingPrice.equals(that.shippingPrice) : that.shippingPrice != null)
-            return false;
-        if (paymentName != null ? !paymentName.equals(that.paymentName) : that.paymentName != null) return false;
-        if (paymentPrice != null ? !paymentPrice.equals(that.paymentPrice) : that.paymentPrice != null) return false;
-        return ecommerceRegionId != null ? ecommerceRegionId.equals(that.ecommerceRegionId) : that.ecommerceRegionId == null;
+    public Double getDiscountAmount() {
+        return discountAmount;
     }
 
-    @Override
-    public int hashCode() {
-        int result = ecommerceOrderId != null ? ecommerceOrderId.hashCode() : 0;
-        result = 31 * result + (ecommerceShippingId != null ? ecommerceShippingId.hashCode() : 0);
-        result = 31 * result + (ecommercePaymentId != null ? ecommercePaymentId.hashCode() : 0);
-        result = 31 * result + (platformUserId != null ? platformUserId.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (street != null ? street.hashCode() : 0);
-        result = 31 * result + (houseNumber != null ? houseNumber.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (zip != null ? zip.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (note != null ? note.hashCode() : 0);
-        result = 31 * result + (dateCreated != null ? dateCreated.hashCode() : 0);
-        result = 31 * result + (buyerStatus != null ? buyerStatus.hashCode() : 0);
-        result = 31 * result + (orderStatus != null ? orderStatus.hashCode() : 0);
-        result = 31 * result + (total != null ? total.hashCode() : 0);
-        result = 31 * result + (shippingName != null ? shippingName.hashCode() : 0);
-        result = 31 * result + (shippingPrice != null ? shippingPrice.hashCode() : 0);
-        result = 31 * result + (paymentName != null ? paymentName.hashCode() : 0);
-        result = 31 * result + (paymentPrice != null ? paymentPrice.hashCode() : 0);
-        result = 31 * result + (ecommerceRegionId != null ? ecommerceRegionId.hashCode() : 0);
-        return result;
+    public void setDiscountAmount(Double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public Double getSubTotalAmount() {
+        return subTotalAmount;
+    }
+
+    public void setSubTotalAmount(Double subTotalAmount) {
+        this.subTotalAmount = subTotalAmount;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Double getGrandTotalAmount() {
+        return grandTotalAmount;
+    }
+
+    public void setGrandTotalAmount(Double grandTotalAmount) {
+        this.grandTotalAmount = grandTotalAmount;
     }
 }

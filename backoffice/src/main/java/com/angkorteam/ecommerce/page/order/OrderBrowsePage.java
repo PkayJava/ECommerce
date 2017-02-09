@@ -43,7 +43,7 @@ public class OrderBrowsePage extends MBaaSPage {
         provider.boardField("payment_name", "paymentName", String.class);
         provider.boardField("order_status", "orderStatus", String.class);
         provider.boardField("buyer_status", "buyerStatus", String.class);
-        provider.boardField("(total + shipping_price + payment_price)", "total", Double.class);
+        provider.boardField("grand_total_amount", "total", Double.class);
         provider.boardField("date_created", "dateCreated", Calendar.DateTime);
 
         provider.selectField("ecommerceOrderId", Long.class);

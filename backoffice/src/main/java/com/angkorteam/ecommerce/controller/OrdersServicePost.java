@@ -1,5 +1,6 @@
 package com.angkorteam.ecommerce.controller;
 
+import com.angkorteam.ecommerce.mobile.cart.Discount;
 import com.angkorteam.ecommerce.mobile.order.Order;
 import com.angkorteam.ecommerce.model.*;
 import com.angkorteam.framework.jdbc.DeleteQuery;
@@ -87,9 +88,6 @@ public class OrdersServicePost {
         selectQuery.addWhere("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
         EcommerceCart ecommerceCart = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCart.class);
 
-        Integer totalProductCount = 0;
-        Double totalPrice = 0d;
-
         selectQuery = new SelectQuery("ecommerce_cart_product_item");
         selectQuery.addWhere("ecommerce_cart_id = :ecommerce_cart_id", ecommerceCart.getEcommerceCartId());
         List<EcommerceCartProductItem> cartItems = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), EcommerceCartProductItem.class);
@@ -151,7 +149,11 @@ public class OrdersServicePost {
         InsertQuery insertQuery = null;
         insertQuery = new InsertQuery("ecommerce_order");
 
-        Double shippingPriceAddon = 0d;
+        Integer totalProductCount = 0;
+        Double subTotalAmount = 0D;
+        Double shippingPrice = shippingRecord.getPrice() == null ? 0D : shippingRecord.getPrice();
+        Double shippingPriceAddon = 0D;
+        Double paymentPrice = paymentRecord.getPrice() == null ? 0D : paymentRecord.getPrice();
 
         Long orderId = Platform.randomUUIDLong("ecommerce_order");
         insertQuery.addValue("ecommerce_order_id = :ecommerce_order_id", orderId);
@@ -169,35 +171,9 @@ public class OrdersServicePost {
         insertQuery.addValue("date_created = :date_created", createdDate);
         insertQuery.addValue("buyer_status = :buyer_status", "Reviewing");
         insertQuery.addValue("order_status = :order_status", status);
-        insertQuery.addValue("total = :total", 0);
         insertQuery.addValue("shipping_name = :shipping_name", shippingRecord.getName());
-        insertQuery.addValue("shipping_price = :shipping_price", 0);
         insertQuery.addValue("payment_name = :payment_name", paymentRecord.getName());
-        insertQuery.addValue("payment_price = :payment_price", paymentRecord.getPrice());
-
-        Date now = new Date();
-        if (ecommerceCart.getEcommerceDiscountCouponId() != null) {
-
-            selectQuery = new SelectQuery("ecommerce_discount");
-            selectQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", ecommerceCart.getEcommerceDiscountId());
-            EcommerceDiscount ecommerceDiscount = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscount.class);
-
-            selectQuery = new SelectQuery("ecommerce_discount_coupon");
-            selectQuery.addWhere("ecommerce_discount_coupon_id = :ecommerce_discount_coupon_id", ecommerceCart.getEcommerceDiscountCouponId());
-            EcommerceDiscountCoupon ecommerceDiscountCoupon = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscountCoupon.class);
-
-            if (ecommerceDiscountCoupon == null || ecommerceDiscountCoupon.getUsed() || ecommerceDiscount == null || !ecommerceDiscount.getEnabled() || now.before(ecommerceDiscount.getStartDate()) || now.after(ecommerceDiscount.getEndDate())) {
-            } else {
-                insertQuery.addValue("ecommerce_discount_coupon_id = :ecommerce_discount_coupon_id", ecommerceCart.getEcommerceDiscountCouponId());
-                insertQuery.addValue("ecommerce_discount_id = :ecommerce_discount_id", ecommerceCart.getEcommerceDiscountId());
-                insertQuery.addValue("coupon_type = :coupon_type", ecommerceDiscount.getType());
-                insertQuery.addValue("coupon_value = :coupon_value", ecommerceDiscount.getValue());
-                jdbcTemplate.update("update ecommerce_discount_coupon set used = true, used_date = now(), platform_user_id = ?, ecommerce_order_id = ? where ecommerce_discount_coupon_id = ?", currentUser.getPlatformUserId(), orderId, ecommerceDiscountCoupon.getEcommerceDiscountCouponId());
-            }
-
-        }
-
-        shippingPriceAddon = shippingRecord.getPrice();
+        insertQuery.addValue("payment_price = :payment_price", paymentPrice);
 
         named.update(insertQuery.toSQL(), insertQuery.getParam());
 
@@ -229,11 +205,9 @@ public class OrdersServicePost {
                 Integer quantity = cartItemRecord.getQuantity() == null ? 0 : cartItemRecord.getQuantity();
                 Double price = productRecord.getPrice() == null ? 0d : productRecord.getPrice();
                 totalProductCount = quantity + totalProductCount;
-                totalPrice = totalPrice + (quantity * price);
+                subTotalAmount = subTotalAmount + (quantity * price);
                 Double productShippingPriceAddon = productRecord.getShippingPrice() == null ? 0d : productRecord.getShippingPrice();
-                if (productShippingPriceAddon != null && productShippingPriceAddon > 0) {
-                    shippingPriceAddon = (shippingPriceAddon == null ? 0d : shippingPriceAddon) + (productShippingPriceAddon * quantity);
-                }
+                shippingPriceAddon = shippingPriceAddon + (productShippingPriceAddon * quantity);
 
                 selectQuery = new SelectQuery("platform_file");
                 selectQuery.addField("CONCAT('" + asset + "', '/api/resource', platform_file.path, '/', platform_file.name)");
@@ -309,9 +283,58 @@ public class OrdersServicePost {
             named.update(updateQuery.toSQL(), updateQuery.getParam());
         }
 
+        Double discountAmount = 0D;
+        Double totalAmount = 0D;
+        Double grandTotalAmount = 0D;
+
         updateQuery = new UpdateQuery("ecommerce_order");
-        updateQuery.addValue("shipping_price = :shipping_price", shippingPriceAddon);
-        updateQuery.addValue("total = :total", totalPrice);
+        updateQuery.addValue("shipping_price = :shipping_price", shippingPrice);
+        updateQuery.addValue("shipping_price_addon = :shipping_price_addon", shippingPriceAddon);
+
+        Date now = new Date();
+        if (ecommerceCart.getEcommerceDiscountCouponId() != null) {
+
+            selectQuery = new SelectQuery("ecommerce_discount");
+            selectQuery.addWhere("ecommerce_discount_id = :ecommerce_discount_id", ecommerceCart.getEcommerceDiscountId());
+            EcommerceDiscount ecommerceDiscount = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscount.class);
+
+            selectQuery = new SelectQuery("ecommerce_discount_coupon");
+            selectQuery.addWhere("ecommerce_discount_coupon_id = :ecommerce_discount_coupon_id", ecommerceCart.getEcommerceDiscountCouponId());
+            EcommerceDiscountCoupon ecommerceDiscountCoupon = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceDiscountCoupon.class);
+
+            if (ecommerceDiscountCoupon == null || ecommerceDiscountCoupon.getUsed() || ecommerceDiscount == null || !ecommerceDiscount.getEnabled() || now.before(ecommerceDiscount.getStartDate()) || now.after(ecommerceDiscount.getEndDate())) {
+            } else {
+                insertQuery.addValue("ecommerce_discount_coupon_id = :ecommerce_discount_coupon_id", ecommerceCart.getEcommerceDiscountCouponId());
+                insertQuery.addValue("ecommerce_discount_id = :ecommerce_discount_id", ecommerceCart.getEcommerceDiscountId());
+                insertQuery.addValue("coupon_type = :coupon_type", ecommerceDiscount.getType());
+                insertQuery.addValue("coupon_value = :coupon_value", ecommerceDiscount.getValue());
+                UpdateQuery pp = new UpdateQuery("ecommerce_discount_coupon");
+                pp.addValue("used = :used", true);
+                pp.addValue("used_date = :used_date", now);
+                pp.addValue("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
+                pp.addValue("ecommerce_order_id = :ecommerce_order_id", orderId);
+                pp.addWhere("ecommerce_discount_coupon_id = :ecommerce_discount_coupon_id", ecommerceDiscountCoupon.getEcommerceDiscountCouponId());
+                named.update(pp.toSQL(), pp.getParam());
+                if (Discount.TYPE_PERCENTAGE.equals(ecommerceDiscount.getType())) {
+                    discountAmount = subTotalAmount * (ecommerceDiscount.getValue() / 100D);
+                } else if (Discount.TYPE_FIXED.equals(ecommerceDiscount.getType())) {
+                    discountAmount = ecommerceDiscount.getValue();
+                }
+                totalAmount = subTotalAmount - discountAmount;
+                if (totalAmount < 0D) {
+                    totalAmount = 0D;
+                }
+                grandTotalAmount = totalAmount + paymentPrice + shippingPrice + shippingPriceAddon;
+            }
+
+        }
+
+        updateQuery.addValue("discount_amount = :discount_amount", discountAmount);
+        updateQuery.addValue("sub_total_amount = :sub_total_amount", subTotalAmount);
+        updateQuery.addValue("total_amount = :total_amount", totalAmount);
+        updateQuery.addValue("grand_total_amount = :grand_total_amount", grandTotalAmount);
+
+
         updateQuery.addWhere("ecommerce_order_id = :ecommerce_order_id", orderId);
         named.update(updateQuery.toSQL(), updateQuery.getParam());
 

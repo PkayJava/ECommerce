@@ -2,7 +2,6 @@ package com.angkorteam.ecommerce.controller;
 
 import com.angkorteam.ecommerce.mobile.cart.CartProductItem;
 import com.angkorteam.ecommerce.mobile.cart.CartProductItemVariant;
-import com.angkorteam.ecommerce.mobile.cart.Discount;
 import com.angkorteam.ecommerce.mobile.order.Order;
 import com.angkorteam.ecommerce.mobile.product.ProductColor;
 import com.angkorteam.ecommerce.mobile.product.ProductSize;
@@ -70,7 +69,7 @@ public class OrdersSingleServiceGet {
         EcommerceOrder ecommerceOrder = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), EcommerceOrder.class);
 
         Double shippingPrice = ecommerceOrder.getShippingPrice() == null ? 0d : ecommerceOrder.getShippingPrice();
-        Double paymentPrice = ecommerceOrder.getPaymentPrice() == null ? 0d : ecommerceOrder.getPaymentPrice();
+        Double shippingPriceAddon = ecommerceOrder.getShippingPriceAddon() == null ? 0d : ecommerceOrder.getShippingPriceAddon();
 
         Order data = new Order();
         data.setId(ecommerceOrder.getEcommerceOrderId());
@@ -78,7 +77,7 @@ public class OrdersSingleServiceGet {
         data.setDateCreated(datetimeFormat.format(ecommerceOrder.getDateCreated()));
         data.setStatus(ecommerceOrder.getOrderStatus());
         data.setShippingName(ecommerceOrder.getShippingName());
-        data.setShippingPrice(shippingPrice);
+        data.setShippingPrice(shippingPrice + shippingPriceAddon);
         data.setShippingPriceFormatted(priceFormat.format(data.getShippingPrice()));
         data.setCurrency(currency);
         data.setShippingType(ecommerceOrder.getEcommerceShippingId());
@@ -91,27 +90,13 @@ public class OrdersSingleServiceGet {
         data.setEmail(ecommerceOrder.getEmail());
         data.setPhone(ecommerceOrder.getPhone());
 
-        Double total = ecommerceOrder.getTotal() == null ? 0D : ecommerceOrder.getTotal();
-        Double couponValue = 0D;
-        if (ecommerceOrder.getEcommerceDiscountCouponId() != null) {
-            if (Discount.TYPE_PERCENTAGE.equals(ecommerceOrder.getCouponType())) {
-                couponValue = total * (ecommerceOrder.getCouponValue() / 100D);
-            } else if (Discount.TYPE_FIXED.equals(ecommerceOrder.getCouponType())) {
-                couponValue = ecommerceOrder.getCouponValue();
-            }
-            total = total - couponValue;
-            if (total < 0) {
-                total = 0D;
-            }
-        }
-
-        data.setTotal(total + shippingPrice + paymentPrice);
+        data.setTotal(ecommerceOrder.getGrandTotalAmount());
         data.setTotalFormatted(priceFormat.format(data.getTotal()));
 
-        if (couponValue > 0) {
+        if (ecommerceOrder.getDiscountAmount() > 0) {
             data.setNote(ecommerceOrder.getNote());
         } else {
-            data.setNote(ecommerceOrder.getNote() + " \n Discount " + priceFormat.format(couponValue));
+            data.setNote(ecommerceOrder.getNote() + " \n Discount " + priceFormat.format(ecommerceOrder.getDiscountAmount()));
         }
 
         selectQuery = new SelectQuery("ecommerce_order_item");

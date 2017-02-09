@@ -69,6 +69,7 @@ public class SizeCreatePage extends MBaaSPage {
         insertQuery = new InsertQuery("ecommerce_size");
         insertQuery.addValue("ecommerce_size_id = :ecommerce_size_id", Platform.randomUUIDLong("ecommerce_size"));
         insertQuery.addValue("`value` = :value", this.value);
+        insertQuery.addValue("`enabled` = :enabled", true);
         insertQuery.addValue("reference = :reference", this.reference);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 

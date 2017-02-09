@@ -148,6 +148,7 @@ public class ShopCreatePage extends MBaaSPage {
         insertQuery.addValue("google_ua = :google_ua", this.google);
         insertQuery.addValue("logo_platform_file_id = :logo_platform_file_id", logoFileId);
         insertQuery.addValue("flag_icon_platform_file_id = :flag_icon_platform_file_id", flagIconFileId);
+        insertQuery.addValue("`enabled` = :enabled", true);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
         setResponsePage(ShopBrowsePage.class);
     }

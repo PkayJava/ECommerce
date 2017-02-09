@@ -281,6 +281,7 @@ public class ProductCreatePage extends MBaaSPage {
         insertQuery.addValue("ecommerce_color_id = :ecommerce_color_id", this.color.getId());
         insertQuery.addValue("ecommerce_size_id = :ecommerce_size_id", this.size.getId());
         insertQuery.addValue("quantity = :quantity", this.quantity);
+        insertQuery.addValue("`enabled` = :enabled", true);
 
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 

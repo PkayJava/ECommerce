@@ -153,6 +153,7 @@ public class ShippingCreatePage extends MBaaSPage {
         insertQuery.addValue("availability_date = :availability_date", this.availabilityDate);
         insertQuery.addValue("type = :type", this.type);
         insertQuery.addValue("price = :price", this.price);
+        insertQuery.addValue("`enabled` = :enabled", true);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 
         if (this.payment != null && !this.payment.isEmpty()) {

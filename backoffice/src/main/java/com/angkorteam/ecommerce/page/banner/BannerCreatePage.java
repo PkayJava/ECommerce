@@ -142,6 +142,7 @@ public class BannerCreatePage extends MBaaSPage {
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("`order` = :order", this.order);
         insertQuery.addValue("type = :type", this.type);
+        insertQuery.addValue("`enabled` = :enabled", true);
         insertQuery.addValue("ecommerce_product_id = :ecommerce_product_id", productId);
         insertQuery.addValue("ecommerce_category_id = :ecommerce_category_id", categoryId);
         insertQuery.addValue("image_url_platform_file_id = :image_url_platform_file_id ", imageUrlFileId);

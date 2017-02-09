@@ -67,6 +67,7 @@ public class BrandCreatePage extends MBaaSPage {
         insertQuery.addValue("ecommerce_brand_id = :ecommerce_brand_id", Platform.randomUUIDLong("ecommerce_brand"));
         insertQuery.addValue("`order` = :order", this.order);
         insertQuery.addValue("name = :name", this.name);
+        insertQuery.addValue("`enabled` = :enabled", true);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
         setResponsePage(BrandBrowsePage.class);
     }

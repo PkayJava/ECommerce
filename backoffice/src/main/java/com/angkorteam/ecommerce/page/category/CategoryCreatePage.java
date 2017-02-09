@@ -115,6 +115,7 @@ public class CategoryCreatePage extends MBaaSPage {
         insertQuery.addValue("`order` = :order", this.order);
         insertQuery.addValue("code = :code", this.code);
         insertQuery.addValue("path = :path", path);
+        insertQuery.addValue("`enabled` = :enabled", true);
         insertQuery.addValue("parent_path = :parent_path", parentPath);
         insertQuery.addValue("full_code = :full_code", fullCode);
         insertQuery.addValue("type = :type", "category");

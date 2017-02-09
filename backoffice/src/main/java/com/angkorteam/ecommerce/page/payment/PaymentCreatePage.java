@@ -182,6 +182,7 @@ public class PaymentCreatePage extends MBaaSPage {
         insertQuery.addValue("description = :description", this.description);
         insertQuery.addValue("price = :price", this.price);
         insertQuery.addValue("type = :type", this.type);
+        insertQuery.addValue("`enabled` = :enabled", true);
         insertQuery.addValue("server_param1 = :server_param1", this.serverParam1);
         insertQuery.addValue("server_param2 = :server_param2", this.serverParam2);
         insertQuery.addValue("server_param3 = :server_param3", this.serverParam3);

@@ -76,6 +76,7 @@ public class ArticleCreatePage extends MBaaSPage {
         InsertQuery insertQuery = new InsertQuery("ecommerce_page");
         insertQuery.addValue("`ecommerce_page_id` = :ecommerce_page_id", Platform.randomUUIDLong("ecommerce_page"));
         insertQuery.addValue("`order` = :order", this.order);
+        insertQuery.addValue("`enabled` = :enabled", true);
         insertQuery.addValue("`title` = :title", this.articleTitle);
         insertQuery.addValue("`text` = :text", this.articleText);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());

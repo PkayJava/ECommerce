@@ -9,7 +9,9 @@ CREATE TABLE `ecommerce_category` (
   `path`                         VARCHAR(255) NOT NULL,
   `parent_path`                  VARCHAR(255) NOT NULL,
   `parent_ecommerce_category_id` BIGINT(19),
+  `enabled`                      BIT(1),
 
+  KEY (`enabled`),
   KEY (`name`),
   KEY (`full_code`),
   KEY (`code`),

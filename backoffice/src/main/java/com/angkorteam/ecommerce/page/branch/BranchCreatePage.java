@@ -97,6 +97,7 @@ public class BranchCreatePage extends MBaaSPage {
         insertQuery.addValue("name = :name", this.name);
         insertQuery.addValue("address = :address", this.address);
         insertQuery.addValue("note = :note", this.note);
+        insertQuery.addValue("`enabled` = :enabled", true);
         insertQuery.addValue("longitude = :longitude", this.longitude);
         insertQuery.addValue("latitude = :latitude", this.latitude);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());

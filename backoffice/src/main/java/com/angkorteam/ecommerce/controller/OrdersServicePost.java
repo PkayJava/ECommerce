@@ -287,8 +287,8 @@ public class OrdersServicePost {
         }
 
         Double discountAmount = 0D;
-        Double totalAmount = 0D;
-        Double grandTotalAmount = 0D;
+        Double totalAmount = subTotalAmount - discountAmount;
+        Double grandTotalAmount = totalAmount + paymentPrice + shippingPrice + shippingPriceAddon;
 
         updateQuery = new UpdateQuery("ecommerce_order");
         updateQuery.addValue("shipping_price = :shipping_price", shippingPrice);

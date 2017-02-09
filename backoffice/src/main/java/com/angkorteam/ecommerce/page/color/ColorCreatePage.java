@@ -9,7 +9,7 @@ import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -57,7 +57,7 @@ public class ColorCreatePage extends MBaaSPage {
         this.form = new Form<>("form");
         layout.add(this.form);
 
-        this.reference = String.valueOf(RandomStringUtils.randomAlphabetic(6));
+        this.reference = StringUtils.upperCase(org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(6));
         this.referenceField = new TextField<>("referenceField", new PropertyModel<>(this, "reference"));
         this.referenceField.add(new UniqueRecordValidator<>("ecommerce_color", "reference"));
         this.referenceField.setRequired(true);

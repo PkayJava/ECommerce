@@ -37,6 +37,7 @@ public class ArticleBrowsePage extends MBaaSPage {
         provider.boardField("ecommerce_page_id", "ecommercePageId", Long.class);
         provider.boardField("text", "text", String.class);
         provider.boardField("title", "title", String.class);
+        provider.boardField("enabled", "enabled", Boolean.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);
@@ -45,6 +46,7 @@ public class ArticleBrowsePage extends MBaaSPage {
         columns.add(new TextFilterColumn(provider, ItemClass.Long, Model.of("ID"), "ecommercePageId"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("title"), "title"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("text"), "text"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("enabled"), "enabled"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         this.dataTable = new DefaultDataTable<>("table", columns, provider, 20);
@@ -61,6 +63,12 @@ public class ArticleBrowsePage extends MBaaSPage {
     private List<ActionItem> actions(String name, Map<String, Object> object) {
         List<ActionItem> actionItems = Lists.newArrayList();
         actionItems.add(new ActionItem("Edit", Model.of("Edit")));
+        Boolean enabled = (Boolean) object.get("enabled");
+        if (enabled != null && enabled) {
+            actionItems.add(new ActionItem("Disable", Model.of("Disable"), ItemCss.DANGER));
+        } else {
+            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.DANGER));
+        }
         actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;
     }
@@ -74,6 +82,12 @@ public class ArticleBrowsePage extends MBaaSPage {
             PageParameters parameters = new PageParameters();
             parameters.add("ecommercePageId", ecommercePageId);
             setResponsePage(ArticleModifyPage.class, parameters);
+        } else if ("Enable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_page set enabled = true where ecommerce_page_id = ?", ecommercePageId);
+            target.add(this.dataTable);
+        } else if ("Disable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_page set enabled = false where ecommerce_page_id = ?", ecommercePageId);
+            target.add(this.dataTable);
         }
     }
 

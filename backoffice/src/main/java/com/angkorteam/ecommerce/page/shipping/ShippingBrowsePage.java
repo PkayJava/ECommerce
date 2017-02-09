@@ -42,6 +42,7 @@ public class ShippingBrowsePage extends MBaaSPage {
         provider.boardField("ecommerce_shipping.min_cart_amount", "minCartAmount", Double.class);
         provider.boardField("ecommerce_shipping.type", "type", String.class);
         provider.boardField("ecommerce_branch.name", "branch", String.class);
+        provider.boardField("enabled", "enabled", Boolean.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);
@@ -53,6 +54,7 @@ public class ShippingBrowsePage extends MBaaSPage {
         columns.add(new TextFilterColumn(provider, ItemClass.Double, Model.of("minCartAmount"), "minCartAmount"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("type"), "type"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("branch"), "branch"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("enabled"), "enabled"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         this.dataTable = new DefaultDataTable<>("table", columns, provider, 20);
@@ -69,6 +71,12 @@ public class ShippingBrowsePage extends MBaaSPage {
     private List<ActionItem> actions(String name, Map<String, Object> object) {
         List<ActionItem> actionItems = Lists.newArrayList();
         actionItems.add(new ActionItem("Edit", Model.of("Edit")));
+        Boolean enabled = (Boolean) object.get("enabled");
+        if (enabled != null && enabled) {
+            actionItems.add(new ActionItem("Disable", Model.of("Disable"), ItemCss.DANGER));
+        } else {
+            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.DANGER));
+        }
         actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;
     }
@@ -82,6 +90,12 @@ public class ShippingBrowsePage extends MBaaSPage {
             PageParameters parameters = new PageParameters();
             parameters.add("ecommerceShippingId", ecommerceShippingId);
             setResponsePage(ShippingModifyPage.class, parameters);
+        } else if ("Enable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_shipping set enabled = true where ecommerce_shipping_id = ?", ecommerceShippingId);
+            target.add(this.dataTable);
+        } else if ("Disable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_shipping set enabled = false where ecommerce_shipping_id = ?", ecommerceShippingId);
+            target.add(this.dataTable);
         }
     }
 

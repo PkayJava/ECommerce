@@ -116,12 +116,16 @@ public class ShippingCreatePage extends MBaaSPage {
         this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
         this.form.add(this.typeFeedback);
 
-        this.branchField = new Select2SingleChoice<>("branchField", new PropertyModel<>(this, "branch"), new OptionSingleChoiceProvider("ecommerce_branch", "ecommerce_branch_id", "name"));
+        OptionSingleChoiceProvider branchOption = new OptionSingleChoiceProvider("ecommerce_branch", "ecommerce_branch_id", "name");
+        branchOption.addWhere("enabled = true");
+        this.branchField = new Select2SingleChoice<>("branchField", new PropertyModel<>(this, "branch"), branchOption);
         this.form.add(this.branchField);
         this.branchFeedback = new TextFeedbackPanel("branchFeedback", this.branchField);
         this.form.add(this.branchFeedback);
 
-        this.paymentField = new Select2MultipleChoice<>("paymentField", new PropertyModel<>(this, "payment"), new OptionMultipleChoiceProvider("ecommerce_payment", "ecommerce_payment_id", "name"));
+        OptionMultipleChoiceProvider paymentOption = new OptionMultipleChoiceProvider("ecommerce_payment", "ecommerce_payment_id", "name");
+        paymentOption.addWhere("enabled = true");
+        this.paymentField = new Select2MultipleChoice<>("paymentField", new PropertyModel<>(this, "payment"), paymentOption);
         this.form.add(this.paymentField);
         this.paymentFeedback = new TextFeedbackPanel("paymentFeedback", this.paymentField);
         this.form.add(this.paymentFeedback);

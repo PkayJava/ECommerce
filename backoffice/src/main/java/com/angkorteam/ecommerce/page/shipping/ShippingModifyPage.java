@@ -141,7 +141,9 @@ public class ShippingModifyPage extends MBaaSPage {
         selectQuery.addField("ecommerce_branch_id AS id", "name AS text");
         selectQuery.addWhere("ecommerce_branch_id = :ecommerce_branch_id", ecommerceShipping.getEcommerceBranchId());
         this.branch = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
-        this.branchField = new Select2SingleChoice<>("branchField", new PropertyModel<>(this, "branch"), new OptionSingleChoiceProvider("ecommerce_branch", "ecommerce_branch_id", "name"));
+        OptionSingleChoiceProvider branchOption = new OptionSingleChoiceProvider("ecommerce_branch", "ecommerce_branch_id", "name");
+        branchOption.addWhere("enabled = true");
+        this.branchField = new Select2SingleChoice<>("branchField", new PropertyModel<>(this, "branch"), branchOption);
         this.form.add(this.branchField);
         this.branchFeedback = new TextFeedbackPanel("branchFeedback", this.branchField);
         this.form.add(this.branchFeedback);
@@ -151,7 +153,9 @@ public class ShippingModifyPage extends MBaaSPage {
         selectQuery.addJoin(JoinType.InnerJoin, "ecommerce_shipping_payment", "ecommerce_shipping_payment.ecommerce_payment_id = ecommerce_payment.ecommerce_payment_id");
         selectQuery.addWhere("ecommerce_shipping_payment.ecommerce_shipping_id = :ecommerce_shipping_id", this.ecommerceShippingId);
         this.payment = getNamed().queryForList(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
-        this.paymentField = new Select2MultipleChoice<>("paymentField", new PropertyModel<>(this, "payment"), new OptionMultipleChoiceProvider("ecommerce_payment", "ecommerce_payment_id", "name"));
+        OptionMultipleChoiceProvider paymentOption = new OptionMultipleChoiceProvider("ecommerce_payment", "ecommerce_payment_id", "name");
+        paymentOption.addWhere("enabled = true");
+        this.paymentField = new Select2MultipleChoice<>("paymentField", new PropertyModel<>(this, "payment"), paymentOption);
         this.form.add(this.paymentField);
         this.paymentFeedback = new TextFeedbackPanel("paymentFeedback", this.paymentField);
         this.form.add(this.paymentFeedback);

@@ -38,6 +38,7 @@ public class PaymentBrowsePage extends MBaaSPage {
         provider.boardField("name", "name", String.class);
         provider.boardField("type", "type", String.class);
         provider.boardField("price", "price", Double.class);
+        provider.boardField("enabled", "enabled", Boolean.class);
 
         provider.selectField("ecommercePaymentId", String.class);
 
@@ -49,6 +50,7 @@ public class PaymentBrowsePage extends MBaaSPage {
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("name"), "name"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("type"), "type"));
         columns.add(new TextFilterColumn(provider, ItemClass.Double, Model.of("price"), "price"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("enabled"), "enabled"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         this.dataTable = new DefaultDataTable<>("table", columns, provider, 20);
@@ -65,6 +67,12 @@ public class PaymentBrowsePage extends MBaaSPage {
     private List<ActionItem> actions(String name, Map<String, Object> object) {
         List<ActionItem> actionItems = Lists.newArrayList();
         actionItems.add(new ActionItem("Edit", Model.of("Edit")));
+        Boolean enabled = (Boolean) object.get("enabled");
+        if (enabled != null && enabled) {
+            actionItems.add(new ActionItem("Disable", Model.of("Disable"), ItemCss.DANGER));
+        } else {
+            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.DANGER));
+        }
         actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;
     }
@@ -78,6 +86,12 @@ public class PaymentBrowsePage extends MBaaSPage {
             PageParameters parameters = new PageParameters();
             parameters.add("ecommercePaymentId", ecommercePaymentId);
             setResponsePage(PaymentModifyPage.class, parameters);
+        } else if ("Enable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_payment set enabled = true where ecommerce_payment_id = ?", ecommercePaymentId);
+            target.add(this.dataTable);
+        } else if ("Disable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_payment set enabled = false where ecommerce_payment_id = ?", ecommercePaymentId);
+            target.add(this.dataTable);
         }
     }
 

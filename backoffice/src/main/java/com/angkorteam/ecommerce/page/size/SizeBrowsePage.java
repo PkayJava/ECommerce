@@ -36,6 +36,7 @@ public class SizeBrowsePage extends MBaaSPage {
         provider.boardField("ecommerce_size_id", "ecommerceSizeId", Long.class);
         provider.boardField("reference", "reference", String.class);
         provider.boardField("value", "value", String.class);
+        provider.boardField("enabled", "enabled", Boolean.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);
@@ -44,6 +45,8 @@ public class SizeBrowsePage extends MBaaSPage {
         columns.add(new TextFilterColumn(provider, ItemClass.Long, Model.of("ID"), "ecommerceSizeId"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("reference"), "reference"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("value"), "value"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("enabled"), "enabled"));
+
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         this.dataTable = new DefaultDataTable<>("table", columns, provider, 20);
@@ -59,17 +62,28 @@ public class SizeBrowsePage extends MBaaSPage {
 
     private List<ActionItem> actions(String name, Map<String, Object> object) {
         List<ActionItem> actionItems = Lists.newArrayList();
+        Boolean enabled = (Boolean) object.get("enabled");
+        if (enabled != null && enabled) {
+            actionItems.add(new ActionItem("Disable", Model.of("Disable"), ItemCss.DANGER));
+        } else {
+            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.DANGER));
+        }
         actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;
     }
 
     private void itemClick(String link, Map<String, Object> object, AjaxRequestTarget target) {
+        Long ecommerceSizeId = (Long) object.get("ecommerceSizeId");
         if ("Delete".equals(link)) {
-            Long ecommerceSizeId = (Long) object.get("ecommerceSizeId");
             getJdbcTemplate().update("delete from ecommerce_size where ecommerce_size_id = ?", ecommerceSizeId);
+            target.add(this.dataTable);
+        } else if ("Enable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_size set enabled = true where ecommerce_size_id = ?", ecommerceSizeId);
+            target.add(this.dataTable);
+        } else if ("Disable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_size set enabled = false where ecommerce_size_id = ?", ecommerceSizeId);
             target.add(this.dataTable);
         }
     }
-
 
 }

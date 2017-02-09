@@ -124,13 +124,17 @@ public class ProductCreatePage extends MBaaSPage {
         this.normalPriceFeedback = new TextFeedbackPanel("normalPriceFeedback", this.normalPriceField);
         this.form.add(this.normalPriceFeedback);
 
-        this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"), new OptionSingleChoiceProvider("ecommerce_category", "ecommerce_category_id", "name", "path"));
+        OptionSingleChoiceProvider categoryOption = new OptionSingleChoiceProvider("ecommerce_category", "ecommerce_category_id", "name", "path");
+        categoryOption.addWhere("enabled = true");
+        this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"), categoryOption);
         this.categoryField.setRequired(true);
         this.form.add(this.categoryField);
         this.categoryFeedback = new TextFeedbackPanel("categoryFeedback", this.categoryField);
         this.form.add(this.categoryFeedback);
 
-        this.brandField = new Select2SingleChoice<>("brandField", new PropertyModel<>(this, "brand"), new OptionSingleChoiceProvider("ecommerce_brand", "ecommerce_brand_id", "name"));
+        OptionSingleChoiceProvider brandOption = new OptionSingleChoiceProvider("ecommerce_brand", "ecommerce_brand_id", "name");
+        brandOption.addWhere("enable = true");
+        this.brandField = new Select2SingleChoice<>("brandField", new PropertyModel<>(this, "brand"), brandOption);
         this.form.add(this.brandField);
         this.brandFeedback = new TextFeedbackPanel("brandFeedback", this.brandField);
         this.form.add(this.brandFeedback);
@@ -154,13 +158,17 @@ public class ProductCreatePage extends MBaaSPage {
         this.mainImageFeedback = new TextFeedbackPanel("mainImageFeedback", this.mainImageField);
         this.form.add(this.mainImageFeedback);
 
-        this.colorField = new Select2SingleChoice<>("colorField", new PropertyModel<>(this, "color"), new OptionSingleChoiceProvider("ecommerce_color", "ecommerce_color_id", "CONCAT(value, ' -> ', reference)"));
+        OptionSingleChoiceProvider colorOption = new OptionSingleChoiceProvider("ecommerce_color", "ecommerce_color_id", "CONCAT(value, ' -> ', reference)");
+        colorOption.addWhere("enabled = true");
+        this.colorField = new Select2SingleChoice<>("colorField", new PropertyModel<>(this, "color"), colorOption);
         this.colorField.setRequired(true);
         this.form.add(this.colorField);
         this.colorFeedback = new TextFeedbackPanel("colorFeedback", this.colorField);
         this.form.add(this.colorFeedback);
 
-        this.sizeField = new Select2SingleChoice<>("sizeField", new PropertyModel<>(this, "size"), new OptionSingleChoiceProvider("ecommerce_size", "ecommerce_size_id", "CONCAT(value, ' -> ', reference)"));
+        OptionSingleChoiceProvider sizeOption = new OptionSingleChoiceProvider("ecommerce_size", "ecommerce_size_id", "CONCAT(value, ' -> ', reference)");
+        sizeOption.addWhere("enabled = true");
+        this.sizeField = new Select2SingleChoice<>("sizeField", new PropertyModel<>(this, "size"), sizeOption);
         this.sizeField.setRequired(true);
         this.form.add(this.sizeField);
         this.sizeFeedback = new TextFeedbackPanel("sizeFeedback", this.sizeField);
@@ -172,7 +180,9 @@ public class ProductCreatePage extends MBaaSPage {
         this.mainImageHighResFeedback = new TextFeedbackPanel("mainImageHighResFeedback", this.mainImageHighResField);
         this.form.add(this.mainImageHighResFeedback);
 
-        this.relatedProductField = new Select2MultipleChoice<>("relatedProductField", new PropertyModel<>(this, "relatedProduct"), new OptionMultipleChoiceProvider("ecommerce_product", "ecommerce_product_id", "name"));
+        OptionMultipleChoiceProvider relatedOption = new OptionMultipleChoiceProvider("ecommerce_product", "ecommerce_product_id", "name");
+        relatedOption.addWhere("enabled = true");
+        this.relatedProductField = new Select2MultipleChoice<>("relatedProductField", new PropertyModel<>(this, "relatedProduct"), relatedOption);
         this.form.add(this.relatedProductField);
         this.relatedProductFeedback = new TextFeedbackPanel("relatedProductFeedback", this.relatedProductField);
         this.form.add(this.relatedProductFeedback);
@@ -269,7 +279,6 @@ public class ProductCreatePage extends MBaaSPage {
                 getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
             }
         }
-
 
         // insert variant
 

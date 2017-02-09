@@ -58,6 +58,7 @@ public class ProductBrowsePage extends MBaaSPage {
         provider.boardField("max(ecommerce_product.quantity)", "quantity", Integer.class);
         provider.boardField("max(ecommerce_brand.name)", "brand", String.class);
         provider.boardField("max(ecommerce_category.name)", "category", String.class);
+        provider.boardField("max(ecommerce_product.enabled)", "enabled", Boolean.class);
 
         provider.setSort("ready", SortOrder.ASCENDING);
 
@@ -84,6 +85,7 @@ public class ProductBrowsePage extends MBaaSPage {
             columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("fullName"), "fullName"));
         }
         columns.add(new TextFilterColumn(provider, ItemClass.Integer, Model.of("variant"), "variant"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("enabled"), "enabled"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         this.dataTable = new DefaultDataTable<>("table", columns, provider, 20);
@@ -111,6 +113,12 @@ public class ProductBrowsePage extends MBaaSPage {
             if (count > 0) {
                 actionItems.add(new ActionItem("Review", Model.of("Review"), ItemCss.WARNING));
             }
+        }
+        Boolean enabled = (Boolean) object.get("enabled");
+        if (enabled != null && enabled) {
+            actionItems.add(new ActionItem("Disable", Model.of("Disable"), ItemCss.DANGER));
+        } else {
+            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.DANGER));
         }
         actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;
@@ -142,6 +150,12 @@ public class ProductBrowsePage extends MBaaSPage {
             PageParameters parameters = new PageParameters();
             parameters.add("ecommerceProductId", ecommerceProductId);
             setResponsePage(ProductReviewPage.class, parameters);
+        } else if ("Enable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_product set enabled = true where ecommerce_product_id = ?", ecommerceProductId);
+            target.add(this.dataTable);
+        } else if ("Disable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_product set enabled = false where ecommerce_product_id = ?", ecommerceProductId);
+            target.add(this.dataTable);
         }
     }
 }

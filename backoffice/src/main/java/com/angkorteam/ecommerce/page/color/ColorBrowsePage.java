@@ -37,6 +37,7 @@ public class ColorBrowsePage extends MBaaSPage {
         provider.boardField("reference", "reference", String.class);
         provider.boardField("code", "code", String.class);
         provider.boardField("value", "value", String.class);
+        provider.boardField("enabled", "enabled", Boolean.class);
 
         provider.selectField("ecommerceColorId", String.class);
 
@@ -47,6 +48,8 @@ public class ColorBrowsePage extends MBaaSPage {
         columns.add(new TextFilterColumn(provider, ItemClass.Long, Model.of("ID"), "ecommerceColorId"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("reference"), "reference"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("code"), "code"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("enabled"), "enabled"));
+
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         this.dataTable = new DefaultDataTable<>("table", columns, provider, 20);
@@ -62,14 +65,26 @@ public class ColorBrowsePage extends MBaaSPage {
 
     private List<ActionItem> actions(String name, Map<String, Object> object) {
         List<ActionItem> actionItems = Lists.newArrayList();
+        Boolean enabled = (Boolean) object.get("enabled");
+        if (enabled != null && enabled) {
+            actionItems.add(new ActionItem("Disable", Model.of("Disable"), ItemCss.DANGER));
+        } else {
+            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.DANGER));
+        }
         actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;
     }
 
     private void itemClick(String link, Map<String, Object> object, AjaxRequestTarget target) {
+        Long ecommerceColorId = (Long) object.get("ecommerceColorId");
         if ("Delete".equals(link)) {
-            Long ecommerceColorId = (Long) object.get("ecommerceColorId");
             getJdbcTemplate().update("delete from ecommerce_color where ecommerce_color_id = ?", ecommerceColorId);
+            target.add(this.dataTable);
+        } else if ("Enable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_color set enabled = true where ecommerce_color_id = ?", ecommerceColorId);
+            target.add(this.dataTable);
+        } else if ("Disable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_color set enabled = false where ecommerce_color_id = ?", ecommerceColorId);
             target.add(this.dataTable);
         }
     }

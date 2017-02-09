@@ -38,6 +38,7 @@ public class BranchBrowsePage extends MBaaSPage {
         provider.boardField("name", "name", String.class);
         provider.boardField("longitude", "longitude", Double.class);
         provider.boardField("latitude", "latitude", Double.class);
+        provider.boardField("enabled", "enabled", Boolean.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);
@@ -47,6 +48,7 @@ public class BranchBrowsePage extends MBaaSPage {
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("name"), "name"));
         columns.add(new TextFilterColumn(provider, ItemClass.Double, Model.of("longitude"), "longitude"));
         columns.add(new TextFilterColumn(provider, ItemClass.Double, Model.of("latitude"), "latitude"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("enabled"), "enabled"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         this.dataTable = new DefaultDataTable<>("table", columns, provider, 20);
@@ -65,6 +67,12 @@ public class BranchBrowsePage extends MBaaSPage {
         actionItems.add(new ActionItem("Edit", Model.of("Edit")));
         actionItems.add(new ActionItem("Opening", Model.of("Opening")));
         actionItems.add(new ActionItem("Transport", Model.of("Transport")));
+        Boolean enabled = (Boolean) object.get("enabled");
+        if (enabled != null && enabled) {
+            actionItems.add(new ActionItem("Disable", Model.of("Disable"), ItemCss.DANGER));
+        } else {
+            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.DANGER));
+        }
         actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;
     }
@@ -88,6 +96,12 @@ public class BranchBrowsePage extends MBaaSPage {
             PageParameters parameters = new PageParameters();
             parameters.add("ecommerceBranchId", ecommerceBranchId);
             setResponsePage(BranchTransportBrowsePage.class, parameters);
+        } else if ("Enable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_branch set enabled = true where ecommerce_branch_id = ?", ecommerceBranchId);
+            target.add(this.dataTable);
+        } else if ("Disable".equals(link)) {
+            getJdbcTemplate().update("update ecommerce_branch set enabled = false where ecommerce_branch_id = ?", ecommerceBranchId);
+            target.add(this.dataTable);
         }
     }
 

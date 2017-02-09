@@ -82,12 +82,16 @@ public class BannerCreatePage extends MBaaSPage {
         this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
         this.form.add(this.typeFeedback);
 
-        this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "product"), new OptionSingleChoiceProvider("ecommerce_product", "ecommerce_product_id", "name"));
+        OptionSingleChoiceProvider productOption = new OptionSingleChoiceProvider("ecommerce_product", "ecommerce_product_id", "name");
+        productOption.addWhere("enabled = true");
+        this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "product"), productOption);
         this.form.add(this.productField);
         this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
         this.form.add(this.productFeedback);
 
-        this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"), new OptionSingleChoiceProvider("ecommerce_category", "ecommerce_category_id", "CONCAT(name, ( IF (parent_path = '', '', CONCAT(' : ', parent_path) )))"));
+        OptionSingleChoiceProvider categoryOption = new OptionSingleChoiceProvider("ecommerce_category", "ecommerce_category_id", "CONCAT(name, ( IF (parent_path = '', '', CONCAT(' : ', parent_path) )))");
+        categoryOption.addWhere("enabled = true");
+        this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"), categoryOption);
         this.form.add(this.categoryField);
         this.categoryFeedback = new TextFeedbackPanel("categoryFeedback", this.categoryField);
         this.form.add(this.categoryFeedback);

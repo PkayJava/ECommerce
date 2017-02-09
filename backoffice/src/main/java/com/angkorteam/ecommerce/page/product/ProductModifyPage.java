@@ -4,7 +4,6 @@ import com.angkorteam.ecommerce.model.EcommerceProduct;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.extension.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
@@ -120,13 +119,14 @@ public class ProductModifyPage extends MBaaSPage {
         this.normalPriceFeedback = new TextFeedbackPanel("normalPriceFeedback", this.normalPriceField);
         this.form.add(this.normalPriceFeedback);
 
-        OptionMapper optionMapper = new OptionMapper();
         selectQuery = new SelectQuery("ecommerce_category");
         selectQuery.addField("ecommerce_category_id AS id");
         selectQuery.addField("name AS text");
         selectQuery.addWhere("ecommerce_category_id = :ecommerce_category_id", ecommerceProduct.getEcommerceCategoryId());
         this.category = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
-        this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"), new OptionSingleChoiceProvider("ecommerce_category", "ecommerce_category_id", "name", "path"));
+        OptionSingleChoiceProvider categoryOption = new OptionSingleChoiceProvider("ecommerce_category", "ecommerce_category_id", "name", "path");
+        categoryOption.addWhere("enabled = true");
+        this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"), categoryOption);
         this.categoryField.setRequired(true);
         this.form.add(this.categoryField);
         this.categoryFeedback = new TextFeedbackPanel("categoryFeedback", this.categoryField);
@@ -137,7 +137,9 @@ public class ProductModifyPage extends MBaaSPage {
         selectQuery.addField("name AS text");
         selectQuery.addWhere("ecommerce_brand_id = :ecommerce_brand_id", ecommerceProduct.getEcommerceBrandId());
         this.brand = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.class);
-        this.brandField = new Select2SingleChoice<>("brandField", new PropertyModel<>(this, "brand"), new OptionSingleChoiceProvider("ecommerce_brand", "ecommerce_brand_id", "name"));
+        OptionSingleChoiceProvider brandOption = new OptionSingleChoiceProvider("ecommerce_brand", "ecommerce_brand_id", "name");
+        brandOption.addWhere("enabled = true");
+        this.brandField = new Select2SingleChoice<>("brandField", new PropertyModel<>(this, "brand"), brandOption);
         this.form.add(this.brandField);
         this.brandFeedback = new TextFeedbackPanel("brandFeedback", this.brandField);
         this.form.add(this.brandFeedback);
@@ -161,6 +163,7 @@ public class ProductModifyPage extends MBaaSPage {
 
         OptionMultipleChoiceProvider provider = new OptionMultipleChoiceProvider("ecommerce_product", "ecommerce_product_id", "name");
         provider.addWhere("ecommerce_product_id != '" + this.ecommerceProductId + "'");
+        provider.addWhere("enabled = true");
         this.relatedProductField = new Select2MultipleChoice<>("relatedProductField", new PropertyModel<>(this, "relatedProduct"), provider);
         this.form.add(this.relatedProductField);
         this.relatedProductFeedback = new TextFeedbackPanel("relatedProductFeedback", this.relatedProductField);

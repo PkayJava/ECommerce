@@ -16,6 +16,15 @@ public class EcommerceShipping implements Serializable {
     private String availabilityDate;
     private String type;
     private Double price;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getEcommerceShippingId() {
         return ecommerceShippingId;

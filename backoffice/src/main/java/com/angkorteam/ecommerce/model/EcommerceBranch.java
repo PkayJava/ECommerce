@@ -13,6 +13,15 @@ public class EcommerceBranch implements Serializable{
     private String note;
     private Double longitude;
     private Double latitude;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getEcommerceBranchId() {
         return ecommerceBranchId;

@@ -14,6 +14,15 @@ public class EcommerceBanner implements Serializable {
     private String name;
     private String type;
     private Integer order;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getEcommerceBannerId() {
         return ecommerceBannerId;

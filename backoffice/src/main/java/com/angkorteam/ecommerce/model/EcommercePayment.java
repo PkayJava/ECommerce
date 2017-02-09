@@ -22,6 +22,15 @@ public class EcommercePayment implements Serializable {
     private String serverParam3;
     private String serverParam4;
     private String serverParam5;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getType() {
         return type;

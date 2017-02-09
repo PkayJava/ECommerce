@@ -11,6 +11,15 @@ public class EcommercePage implements Serializable {
     private String title;
     private String text;
     private Integer order;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getEcommercePageId() {
         return ecommercePageId;

@@ -18,7 +18,9 @@ CREATE TABLE `ecommerce_product` (
   `last_modified`                        DATETIME,
   `popularity`                           INT(11),
   `normal_price`                         DECIMAL(15, 4),
+  `enabled`                              BIT(1),
 
+  KEY (`enabled`),
   KEY (`main_image_platform_file_id`),
   KEY (`main_image_high_res_platform_file_id`),
   KEY (`discount_price`),

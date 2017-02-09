@@ -9,8 +9,10 @@ CREATE TABLE `ecommerce_banner` (
   `name`                       VARCHAR(255),
   `type`                       VARCHAR(10) NOT NULL,
   `order`                      INT(11),
+  `enabled`                    BIT(1),
 
   KEY (`name`),
+  KEY (`enabled`),
   KEY (`type`),
   KEY (`ecommerce_product_id`),
   KEY (`ecommerce_category_id`),
@@ -30,8 +32,10 @@ CREATE TABLE `ecommerce_branch` (
   `note`                VARCHAR(1000),
   `longitude`           DECIMAL(15, 10) NOT NULL,
   `latitude`            DECIMAL(15, 10) NOT NULL,
+  `enabled`             BIT(1),
 
   KEY (`address`),
+  KEY (`enabled`),
   KEY (`longitude`),
   KEY (`latitude`),
   KEY (`note`),
@@ -79,8 +83,10 @@ CREATE TABLE `ecommerce_brand` (
   `ecommerce_brand_id` BIGINT(19)   NOT NULL,
   `name`               VARCHAR(255) NOT NULL,
   `order`              INT(11),
+  `enabled`            BIT(1),
 
   KEY (`order`),
+  KEY (`enabled`),
   UNIQUE KEY (`name`),
   PRIMARY KEY (`ecommerce_brand_id`)
 );
@@ -155,8 +161,10 @@ CREATE TABLE `ecommerce_color` (
   `code`                 VARCHAR(255),
   `img_platform_file_id` BIGINT(19),
   `reference`            VARCHAR(100) NOT NULL,
+  `enabled`              BIT(1),
 
   KEY (`value`),
+  KEY (`enabled`),
   KEY (`code`),
   KEY (`img_platform_file_id`),
   UNIQUE KEY (`reference`),
@@ -356,8 +364,10 @@ CREATE TABLE `ecommerce_page` (
   `title`             VARCHAR(255)  NOT NULL,
   `text`              VARCHAR(1000) NOT NULL,
   `order`             INT(11),
+  `enabled`           BIT(1),
 
   KEY (`order`),
+  KEY (`enabled`),
   KEY (`text`),
   UNIQUE KEY (`title`),
   PRIMARY KEY (`ecommerce_page_id`)
@@ -373,18 +383,20 @@ CREATE TABLE `ecommerce_payment` (
   `description`          VARCHAR(255),
   `price`                DECIMAL(15, 4) NOT NULL,
   `type`                 VARCHAR(100)   NOT NULL,
-  `client_param1`       VARCHAR(255),
-  `client_param2`       VARCHAR(255),
-  `client_param3`       VARCHAR(255),
-  `client_param4`       VARCHAR(255),
-  `client_param5`       VARCHAR(255),
-  `server_param1`       VARCHAR(255),
-  `server_param2`       VARCHAR(255),
-  `server_param3`       VARCHAR(255),
-  `server_param4`       VARCHAR(255),
-  `server_param5`       VARCHAR(255),
+  `enabled`              BIT(1),
+  `client_param1`        VARCHAR(255),
+  `client_param2`        VARCHAR(255),
+  `client_param3`        VARCHAR(255),
+  `client_param4`        VARCHAR(255),
+  `client_param5`        VARCHAR(255),
+  `server_param1`        VARCHAR(255),
+  `server_param2`        VARCHAR(255),
+  `server_param3`        VARCHAR(255),
+  `server_param4`        VARCHAR(255),
+  `server_param5`        VARCHAR(255),
 
   KEY (`name`),
+  KEY (`enabled`),
   KEY (`type`),
   KEY (`description`),
   KEY (`price`),
@@ -414,7 +426,9 @@ CREATE TABLE `ecommerce_product` (
   `last_modified`                        DATETIME,
   `popularity`                           INT(11),
   `normal_price`                         DECIMAL(15, 4),
+  `enabled`                              BIT(1),
 
+  KEY (`enabled`),
   KEY (`main_image_platform_file_id`),
   KEY (`main_image_high_res_platform_file_id`),
   KEY (`discount_price`),
@@ -515,8 +529,10 @@ CREATE TABLE `ecommerce_shipping` (
   `availability_date`     VARCHAR(255),
   `type`                  VARCHAR(255)   NOT NULL,
   `price`                 DECIMAL(15, 4) NOT NULL,
+  `enabled`               BIT(1),
 
   KEY (`type`),
+  KEY (`enabled`),
   KEY (`price`),
   UNIQUE KEY (`name`, `ecommerce_branch_id`),
   PRIMARY KEY (`ecommerce_shipping_id`)
@@ -548,8 +564,10 @@ CREATE TABLE `ecommerce_shop` (
   `google_ua`                  VARCHAR(100),
   `language`                   VARCHAR(100),
   `flag_icon_platform_file_id` BIGINT(19),
+  `enabled`                    BIT(1),
 
   KEY (`flag_icon_platform_file_id`),
+  KEY (`enabled`),
   KEY (`google_ua`),
   KEY (`language`),
   KEY (`logo_platform_file_id`),
@@ -566,8 +584,10 @@ CREATE TABLE `ecommerce_size` (
   `ecommerce_size_id` BIGINT(19)   NOT NULL,
   `value`             VARCHAR(255),
   `reference`         VARCHAR(100) NOT NULL,
+  `enabled`           BIT(1),
 
   KEY (`value`),
+  KEY (`enabled`),
   UNIQUE KEY (`reference`),
   PRIMARY KEY (`ecommerce_size_id`)
 );

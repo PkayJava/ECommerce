@@ -7,8 +7,10 @@ CREATE TABLE `ecommerce_banner` (
   `name`                       VARCHAR(255),
   `type`                       VARCHAR(10) NOT NULL,
   `order`                      INT(11),
+  `enabled`                    BIT(1),
 
   KEY (`name`),
+  KEY (`enabled`),
   KEY (`type`),
   KEY (`ecommerce_product_id`),
   KEY (`ecommerce_category_id`),

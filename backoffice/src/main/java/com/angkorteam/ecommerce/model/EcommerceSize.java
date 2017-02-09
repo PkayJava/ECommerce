@@ -10,6 +10,15 @@ public class EcommerceSize implements Serializable {
     private Long ecommerceSizeId;
     private String value;
     private String reference;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getEcommerceSizeId() {
         return ecommerceSizeId;

@@ -6,8 +6,10 @@ CREATE TABLE `ecommerce_branch` (
   `note`                VARCHAR(1000),
   `longitude`           DECIMAL(15, 10) NOT NULL,
   `latitude`            DECIMAL(15, 10) NOT NULL,
+  `enabled`             BIT(1),
 
   KEY (`address`),
+  KEY (`enabled`),
   KEY (`longitude`),
   KEY (`latitude`),
   KEY (`note`),

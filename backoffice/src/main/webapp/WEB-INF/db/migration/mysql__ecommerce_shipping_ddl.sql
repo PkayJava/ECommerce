@@ -9,8 +9,10 @@ CREATE TABLE `ecommerce_shipping` (
   `availability_date`     VARCHAR(255),
   `type`                  VARCHAR(255)   NOT NULL,
   `price`                 DECIMAL(15, 4) NOT NULL,
+  `enabled`               BIT(1),
 
   KEY (`type`),
+  KEY (`enabled`),
   KEY (`price`),
   UNIQUE KEY (`name`, `ecommerce_branch_id`),
   PRIMARY KEY (`ecommerce_shipping_id`)

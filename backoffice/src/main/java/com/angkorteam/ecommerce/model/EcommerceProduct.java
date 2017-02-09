@@ -26,6 +26,15 @@ public class EcommerceProduct implements Serializable {
     private Date lastModified;
     private Integer popularity;
     private Double normalPrice;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getEcommerceProductId() {
         return ecommerceProductId;

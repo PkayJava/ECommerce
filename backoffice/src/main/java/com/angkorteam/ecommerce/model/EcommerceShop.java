@@ -15,6 +15,15 @@ public class EcommerceShop implements Serializable {
     private String googleUa;
     private String language;
     private String flagIconPlatformFileId;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getEcommerceShopId() {
         return ecommerceShopId;

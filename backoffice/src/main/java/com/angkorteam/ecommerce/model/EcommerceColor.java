@@ -12,6 +12,15 @@ public class EcommerceColor implements Serializable {
     private String value;
     private String code;
     private String reference;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getEcommerceColorId() {
         return ecommerceColorId;

@@ -10,6 +10,15 @@ public class EcommerceBrand implements Serializable {
     private Long ecommerceBrandId;
     private String name;
     private Integer order;
+    private Boolean enabled;
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getEcommerceBrandId() {
         return ecommerceBrandId;

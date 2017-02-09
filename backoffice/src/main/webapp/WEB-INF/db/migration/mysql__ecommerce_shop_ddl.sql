@@ -8,8 +8,10 @@ CREATE TABLE `ecommerce_shop` (
   `google_ua`                  VARCHAR(100),
   `language`                   VARCHAR(100),
   `flag_icon_platform_file_id` BIGINT(19),
+  `enabled`                    BIT(1),
 
   KEY (`flag_icon_platform_file_id`),
+  KEY (`enabled`),
   KEY (`google_ua`),
   KEY (`language`),
   KEY (`logo_platform_file_id`),

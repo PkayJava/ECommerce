@@ -91,7 +91,6 @@ public class ShopCreatePage extends MBaaSPage {
         this.form.add(this.logoFeedback);
 
         this.googleField = new TextField<>("googleField", new PropertyModel<>(this, "google"));
-        this.googleField.setRequired(true);
         this.form.add(this.googleField);
         this.googleFeedback = new TextFeedbackPanel("googleFeedback", this.googleField);
         this.form.add(this.googleFeedback);

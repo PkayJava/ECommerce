@@ -448,23 +448,23 @@ public class OrdersServicePost {
         private String note;
 
         @Expose
-        @SerializedName("param_1")
+        @SerializedName("param1")
         private String param1;
 
         @Expose
-        @SerializedName("param_2")
+        @SerializedName("param2")
         private String param2;
 
         @Expose
-        @SerializedName("param_3")
+        @SerializedName("param3")
         private String param3;
 
         @Expose
-        @SerializedName("param_4")
+        @SerializedName("param4")
         private String param4;
 
         @Expose
-        @SerializedName("param_5")
+        @SerializedName("param5")
         private String param5;
 
         public Long getShippingType() {

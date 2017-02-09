@@ -182,16 +182,16 @@ public class PaymentCreatePage extends MBaaSPage {
         insertQuery.addValue("description = :description", this.description);
         insertQuery.addValue("price = :price", this.price);
         insertQuery.addValue("type = :type", this.type);
-        insertQuery.addValue("server_param_1 = :server_param_1", this.serverParam1);
-        insertQuery.addValue("server_param_2 = :server_param_2", this.serverParam2);
-        insertQuery.addValue("server_param_3 = :server_param_3", this.serverParam3);
-        insertQuery.addValue("server_param_4 = :server_param_4", this.serverParam4);
-        insertQuery.addValue("server_param_5 = :server_param_5", this.serverParam5);
-        insertQuery.addValue("client_param_1 = :client_param_1", this.clientParam1);
-        insertQuery.addValue("client_param_2 = :client_param_2", this.clientParam2);
-        insertQuery.addValue("client_param_3 = :client_param_3", this.clientParam3);
-        insertQuery.addValue("client_param_4 = :client_param_4", this.clientParam4);
-        insertQuery.addValue("client_param_5 = :client_param_5", this.clientParam5);
+        insertQuery.addValue("server_param1 = :server_param1", this.serverParam1);
+        insertQuery.addValue("server_param2 = :server_param2", this.serverParam2);
+        insertQuery.addValue("server_param3 = :server_param3", this.serverParam3);
+        insertQuery.addValue("server_param4 = :server_param4", this.serverParam4);
+        insertQuery.addValue("server_param5 = :server_param5", this.serverParam5);
+        insertQuery.addValue("client_param1 = :client_param1", this.clientParam1);
+        insertQuery.addValue("client_param2 = :client_param2", this.clientParam2);
+        insertQuery.addValue("client_param3 = :client_param3", this.clientParam3);
+        insertQuery.addValue("client_param4 = :client_param4", this.clientParam4);
+        insertQuery.addValue("client_param5 = :client_param5", this.clientParam5);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 
         setResponsePage(PaymentBrowsePage.class);

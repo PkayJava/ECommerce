@@ -2,6 +2,7 @@ INSERT INTO platform_page_role (platform_page_role_id, platform_role_id, platfor
 VALUES
   (94, 1, 171),
   (95, 1, 170),
+  (96, 1, 124),
   (1, 5, 1),
   (2, 4, 1),
   (3, 4, 155),
@@ -61,7 +62,6 @@ VALUES
   (59, 1, 127),
   (60, 1, 122),
   (61, 1, 123),
-  (61, 1, 124),
   (62, 1, 119),
   (63, 1, 120),
   (64, 1, 121),

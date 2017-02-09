@@ -7,5 +7,5 @@ VALUES
   (5, 'required', '', ' is required.', 1),
   (6, 'incorrect', '', ' is incorrect.', 1),
   (7, 'brand.text.mini', '', ' Shop', 1),
-  (7, 'brand.text', '', ' ShopKH', 1),
-  (8, 'nullValid', '', 'Select One', 1);
+  (8, 'brand.text', '', ' ShopKH', 1),
+  (9, 'nullValid', '', 'Select One', 1);

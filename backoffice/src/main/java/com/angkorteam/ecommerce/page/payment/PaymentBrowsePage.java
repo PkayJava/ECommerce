@@ -47,6 +47,7 @@ public class PaymentBrowsePage extends MBaaSPage {
         List<IColumn<Map<String, Object>, String>> columns = new ArrayList<>();
         columns.add(new TextFilterColumn(provider, ItemClass.Long, Model.of("ID"), "ecommercePaymentId"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("name"), "name"));
+        columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("type"), "type"));
         columns.add(new TextFilterColumn(provider, ItemClass.Double, Model.of("price"), "price"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 

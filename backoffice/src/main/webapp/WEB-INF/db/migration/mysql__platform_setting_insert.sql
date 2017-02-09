@@ -1,7 +1,7 @@
 INSERT INTO `platform_setting` (`platform_setting_id`, `key`, `value`, `description`, `version`)
 VALUES
-  (10, 'smtp_user', 'SMTP User', 'SMTP User', 1),
-  (9, 'smtp_password', 'SMTP Password', 'SMTP Password', 1),
+  (10, 'smtp_user', '', 'SMTP User', 1),
+  (9, 'smtp_password', '', 'SMTP Password', 1),
   (1, 'home_page', 'Home Page', 'Home Page', 1),
   (2, 'google_api_key', '', 'Google Api Key', 1),
   (3, 'asset', 'http://192.168.0.114:8080', 'Asset', 1),

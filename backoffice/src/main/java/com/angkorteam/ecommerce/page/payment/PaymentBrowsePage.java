@@ -36,6 +36,7 @@ public class PaymentBrowsePage extends MBaaSPage {
         JdbcProvider provider = new JdbcProvider("ecommerce_payment");
         provider.boardField("ecommerce_payment_id", "ecommercePaymentId", Long.class);
         provider.boardField("name", "name", String.class);
+        provider.boardField("type", "type", String.class);
         provider.boardField("price", "price", Double.class);
 
         provider.selectField("ecommercePaymentId", String.class);

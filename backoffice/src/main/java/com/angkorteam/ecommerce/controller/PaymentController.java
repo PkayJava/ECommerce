@@ -6,6 +6,7 @@ import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
 import com.angkorteam.platform.Platform;
 import com.braintreegateway.BraintreeGateway;
+import com.google.common.base.Strings;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,9 @@ public class PaymentController {
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         EcommercePayment ecommercePayment = jdbcTemplate.queryForObject("select * from ecommerce_payment", EcommercePayment.class, paymentId);
         if (ecommercePayment == null || Payment.TYPE_PAYPAL.equals(ecommercePayment.getType())) {
+            throw new ServletException("payment is not available");
+        }
+        if (Strings.isNullOrEmpty(ecommercePayment.getServerParam1())) {
             throw new ServletException("payment is not available");
         }
         BraintreeGateway gateway = new BraintreeGateway(ecommercePayment.getServerParam1());

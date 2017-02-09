@@ -240,6 +240,7 @@ public class ProductCreatePage extends MBaaSPage {
         insertQuery = new InsertQuery("ecommerce_product");
         insertQuery.addValue("ecommerce_product_id = :ecommerce_product", productId);
         insertQuery.addValue("name = :name", this.name);
+        insertQuery.addValue("`enabled` = :enabled", true);
 
         if (this.discountPrice == null || this.discountPrice > this.normalPrice) {
             insertQuery.addValue("price = :price", this.normalPrice);
@@ -290,7 +291,6 @@ public class ProductCreatePage extends MBaaSPage {
         insertQuery.addValue("ecommerce_color_id = :ecommerce_color_id", this.color.getId());
         insertQuery.addValue("ecommerce_size_id = :ecommerce_size_id", this.size.getId());
         insertQuery.addValue("quantity = :quantity", this.quantity);
-        insertQuery.addValue("`enabled` = :enabled", true);
 
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 

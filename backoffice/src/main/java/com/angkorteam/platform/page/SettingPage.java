@@ -96,61 +96,51 @@ public class SettingPage extends MBaaSPage {
         layout.add(this.form);
 
         this.homePageField = new Select2SingleChoice<>("homePageField", new PropertyModel<>(this, "homePage"), new OptionSingleChoiceProvider("platform_page", "platform_page_id", "page_title"));
-        this.homePageField.setRequired(true);
         this.form.add(this.homePageField);
         this.homePageFeedback = new TextFeedbackPanel("homePageFeedback", this.homePageField);
         this.form.add(this.homePageFeedback);
 
         this.googleApiKeyField = new TextField<>("googleApiKeyField", new PropertyModel<>(this, "googleApiKey"));
-        this.googleApiKeyField.setRequired(true);
         this.form.add(this.googleApiKeyField);
         this.googleApiKeyFeedback = new TextFeedbackPanel("googleApiKeyFeedback", this.googleApiKeyField);
         this.form.add(this.googleApiKeyFeedback);
 
         this.assetField = new TextField<>("assetField", new PropertyModel<>(this, "asset"));
-        this.assetField.setRequired(true);
         this.form.add(this.assetField);
         this.assetFeedback = new TextFeedbackPanel("assetFeedback", this.assetField);
         this.form.add(this.assetFeedback);
 
         this.priceFormatField = new TextField<>("priceFormatField", new PropertyModel<>(this, "priceFormat"));
-        this.priceFormatField.setRequired(true);
         this.form.add(this.priceFormatField);
         this.priceFormatFeedback = new TextFeedbackPanel("priceFormatFeedback", this.priceFormatField);
         this.form.add(this.priceFormatFeedback);
 
         this.currencyField = new TextField<>("currencyField", new PropertyModel<>(this, "currency"));
-        this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
         this.form.add(this.currencyFeedback);
 
         this.dateFormatField = new TextField<>("dateFormatField", new PropertyModel<>(this, "dateFormat"));
-        this.dateFormatField.setRequired(true);
         this.form.add(this.dateFormatField);
         this.dateFormatFeedback = new TextFeedbackPanel("dateFormatFeedback", this.dateFormatField);
         this.form.add(this.dateFormatFeedback);
 
         this.timeFormatField = new TextField<>("timeFormatField", new PropertyModel<>(this, "timeFormat"));
-        this.timeFormatField.setRequired(true);
         this.form.add(this.timeFormatField);
         this.timeFormatFeedback = new TextFeedbackPanel("timeFormatFeedback", this.timeFormatField);
         this.form.add(this.timeFormatFeedback);
 
         this.datetimeFormatField = new TextField<>("datetimeFormatField", new PropertyModel<>(this, "datetimeFormat"));
-        this.datetimeFormatField.setRequired(true);
         this.form.add(this.datetimeFormatField);
         this.datetimeFormatFeedback = new TextFeedbackPanel("datetimeFormatFeedback", this.datetimeFormatField);
         this.form.add(this.datetimeFormatFeedback);
 
         this.smtpUserField = new TextField<>("smtpUserField", new PropertyModel<>(this, "smtpUser"));
-        this.smtpUserField.setRequired(true);
         this.form.add(this.smtpUserField);
         this.smtpUserFeedback = new TextFeedbackPanel("smtpUserFeedback", this.smtpUserField);
         this.form.add(this.smtpUserFeedback);
 
         this.smtpPasswordField = new TextField<>("smtpPasswordField", new PropertyModel<>(this, "smtpPassword"));
-        this.smtpPasswordField.setRequired(true);
         this.form.add(this.smtpPasswordField);
         this.smtpPasswordFeedback = new TextFeedbackPanel("smtpPasswordFeedback", this.smtpPasswordField);
         this.form.add(this.smtpPasswordFeedback);

@@ -133,7 +133,7 @@ public class ProductCreatePage extends MBaaSPage {
         this.form.add(this.categoryFeedback);
 
         OptionSingleChoiceProvider brandOption = new OptionSingleChoiceProvider("ecommerce_brand", "ecommerce_brand_id", "name");
-        brandOption.addWhere("enable = true");
+        brandOption.addWhere("enabled = true");
         this.brandField = new Select2SingleChoice<>("brandField", new PropertyModel<>(this, "brand"), brandOption);
         this.form.add(this.brandField);
         this.brandFeedback = new TextFeedbackPanel("brandFeedback", this.brandField);

@@ -1,6 +1,7 @@
 package com.angkorteam.ecommerce.controller;
 
 import com.angkorteam.ecommerce.mobile.cart.Discount;
+import com.angkorteam.ecommerce.mobile.delivery.Payment;
 import com.angkorteam.ecommerce.mobile.order.Order;
 import com.angkorteam.ecommerce.model.*;
 import com.angkorteam.framework.jdbc.DeleteQuery;
@@ -353,6 +354,44 @@ public class OrdersServicePost {
         insertQuery.addValue("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
         named.update(insertQuery.toSQL(), insertQuery.getParam());
 
+        if (Payment.TYPE_PAYPAL.equals(paymentRecord.getType())) {
+            //    @RequestMapping("/paypal/nonce")
+//    public ResponseEntity<?> paypalNonce(HttpServletRequest request, @RequestParam("id") String id) {
+//
+//        TransactionRequest transactionRequest = new TransactionRequest().
+//                amount(request.queryParams("amount")).
+//                merchantAccountId("USD").
+//                paymentMethodNonce(request.queryParams("paymentMethodNonce")).
+//                orderId("Mapped to PayPal Invoice Number").
+//                descriptor().
+//                name("Descriptor displayed in customer CC statements. 22 char max").
+//                done();
+//        shippingAddress().
+//        .firstName("Jen")
+//                .lastName("Smith")
+//                .company("Braintree")
+//                .streetAddress("1 E 1st St")
+//                .extendedAddress("Suite 403")
+//                .locality("Bartlett")
+//                .region("IL")
+//                .postalCode("60103")
+//                .countryCodeAlpha2("US")
+//                .done();
+//        options().
+//                paypal().
+//                customField("PayPal custom field").
+//                description("Description for PayPal email receipt").
+//                done();
+//        storeInVaultOnSuccess(true).
+//                done();
+//
+//        Result<Transaction> saleResult = gateway.transaction().sale(request);
+//
+//        return null;
+//    }
+        } else if (Payment.TYPE_CASH.equals(paymentRecord.getType())) {
+        }
+
         Order data = new Order();
 
         data.setName(requestBody.getName());
@@ -407,6 +446,26 @@ public class OrdersServicePost {
         @Expose
         @SerializedName("note")
         private String note;
+
+        @Expose
+        @SerializedName("param_1")
+        private String param1;
+
+        @Expose
+        @SerializedName("param_2")
+        private String param2;
+
+        @Expose
+        @SerializedName("param_3")
+        private String param3;
+
+        @Expose
+        @SerializedName("param_4")
+        private String param4;
+
+        @Expose
+        @SerializedName("param_5")
+        private String param5;
 
         public Long getShippingType() {
             return shippingType;
@@ -486,6 +545,46 @@ public class OrdersServicePost {
 
         public void setNote(String note) {
             this.note = note;
+        }
+
+        public String getParam1() {
+            return param1;
+        }
+
+        public void setParam1(String param1) {
+            this.param1 = param1;
+        }
+
+        public String getParam2() {
+            return param2;
+        }
+
+        public void setParam2(String param2) {
+            this.param2 = param2;
+        }
+
+        public String getParam3() {
+            return param3;
+        }
+
+        public void setParam3(String param3) {
+            this.param3 = param3;
+        }
+
+        public String getParam4() {
+            return param4;
+        }
+
+        public void setParam4(String param4) {
+            this.param4 = param4;
+        }
+
+        public String getParam5() {
+            return param5;
+        }
+
+        public void setParam5(String param5) {
+            this.param5 = param5;
         }
     }
 

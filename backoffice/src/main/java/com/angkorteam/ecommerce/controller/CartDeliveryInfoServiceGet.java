@@ -225,6 +225,12 @@ public class CartDeliveryInfoServiceGet {
                 payment.setPriceFormatted(priceFormat.format(payment.getPrice()));
                 payment.setTotalPrice(totalPrice + shipping.getPrice() + (payment.getPrice() == null ? 0d : payment.getPrice()));
                 payment.setTotalPriceFormatted(priceFormat.format(payment.getTotalPrice()));
+                payment.setType(paymentRecord.getType());
+                payment.setParam1(paymentRecord.getClientParam1());
+                payment.setParam2(paymentRecord.getClientParam2());
+                payment.setParam3(paymentRecord.getClientParam3());
+                payment.setParam4(paymentRecord.getClientParam4());
+                payment.setParam5(paymentRecord.getClientParam5());
                 listPayments.add(payment);
             }
             shipping.setPayment(listPayments);

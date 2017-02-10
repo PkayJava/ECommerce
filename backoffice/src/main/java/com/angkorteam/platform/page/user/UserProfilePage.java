@@ -138,6 +138,7 @@ public class UserProfilePage extends MBaaSPage {
         this.form.add(this.saveButton);
 
         this.closeButton = new BookmarkablePageLink<>("closeButton", DashboardPage.class);
+        this.form.add(this.closeButton);
 
     }
 

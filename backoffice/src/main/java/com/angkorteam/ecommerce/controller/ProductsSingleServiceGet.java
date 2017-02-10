@@ -61,10 +61,12 @@ public class ProductsSingleServiceGet {
         productQuery.addField("ecommerce_product.shipping_price AS shippingPrice");
         productQuery.addField("ecommerce_product.reference AS code");
         productQuery.addField("ecommerce_product.description AS description");
+        productQuery.addField("platform_user.phone AS phoneNumber");
         productQuery.addField("CONCAT('" + asset + "', '/api/resource', platform_file.path, '/', platform_file.name) AS mainImage");
         productQuery.addJoin(JoinType.LeftJoin, "platform_file", "ecommerce_product.main_image_platform_file_id = platform_file.platform_file_id");
         productQuery.addJoin(JoinType.LeftJoin, "ecommerce_category", "ecommerce_product.ecommerce_category_id = ecommerce_category.ecommerce_category_id");
         productQuery.addJoin(JoinType.LeftJoin, "ecommerce_brand", "ecommerce_product.ecommerce_brand_id = ecommerce_brand.ecommerce_brand_id");
+        productQuery.addJoin(JoinType.InnerJoin, "platform_user", "ecommerce_product.platform_user_id = platform_user.platform_user_id");
         productQuery.addWhere("ecommerce_product.ecommerce_product_id = :ecommerce_product_id", id);
         Product product = named.queryForObject(productQuery.toSQL(), productQuery.getParam(), Product.class);
         if (product.getShippingPrice() != null && product.getShippingPrice() > 0) {

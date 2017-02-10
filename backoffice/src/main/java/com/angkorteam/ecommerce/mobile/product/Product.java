@@ -75,6 +75,10 @@ public class Product implements Serializable {
     @SerializedName("related")
     private List<Product> related;
 
+    @Expose
+    @SerializedName("phone_number")
+    private String phoneNumber;
+
     private Double shippingPrice;
 
     public long getId() {
@@ -211,5 +215,13 @@ public class Product implements Serializable {
 
     public void setRelated(List<Product> related) {
         this.related = related;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

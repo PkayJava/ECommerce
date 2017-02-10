@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<wicket:extend>
+    <wicket:container wicket:id="layout">
+        <div class="box box-primary">
+            <form role="form" wicket:id="form">
+                <div class="box-body">
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label>Login</label>
+                        <span wicket:id="loginLabel" class="form-control" disabled="true"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="fullNameField">Full Name</label>
+                        <input wicket:id="fullNameField" type="text" class="form-control"/>
+                        <span wicket:id="fullNameFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label wicket:for="genderField">Gener</label>
+                        <select wicket:id="genderField" class="form-control"/>
+                        <span wicket:id="genderFeedback" class="help-block"/>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label wicket:for="phoneField">Phone</label>
+                        <input wicket:id="phoneField" type="text" class="form-control"/>
+                        <span wicket:id="phoneFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label wicket:for="streetField">Street</label>
+                        <input wicket:id="streetField" type="text" class="form-control"/>
+                        <span wicket:id="streetFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label wicket:for="houseNumberField">House Number</label>
+                        <input wicket:id="houseNumberField" type="text" class="form-control"/>
+                        <span wicket:id="houseNumberFeedback" class="help-block"/>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label wicket:for="zipField">Zip</label>
+                        <input wicket:id="zipField" type="text" class="form-control"/>
+                        <span wicket:id="zipFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Row -->
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label wicket:for="cityField">City</label>
+                        <input wicket:id="cityField" type="text" class="form-control"/>
+                        <span wicket:id="cityFeedback" class="help-block"/>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label wicket:for="countryField">Country</label>
+                        <input wicket:id="countryField" type="text" class="form-control"/>
+                        <span wicket:id="countryFeedback" class="help-block"/>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="box-footer">
+                    <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                    <a class="btn btn-default pull-right" wicket:id="closeButton">Close</a>
+                </div>
+            </form>
+        </div>
+    </wicket:container>
+</wicket:extend>
+</body>
+</html>

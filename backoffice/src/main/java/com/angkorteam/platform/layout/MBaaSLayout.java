@@ -74,11 +74,12 @@ public class MBaaSLayout extends Border {
         if (user != null) {
             this.welcomeName = Strings.isNullOrEmpty(user.getFullName()) ? user.getLogin() : user.getFullName();
         }
-        Label welcomeNameLabel = new Label("welcomeNameLabel", new PropertyModel<>(this, "welcomeName"));
-        addToBorder(welcomeNameLabel);
 
         BookmarkablePageLink<Void> profileLink = new BookmarkablePageLink<>("profileLink", UserProfilePage.class);
         addToBorder(profileLink);
+
+        Label welcomeNameLabel = new Label("welcomeNameLabel", new PropertyModel<>(this, "welcomeName"));
+        profileLink.add(welcomeNameLabel);
     }
 
     @Override

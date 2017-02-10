@@ -96,7 +96,7 @@ public class VendorRegisterPage extends AdminLTEPage {
         insertQuery.addValue("platform_role_id = :platform_role_id", roleRecord.getPlatformRoleId());
         insertQuery.addValue("system = :system", false);
         insertQuery.addValue("status = :status", "ACTIVE");
-        insertQuery.addValue("full_name = :name", "");
+        insertQuery.addValue("full_name = :full_name", this.fullName);
         insertQuery.addValue("gender = :gender", "");
         insertQuery.addValue("access_token = :access_token", Platform.randomUUIDString());
 

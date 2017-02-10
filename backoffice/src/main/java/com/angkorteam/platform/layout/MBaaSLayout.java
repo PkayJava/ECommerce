@@ -7,6 +7,7 @@ import com.angkorteam.platform.model.PlatformPage;
 import com.angkorteam.platform.model.PlatformSection;
 import com.angkorteam.platform.model.PlatformUser;
 import com.angkorteam.platform.page.LogoutPage;
+import com.angkorteam.platform.page.user.UserProfilePage;
 import com.angkorteam.platform.ui.SectionWidget;
 import com.google.common.base.Strings;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -75,6 +76,9 @@ public class MBaaSLayout extends Border {
         }
         Label welcomeNameLabel = new Label("welcomeNameLabel", new PropertyModel<>(this, "welcomeName"));
         addToBorder(welcomeNameLabel);
+
+        BookmarkablePageLink<Void> profileLink = new BookmarkablePageLink<>("profileLink", UserProfilePage.class);
+        addToBorder(profileLink);
     }
 
     @Override

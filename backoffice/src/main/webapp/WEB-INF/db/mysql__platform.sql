@@ -200,6 +200,7 @@ CREATE TABLE `platform_page` (
 -- ################################################################
 INSERT INTO `platform_page` (`platform_page_id`, `platform_layout_id`, `path`, `html_title`, `page_title`, `page_description`, `java_class`, `version`)
 VALUES
+  (172, 1, '/platform/user/profile', 'Platform User Profile', 'Platform User Profile', 'Platform User Profile', 'com.angkorteam.platform.page.user.UserProfilePage', 1),
   (171, 1, '/ecommerce/discount/coupon/generate', 'eCommerce Discount Coupon Generate', 'eCommerce Discount Coupon Generate', 'eCommerce Discount Coupon Generate', 'com.angkorteam.ecommerce.page.discount.DiscountCouponGeneratePage', 1),
   (170, 1, '/ecommerce/discount/coupon/browse', 'eCommerce Discount Coupon Browse', 'eCommerce Discount Coupon Browse', 'eCommerce Discount Coupon Browse', 'com.angkorteam.ecommerce.page.discount.DiscountCouponBrowsePage', 1),
   (169, 1, '/ecommerce/vendor/register', 'eCommerce Vendor Register', 'eCommerce Vendor Register', 'eCommerce Vendor Register', 'com.angkorteam.ecommerce.page.VendorRegisterPage', 1),
@@ -303,6 +304,12 @@ CREATE TABLE `platform_page_role` (
 -- ################################################################
 INSERT INTO platform_page_role (platform_page_role_id, platform_role_id, platform_page_id)
 VALUES
+  (102, 7, 172),
+  (101, 6, 172),
+  (100, 4, 172),
+  (99, 3, 172),
+  (98, 2, 172),
+  (97, 1, 172),
   (94, 1, 171),
   (95, 1, 170),
   (96, 1, 124),

@@ -27,7 +27,7 @@ public class PaymentController {
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);
         EcommercePayment ecommercePayment = jdbcTemplate.queryForObject("select * from ecommerce_payment where ecommerce_payment_id = ?", EcommercePayment.class, paymentId);
-        if (ecommercePayment == null || Payment.TYPE_PAYPAL.equals(ecommercePayment.getType())) {
+        if (ecommercePayment == null || !Payment.TYPE_PAYPAL.equals(ecommercePayment.getType())) {
             throw new ServletException("payment is not available");
         }
         if (Strings.isNullOrEmpty(ecommercePayment.getServerParam1())) {

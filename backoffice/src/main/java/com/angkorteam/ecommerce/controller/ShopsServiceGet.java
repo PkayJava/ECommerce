@@ -62,7 +62,7 @@ public class ShopsServiceGet {
         selectQuery.addJoin(JoinType.LeftJoin, "platform_file flag_icon_file ", "ecommerce_shop.flag_icon_platform_file_id = flag_icon_file.platform_file_id");
         selectQuery.addWhere("ecommerce_shop.enabled = :enabled", true);
 
-        List<Shop> shops = jdbcTemplate.queryForList(selectQuery.toSQL(), Shop.class);
+        List<Shop> shops = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), Shop.class);
         data.setShopList(shops);
 
         return ResponseEntity.ok(data);

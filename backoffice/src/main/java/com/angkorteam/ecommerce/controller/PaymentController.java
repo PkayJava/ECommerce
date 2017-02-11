@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -27,7 +28,7 @@ public class PaymentController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
 
     @RequestMapping(path = "/paypal/initiate/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> paypalInitiate(HttpServletRequest request, Long paymentId) throws ServletException {
+    public ResponseEntity<?> paypalInitiate(HttpServletRequest request, @PathVariable("id") Long paymentId) throws ServletException {
         LOGGER.info("{}", getClass().getName());
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         NamedParameterJdbcTemplate named = Platform.getBean(NamedParameterJdbcTemplate.class);

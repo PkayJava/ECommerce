@@ -147,7 +147,7 @@ public class ProductsServiceGet {
         }
 
         if (!Strings.isNullOrEmpty(search)) {
-            productQuery.addWhere("ecommerce_product.name like :name1", "%" + search + "%");
+            productQuery.addWhere("lower(ecommerce_product.name) like lower(:name1)", "name1", "%" + search + "%");
             priceQuery.addWhere("ecommerce_product.name like :name2", "%" + search + "%");
             brandQuery.addWhere("ecommerce_product.name like :name3", "%" + search + "%");
             colorQuery.addWhere("ecommerce_product.name like :name4", "%" + search + "%");

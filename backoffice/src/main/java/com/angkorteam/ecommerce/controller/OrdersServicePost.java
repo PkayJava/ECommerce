@@ -357,6 +357,8 @@ public class OrdersServicePost {
         named.update(insertQuery.toSQL(), insertQuery.getParam());
 
         if (Payment.TYPE_PAYPAL.equals(paymentRecord.getType())) {
+            LOGGER.info("token {}", paymentRecord.getServerParam1());
+            LOGGER.info("nonce {}", requestBody.getParam1());
             TransactionRequest transactionRequest = new TransactionRequest();
             transactionRequest.amount(new BigDecimal(grandTotalAmount));
             transactionRequest.merchantAccountId("USD");

@@ -12,10 +12,7 @@ import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.model.PlatformUser;
-import com.braintreegateway.BraintreeGateway;
-import com.braintreegateway.Result;
-import com.braintreegateway.Transaction;
-import com.braintreegateway.TransactionRequest;
+import com.braintreegateway.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -368,32 +365,40 @@ public class OrdersServicePost {
             transactionRequest.paymentMethodNonce(requestBody.getParam1());
             transactionRequest.orderId(String.valueOf(orderId));
 
-//            TransactionDescriptorRequest transactionDescriptorRequest = transactionRequest.descriptor();
-//            transactionDescriptorRequest.name(requestBody.getName());
-//            transactionDescriptorRequest.done();
-//
-//            TransactionAddressRequest transactionAddressRequest = transactionRequest.shippingAddress();
-//            transactionAddressRequest.firstName(requestBody.getName());
-//            transactionAddressRequest.lastName(requestBody.getName());
-//            transactionAddressRequest.company("N/A");
-//            transactionAddressRequest.streetAddress(requestBody.getStreet());
-//            transactionAddressRequest.locality(requestBody.getCity());
-//            transactionAddressRequest.postalCode(requestBody.getZip());
-//            transactionAddressRequest.countryCodeAlpha2("KH");
-//            transactionAddressRequest.done();
-//
-//            TransactionOptionsRequest transactionOptionsRequest = transactionRequest.options();
-//            TransactionOptionsPayPalRequest transactionOptionsPayPalRequest = transactionOptionsRequest.paypal();
-//            transactionOptionsPayPalRequest.customField("PayPal custom field");
-//            transactionOptionsPayPalRequest.description("Description for PayPal email receipt");
-//            transactionOptionsPayPalRequest.done();
-//            transactionOptionsRequest.storeInVaultOnSuccess(true);
-//            transactionOptionsRequest.done();
-
             BraintreeGateway gateway = new BraintreeGateway(paymentRecord.getServerParam1());
 
             Result<Transaction> result = gateway.transaction().sale(transactionRequest);
 
+            if (result.isSuccess()) {
+                Transaction transaction = result.getTarget();
+                System.out.println("Success ID: " + transaction.getId());
+            } else {
+                throw new ServletException("payment error");
+            }
+        } else if (Payment.TYPE_BRAIN_TREE.equalsIgnoreCase(paymentRecord.getType())) {
+            Environment environment = null;
+            String merchantId = paymentRecord.getServerParam2();
+            String publicKey = paymentRecord.getServerParam3();
+            String privateKey = paymentRecord.getServerParam4();
+            if ("DEVELOPMENT".equalsIgnoreCase(paymentRecord.getServerParam1())) {
+                environment = Environment.DEVELOPMENT;
+            } else if ("PRODUCTION".equalsIgnoreCase(paymentRecord.getServerParam1())) {
+                environment = Environment.PRODUCTION;
+            } else if ("QA".equalsIgnoreCase(paymentRecord.getServerParam1())) {
+                environment = Environment.QA;
+            } else if ("SANDBOX".equalsIgnoreCase(paymentRecord.getServerParam1())) {
+                environment = Environment.SANDBOX;
+            }
+
+            BraintreeGateway gateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey);
+            TransactionRequest transactionRequest = new TransactionRequest()
+                    .amount(new BigDecimal(grandTotalAmount))
+                    .merchantAccountId("USD")
+                    .paymentMethodNonce(requestBody.getParam1())
+                    .options()
+                    .submitForSettlement(true)
+                    .done();
+            Result<Transaction> result = gateway.transaction().sale(transactionRequest);
             if (result.isSuccess()) {
                 Transaction transaction = result.getTarget();
                 System.out.println("Success ID: " + transaction.getId());

@@ -12,6 +12,7 @@ public class Payment implements Serializable {
 
     public static final String TYPE_CASH = "Cash";
     public static final String TYPE_PAYPAL = "PayPal";
+    public static final String TYPE_BRAIN_TREE = "Braintree";
 
     @Expose
     @SerializedName("id")

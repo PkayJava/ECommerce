@@ -65,7 +65,7 @@
         <commons-email.version>1.4</commons-email.version>
         <groovy.version>2.4.8</groovy.version>
         <commons-io.version>2.5</commons-io.version>
-        <paypal.version>2.70.0</paypal.version>
+        <paypal.version>2.71.0</paypal.version>
     </properties>
     <dependencies>
 

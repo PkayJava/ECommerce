@@ -123,7 +123,7 @@ public class PaymentModifyPage extends MBaaSPage {
         this.form.add(this.descriptionFeedback);
 
         this.type = record.getType();
-        List<String> types = Arrays.asList(Payment.TYPE_CASH, Payment.TYPE_PAYPAL);
+        List<String> types = Arrays.asList(Payment.TYPE_CASH, Payment.TYPE_PAYPAL, Payment.TYPE_BRAIN_TREE);
         this.typeField = new DropDownChoice<>("typeField", new PropertyModel<>(this, "type"), types);
         this.typeField.setRequired(true);
         this.form.add(this.typeField);

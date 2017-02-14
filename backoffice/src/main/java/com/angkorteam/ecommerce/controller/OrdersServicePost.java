@@ -359,16 +359,15 @@ public class OrdersServicePost {
         if (Payment.TYPE_PAYPAL.equals(paymentRecord.getType())) {
             LOGGER.info("token {}", paymentRecord.getServerParam1());
             LOGGER.info("nonce {}", requestBody.getParam1());
-            TransactionRequest transactionRequest = new TransactionRequest();
-            transactionRequest.amount(new BigDecimal(grandTotalAmount));
-            transactionRequest.merchantAccountId("USD");
-            transactionRequest.paymentMethodNonce(requestBody.getParam1());
-            transactionRequest.orderId(String.valueOf(orderId));
-
             BraintreeGateway gateway = new BraintreeGateway(paymentRecord.getServerParam1());
-
+            TransactionRequest transactionRequest = new TransactionRequest()
+                    .amount(new BigDecimal(grandTotalAmount))
+                    .merchantAccountId("USD")
+                    .paymentMethodNonce(requestBody.getParam1())
+                    .options()
+                    .submitForSettlement(true)
+                    .done();
             Result<Transaction> result = gateway.transaction().sale(transactionRequest);
-
             if (result.isSuccess()) {
                 Transaction transaction = result.getTarget();
                 System.out.println("Success ID: " + transaction.getId());

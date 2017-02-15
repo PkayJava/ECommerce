@@ -356,7 +356,7 @@ public class OrdersServicePost {
         insertQuery.addValue("platform_user_id = :platform_user_id", currentUser.getPlatformUserId());
         named.update(insertQuery.toSQL(), insertQuery.getParam());
 
-        if (Payment.TYPE_PAYPAL.equals(paymentRecord.getType())) {
+        if (Payment.TYPE_PAYPAL.equalsIgnoreCase(paymentRecord.getType())) {
             LOGGER.info("token {}", paymentRecord.getServerParam1());
             LOGGER.info("nonce {}", requestBody.getParam1());
             BraintreeGateway gateway = new BraintreeGateway(paymentRecord.getServerParam1());

@@ -140,6 +140,7 @@ public class SettlementBrowsePage extends MBaaSPage {
                 }
             }
         }
+        target.add(this.dataTable);
     }
 
 }

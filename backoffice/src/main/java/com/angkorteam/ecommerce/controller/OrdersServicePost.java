@@ -365,12 +365,26 @@ public class OrdersServicePost {
                     .merchantAccountId("USD")
                     .paymentMethodNonce(requestBody.getParam1())
                     .options()
-                    .submitForSettlement(true)
+                    .submitForSettlement(false)
                     .done();
             Result<Transaction> result = gateway.transaction().sale(transactionRequest);
             if (result.isSuccess()) {
                 Transaction transaction = result.getTarget();
-                System.out.println("Success ID: " + transaction.getId());
+                InsertQuery p = new InsertQuery("ecommerce_settlement");
+                p.addValue("ecommerce_settlement_id = :ecommerce_settlement_id", Platform.randomUUIDLong("ecommerce_settlement"));
+                p.addValue("ecommerce_order_id = :ecommerce_order_id", orderId);
+                p.addValue("ecommerce_payment_id = :ecommerce_payment_id", paymentRecord.getEcommercePaymentId());
+                p.addValue("amount = :amount", grandTotalAmount);
+                p.addValue("status = :status", EcommerceSettlement.STATUS_CAPTURED);
+                p.addValue("payment_type = :payment_type", paymentRecord.getType());
+                p.addValue("server_param1 = :server_param1", paymentRecord.getServerParam1());
+                p.addValue("server_param2 = :server_param2", paymentRecord.getServerParam2());
+                p.addValue("server_param3 = :server_param3", paymentRecord.getServerParam3());
+                p.addValue("server_param4 = :server_param4", paymentRecord.getServerParam4());
+                p.addValue("server_param5 = :server_param5", paymentRecord.getServerParam5());
+                p.addValue("transaction_param1 = :transaction_param1", transaction.getId());
+                p.addValue("date_created = :date_created", new Date());
+                named.update(p.toSQL(), p.getParam());
             } else {
                 throw new ServletException("payment error");
             }
@@ -395,12 +409,26 @@ public class OrdersServicePost {
                     .merchantAccountId("USD")
                     .paymentMethodNonce(requestBody.getParam1())
                     .options()
-                    .submitForSettlement(true)
+                    .submitForSettlement(false)
                     .done();
             Result<Transaction> result = gateway.transaction().sale(transactionRequest);
             if (result.isSuccess()) {
                 Transaction transaction = result.getTarget();
-                System.out.println("Success ID: " + transaction.getId());
+                InsertQuery p = new InsertQuery("ecommerce_settlement");
+                p.addValue("ecommerce_settlement_id = :ecommerce_settlement_id", Platform.randomUUIDLong("ecommerce_settlement"));
+                p.addValue("ecommerce_order_id = :ecommerce_order_id", orderId);
+                p.addValue("ecommerce_payment_id = :ecommerce_payment_id", paymentRecord.getEcommercePaymentId());
+                p.addValue("amount = :amount", grandTotalAmount);
+                p.addValue("status = :status", EcommerceSettlement.STATUS_CAPTURED);
+                p.addValue("payment_type = :payment_type", paymentRecord.getType());
+                p.addValue("server_param1 = :server_param1", paymentRecord.getServerParam1());
+                p.addValue("server_param2 = :server_param2", paymentRecord.getServerParam2());
+                p.addValue("server_param3 = :server_param3", paymentRecord.getServerParam3());
+                p.addValue("server_param4 = :server_param4", paymentRecord.getServerParam4());
+                p.addValue("server_param5 = :server_param5", paymentRecord.getServerParam5());
+                p.addValue("transaction_param1 = :transaction_param1", transaction.getId());
+                p.addValue("date_created = :date_created", new Date());
+                named.update(p.toSQL(), p.getParam());
             } else {
                 throw new ServletException("payment error");
             }

@@ -1,5 +1,6 @@
 INSERT INTO platform_page_role (platform_page_role_id, platform_role_id, platform_page_id)
 VALUES
+  (103, 1, 173),
   (102, 7, 172),
   (101, 6, 172),
   (100, 4, 172),

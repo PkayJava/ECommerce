@@ -40,8 +40,6 @@ public class PaymentBrowsePage extends MBaaSPage {
         provider.boardField("price", "price", Double.class);
         provider.boardField("enabled", "enabled", Boolean.class);
 
-        provider.selectField("ecommercePaymentId", String.class);
-
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);
 

@@ -1,5 +1,6 @@
 INSERT INTO `platform_page` (`platform_page_id`, `platform_layout_id`, `path`, `html_title`, `page_title`, `page_description`, `java_class`, `version`)
 VALUES
+  (173, 1, '/ecommerce/settlement/browse', 'eCommerce Settlement Browse', 'eCommerce Settlement Browse', 'eCommerce Settlement Browse', 'com.angkorteam.ecommerce.page.settlement.SettlementBrowsePage', 1),
   (172, 1, '/platform/user/profile', 'Platform User Profile', 'Platform User Profile', 'Platform User Profile', 'com.angkorteam.platform.page.user.UserProfilePage', 1),
   (171, 1, '/ecommerce/discount/coupon/generate', 'eCommerce Discount Coupon Generate', 'eCommerce Discount Coupon Generate', 'eCommerce Discount Coupon Generate', 'com.angkorteam.ecommerce.page.discount.DiscountCouponGeneratePage', 1),
   (170, 1, '/ecommerce/discount/coupon/browse', 'eCommerce Discount Coupon Browse', 'eCommerce Discount Coupon Browse', 'eCommerce Discount Coupon Browse', 'com.angkorteam.ecommerce.page.discount.DiscountCouponBrowsePage', 1),

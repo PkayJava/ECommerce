@@ -1,5 +1,6 @@
 INSERT INTO `platform_menu_item` (`platform_menu_item_id`, `platform_section_id`, `platform_menu_id`, `title`, `icon`, `order`, `platform_page_id`)
 VALUES
+  (27, 2, NULL, 'Settlement', '', 5, 173),
   (26, 2, NULL, 'Order', '', 4, 167),
   (25, 2, NULL, 'Order', '', 4, 165),
   (24, 2, NULL, 'Order', '', 4, 162),

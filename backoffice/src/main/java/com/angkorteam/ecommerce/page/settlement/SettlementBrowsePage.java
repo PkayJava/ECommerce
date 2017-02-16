@@ -75,13 +75,6 @@ public class SettlementBrowsePage extends MBaaSPage {
             actionItems.add(new ActionItem("Refund", Model.of("Refund"), ItemCss.DANGER));
             actionItems.add(new ActionItem("Settlement", Model.of("Settlement"), ItemCss.DANGER));
         }
-        Boolean enabled = (Boolean) object.get("enabled");
-        if (enabled != null && enabled) {
-
-        } else {
-            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.DANGER));
-        }
-        actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;
     }
 

@@ -42,10 +42,10 @@ public class MBaaSLayout extends Border {
         super.onInitialize();
 
         Label shortcutText = new Label("shortcutText", Platform.getSetting(SettingPage.SHORTCUT_TEXT));
-        add(shortcutText);
+        addToBorder(shortcutText);
 
         Label descriptionText = new Label("descriptionText", Platform.getSetting(SettingPage.DESCRIPTION_TEXT));
-        add(descriptionText);
+        addToBorder(descriptionText);
 
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 

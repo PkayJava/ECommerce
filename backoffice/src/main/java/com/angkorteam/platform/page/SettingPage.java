@@ -218,8 +218,9 @@ public class SettingPage extends MBaaSPage {
     }
 
     private void saveButtonSubmit(Button button) {
-
-        saveSetting(HOME_PAGE, this.homePage.getId());
+        if (this.homePage != null) {
+            saveSetting(HOME_PAGE, this.homePage.getId());
+        }
         saveSetting(GOOGLE_API_KEY, this.googleApiKey);
         saveSetting(ASSET, this.asset);
         saveSetting(CURRENCY, this.currency);

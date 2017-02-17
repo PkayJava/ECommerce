@@ -11,6 +11,7 @@ import com.angkorteam.platform.page.SettingPage;
 import com.angkorteam.platform.page.user.UserProfilePage;
 import com.angkorteam.platform.ui.SectionWidget;
 import com.google.common.base.Strings;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -20,6 +21,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +45,9 @@ public class MBaaSLayout extends Border {
 
         Label shortcutText = new Label("shortcutText", Platform.getSetting(SettingPage.SHORTCUT_TEXT));
         addToBorder(shortcutText);
+
+        Label yearLabel = new Label("yearLabel", DateFormatUtils.format(new Date(), "yyyy"));
+        addToBorder(yearLabel);
 
         Label descriptionText = new Label("descriptionText", Platform.getSetting(SettingPage.DESCRIPTION_TEXT));
         addToBorder(descriptionText);

@@ -61,6 +61,7 @@ public class ProductsSingleServiceGet {
         productQuery.addField("ecommerce_product.shipping_price AS shippingPrice");
         productQuery.addField("ecommerce_product.reference AS code");
         productQuery.addField("ecommerce_product.description AS description");
+        productQuery.addField("platform_user.verified AS verified");
         productQuery.addField("platform_user.phone AS phoneNumber");
         productQuery.addField("CONCAT('" + asset + "', '/api/resource', platform_file.path, '/', platform_file.name) AS mainImage");
         productQuery.addJoin(JoinType.LeftJoin, "platform_file", "ecommerce_product.main_image_platform_file_id = platform_file.platform_file_id");

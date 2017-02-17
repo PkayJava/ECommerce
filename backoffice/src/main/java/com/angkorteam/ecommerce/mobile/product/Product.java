@@ -79,6 +79,18 @@ public class Product implements Serializable {
     @SerializedName("phone_number")
     private String phoneNumber;
 
+    @Expose
+    @SerializedName("verified")
+    private Boolean verified;
+
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
     private Double shippingPrice;
 
     public long getId() {

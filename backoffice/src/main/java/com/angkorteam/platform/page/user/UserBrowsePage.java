@@ -40,6 +40,7 @@ public class UserBrowsePage extends MBaaSPage {
         provider.boardField("platform_user.login", "login", String.class);
         provider.boardField("platform_role.name", "roleName", String.class);
         provider.boardField("platform_user.status", "status", String.class);
+        provider.boardField("platform_user.verified", "verified", Boolean.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);
@@ -50,6 +51,7 @@ public class UserBrowsePage extends MBaaSPage {
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("login"), "login"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("roleName"), "roleName"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("status"), "status"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("verified"), "verified"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         dataTable = new DefaultDataTable<>("table", columns, provider, 20);

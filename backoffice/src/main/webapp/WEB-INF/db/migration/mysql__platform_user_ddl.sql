@@ -16,7 +16,9 @@ CREATE TABLE `platform_user` (
   `phone`            VARCHAR(255),
   `gender`           VARCHAR(10),
   `country`          VARCHAR(100),
+  `verified`         BIT(1),
 
+  KEY (`verified`),
   KEY (`street`),
   KEY (`city`),
   KEY (`house_number`),

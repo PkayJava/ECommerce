@@ -145,6 +145,7 @@ CREATE TABLE `platform_menu_item` (
 -- ################################################################
 INSERT INTO `platform_menu_item` (`platform_menu_item_id`, `platform_section_id`, `platform_menu_id`, `title`, `icon`, `order`, `platform_page_id`)
 VALUES
+  (27, 2, NULL, 'Settlement', '', 5, 173),
   (26, 2, NULL, 'Order', '', 4, 167),
   (25, 2, NULL, 'Order', '', 4, 165),
   (24, 2, NULL, 'Order', '', 4, 162),
@@ -200,6 +201,7 @@ CREATE TABLE `platform_page` (
 -- ################################################################
 INSERT INTO `platform_page` (`platform_page_id`, `platform_layout_id`, `path`, `html_title`, `page_title`, `page_description`, `java_class`, `version`)
 VALUES
+  (173, 1, '/ecommerce/settlement/browse', 'eCommerce Settlement Browse', 'eCommerce Settlement Browse', 'eCommerce Settlement Browse', 'com.angkorteam.ecommerce.page.settlement.SettlementBrowsePage', 1),
   (172, 1, '/platform/user/profile', 'Platform User Profile', 'Platform User Profile', 'Platform User Profile', 'com.angkorteam.platform.page.user.UserProfilePage', 1),
   (171, 1, '/ecommerce/discount/coupon/generate', 'eCommerce Discount Coupon Generate', 'eCommerce Discount Coupon Generate', 'eCommerce Discount Coupon Generate', 'com.angkorteam.ecommerce.page.discount.DiscountCouponGeneratePage', 1),
   (170, 1, '/ecommerce/discount/coupon/browse', 'eCommerce Discount Coupon Browse', 'eCommerce Discount Coupon Browse', 'eCommerce Discount Coupon Browse', 'com.angkorteam.ecommerce.page.discount.DiscountCouponBrowsePage', 1),
@@ -304,6 +306,7 @@ CREATE TABLE `platform_page_role` (
 -- ################################################################
 INSERT INTO platform_page_role (platform_page_role_id, platform_role_id, platform_page_id)
 VALUES
+  (103, 1, 173),
   (102, 7, 172),
   (101, 6, 172),
   (100, 4, 172),
@@ -590,7 +593,9 @@ CREATE TABLE `platform_user` (
   `phone`            VARCHAR(255),
   `gender`           VARCHAR(10),
   `country`          VARCHAR(100),
+  `verified`         BIT(1),
 
+  KEY (`verified`),
   KEY (`street`),
   KEY (`city`),
   KEY (`house_number`),
@@ -639,6 +644,7 @@ CREATE TABLE `platform_uuid` (
 -- ################################################################
 INSERT INTO `platform_uuid` (table_name, value)
   VALUE
+  ('ecommerce_settlement', 1000),
   ('ecommerce_discount_coupon', 1000),
   ('ecommerce_banner', 1000),
   ('ecommerce_brand', 1000),

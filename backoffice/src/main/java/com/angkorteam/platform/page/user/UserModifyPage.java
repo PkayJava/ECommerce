@@ -12,6 +12,7 @@ import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -38,6 +39,9 @@ public class UserModifyPage extends MBaaSPage {
     private Option role;
     private Select2SingleChoice<Option> roleField;
     private TextFeedbackPanel roleFeedback;
+
+    private Boolean verified;
+    private CheckBox verifiedField;
 
     private Button saveButton;
     private Form<Void> form;
@@ -79,6 +83,11 @@ public class UserModifyPage extends MBaaSPage {
         this.roleFeedback = new TextFeedbackPanel("roleFeedback", this.roleField);
         this.form.add(this.roleFeedback);
 
+        this.verified = userRecord.getVerified();
+        this.verifiedField = new CheckBox("verifiedField", new PropertyModel<>(this, "verified"));
+        this.form.add(this.verifiedField);
+
+
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonOnSubmit);
         this.form.add(this.saveButton);
@@ -90,6 +99,7 @@ public class UserModifyPage extends MBaaSPage {
     private void saveButtonOnSubmit(Button button) {
         UpdateQuery updateQuery = new UpdateQuery("platform_user");
         updateQuery.addValue("full_name = :full_name", this.fullName);
+        updateQuery.addValue("verified = :verified", this.verified);
         updateQuery.addValue("platform_role_id = :role_id", this.role.getId());
         updateQuery.addWhere("platform_user_id = :user_id", this.userId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());

@@ -23,7 +23,15 @@ public class PlatformUser implements Serializable {
     private String phone;
     private String gender;
     private String country;
+    private Boolean verified;
 
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
 
     public String getLogin() {
         return login;

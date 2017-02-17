@@ -7,6 +7,7 @@ import com.angkorteam.platform.model.PlatformPage;
 import com.angkorteam.platform.model.PlatformSection;
 import com.angkorteam.platform.model.PlatformUser;
 import com.angkorteam.platform.page.LogoutPage;
+import com.angkorteam.platform.page.SettingPage;
 import com.angkorteam.platform.page.user.UserProfilePage;
 import com.angkorteam.platform.ui.SectionWidget;
 import com.google.common.base.Strings;
@@ -39,6 +40,12 @@ public class MBaaSLayout extends Border {
     @Override
     protected void onInitialize() {
         super.onInitialize();
+
+        Label shortcutText = new Label("shortcutText", Platform.getSetting(SettingPage.SHORTCUT_TEXT));
+        add(shortcutText);
+
+        Label descriptionText = new Label("descriptionText", Platform.getSetting(SettingPage.DESCRIPTION_TEXT));
+        add(descriptionText);
 
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
 

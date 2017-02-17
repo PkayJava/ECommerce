@@ -4,10 +4,12 @@ import com.angkorteam.framework.extension.wicket.AdminLTEPage;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
 import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.Session;
 import org.apache.wicket.NonResettingRestartException;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
@@ -38,6 +40,12 @@ public class LoginPage extends AdminLTEPage {
         super.onInitialize();
 
         this.originalUrl = RestartResponseAtInterceptPageException.getOriginalUrl();
+
+        Label descriptionText = new Label("descriptionText", Platform.getSetting(SettingPage.DESCRIPTION_TEXT));
+        add(descriptionText);
+
+        Label environmentText = new Label("environmentText", Platform.getSetting(SettingPage.ENVIRONMENT_TEXT));
+        add(environmentText);
 
         this.form = new Form<>("form");
         this.add(this.form);

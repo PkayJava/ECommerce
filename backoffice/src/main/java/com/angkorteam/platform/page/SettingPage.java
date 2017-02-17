@@ -64,28 +64,34 @@ public class SettingPage extends MBaaSPage {
     private TextField<String> smtpPasswordField;
     private TextFeedbackPanel smtpPasswordFeedback;
 
+    private String environmentText;
+    private TextField<String> environmentTextField;
+    private TextFeedbackPanel environmentTextFeedback;
+
+    private String descriptionText;
+    private TextField<String> descriptionTextField;
+    private TextFeedbackPanel descriptionTextFeedback;
+
+    private String shortcutText;
+    private TextField<String> shortcutTextField;
+    private TextFeedbackPanel shortcutTextFeedback;
+
     private Button saveButton;
     private Form<Void> form;
 
-    public final String HOME_PAGE = "home_page";
-
-    public final String GOOGLE_API_KEY = "google_api_key";
-
-    public final String ASSET = "asset";
-
-    public final String CURRENCY = "currency";
-
-    public final String PRICE_FORMAT = "price_format";
-
-    public final String DATE_FORMAT = "date_format";
-
-    public final String DATETIME_FORMAT = "datetime_format";
-
-    public final String TIME_FORMAT = "time_format";
-
-    public final String SMTP_USER = "smtp_user";
-
-    public final String SMTP_PASSWORD = "smtp_password";
+    public static final String HOME_PAGE = "home_page";
+    public static final String GOOGLE_API_KEY = "google_api_key";
+    public static final String ASSET = "asset";
+    public static final String CURRENCY = "currency";
+    public static final String PRICE_FORMAT = "price_format";
+    public static final String DATE_FORMAT = "date_format";
+    public static final String DATETIME_FORMAT = "datetime_format";
+    public static final String TIME_FORMAT = "time_format";
+    public static final String SMTP_USER = "smtp_user";
+    public static final String SMTP_PASSWORD = "smtp_password";
+    public static final String ENVIRONMENT_TEXT = "environment_text";
+    public static final String DESCRIPTION_TEXT = "description_text";
+    public static final String SHORTCUT_TEXT = "shortcut_text";
 
     @Override
     protected void doInitialize(Border layout) {
@@ -145,6 +151,21 @@ public class SettingPage extends MBaaSPage {
         this.smtpPasswordFeedback = new TextFeedbackPanel("smtpPasswordFeedback", this.smtpPasswordField);
         this.form.add(this.smtpPasswordFeedback);
 
+        this.environmentTextField = new TextField<>("environmentTextField", new PropertyModel<>(this, "environmentText"));
+        this.form.add(this.environmentTextField);
+        this.environmentTextFeedback = new TextFeedbackPanel("environmentTextFeedback", this.environmentTextField);
+        this.form.add(this.environmentTextFeedback);
+
+        this.descriptionTextField = new TextField<>("descriptionTextField", new PropertyModel<>(this, "descriptionText"));
+        this.form.add(this.descriptionTextField);
+        this.descriptionTextFeedback = new TextFeedbackPanel("descriptionTextFeedback", this.descriptionTextField);
+        this.form.add(this.descriptionTextFeedback);
+
+        this.shortcutTextField = new TextField<>("shortcutTextField", new PropertyModel<>(this, "shortcutText"));
+        this.form.add(this.shortcutTextField);
+        this.shortcutTextFeedback = new TextFeedbackPanel("shortcutTextFeedback", this.shortcutTextField);
+        this.form.add(this.shortcutTextFeedback);
+
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
@@ -163,6 +184,9 @@ public class SettingPage extends MBaaSPage {
         loadSetting(DATETIME_FORMAT, new PropertyModel<>(this, "datetimeFormat"));
         loadSetting(SMTP_USER, new PropertyModel<>(this, "smtpUser"));
         loadSetting(SMTP_PASSWORD, new PropertyModel<>(this, "smtpPassword"));
+        loadSetting(ENVIRONMENT_TEXT, new PropertyModel<>(this, "environmentText"));
+        loadSetting(SHORTCUT_TEXT, new PropertyModel<>(this, "shortcutText"));
+        loadSetting(DESCRIPTION_TEXT, new PropertyModel<>(this, "descriptionText"));
     }
 
     void loadSetting(String key, PropertyModel<String> model) {
@@ -205,6 +229,9 @@ public class SettingPage extends MBaaSPage {
         saveSetting(DATETIME_FORMAT, this.datetimeFormat);
         saveSetting(SMTP_USER, this.smtpUser);
         saveSetting(SMTP_PASSWORD, this.smtpPassword);
+        saveSetting(DESCRIPTION_TEXT, this.descriptionText);
+        saveSetting(SHORTCUT_TEXT, this.shortcutText);
+        saveSetting(ENVIRONMENT_TEXT, this.environmentText);
 
         setResponsePage(SettingPage.class);
     }

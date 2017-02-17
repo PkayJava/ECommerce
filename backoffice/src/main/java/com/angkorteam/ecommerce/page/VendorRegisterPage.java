@@ -10,7 +10,9 @@ import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.model.PlatformRole;
+import com.angkorteam.platform.page.SettingPage;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -49,6 +51,12 @@ public class VendorRegisterPage extends AdminLTEPage {
 
         this.form = new Form<>("form");
         add(this.form);
+
+        Label descriptionText = new Label("descriptionText", Platform.getSetting(SettingPage.DESCRIPTION_TEXT));
+        add(descriptionText);
+
+        Label environmentText = new Label("environmentText", Platform.getSetting(SettingPage.ENVIRONMENT_TEXT));
+        add(environmentText);
 
         this.fullNameField = new TextField<>("fullNameField", new PropertyModel<>(this, "fullName"));
         this.fullNameField.setRequired(true);

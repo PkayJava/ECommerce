@@ -54,8 +54,8 @@ public class ProductVariantModifyPage extends MBaaSPage {
     protected void doInitialize(Border layout) {
         add(layout);
 
-        this.ecommerceProductId = getPageParameters().get("productId").toString("");
-        this.ecommerceProductVariantId = getPageParameters().get("productVariantId").toString("");
+        this.ecommerceProductId = getPageParameters().get("ecommerceProductId").toString("");
+        this.ecommerceProductVariantId = getPageParameters().get("ecommerceProductVariantId").toString("");
 
         SelectQuery selectQuery = null;
         selectQuery = new SelectQuery("ecommerce_product_variant");

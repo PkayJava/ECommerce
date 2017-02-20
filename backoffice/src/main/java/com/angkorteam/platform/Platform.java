@@ -26,6 +26,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -217,6 +219,51 @@ public abstract class Platform {
     public static String randomUUIDString() {
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
         return jdbcTemplate.queryForObject("select uuid() from dual", String.class);
+    }
+
+    public static int getConfiguration(String key, int defaultValue) {
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
+        return configuration.getInt(key, defaultValue);
+    }
+
+    public static long getConfiguration(String key, long defaultValue) {
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
+        return configuration.getLong(key, defaultValue);
+    }
+
+    public static float getConfiguration(String key, float defaultValue) {
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
+        return configuration.getFloat(key, defaultValue);
+    }
+
+    public static String getConfiguration(String key, String defaultValue) {
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
+        return configuration.getString(key, defaultValue);
+    }
+
+    public static double getConfiguration(String key, double defaultValue) {
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
+        return configuration.getDouble(key, defaultValue);
+    }
+
+    public static byte getConfiguration(String key, byte defaultValue) {
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
+        return configuration.getByte(key, defaultValue);
+    }
+
+    public static boolean getConfiguration(String key, boolean defaultValue) {
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
+        return configuration.getBoolean(key, defaultValue);
+    }
+
+    public static BigDecimal getConfiguration(String key, BigDecimal defaultValue) {
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
+        return configuration.getBigDecimal(key, defaultValue);
+    }
+
+    public static BigInteger getConfiguration(String key, BigInteger defaultValue) {
+        XMLPropertiesConfiguration configuration = Platform.getBean(XMLPropertiesConfiguration.class);
+        return configuration.getBigInteger(key, defaultValue);
     }
 
     public static long saveFile(File file) {

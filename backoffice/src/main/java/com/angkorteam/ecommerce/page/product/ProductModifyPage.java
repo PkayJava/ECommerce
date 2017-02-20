@@ -238,7 +238,7 @@ public class ProductModifyPage extends MBaaSPage {
         updateQuery.addValue("discount_price = :discount_price", this.discountPrice);
         updateQuery.addValue("main_image_platform_file_id = :main_image_platform_file_id", mainImageFileId);
         updateQuery.addValue("main_image_high_res_platform_file_id = :main_image_high_res_platform_file_id", mainImageHighResFileId);
-        updateQuery.addValue("ready = :ready", false);
+        updateQuery.addValue("ready = :ready", Platform.getConfiguration("demo", false));
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 
         getJdbcTemplate().update("delete from ecommerce_product_related where ecommerce_product_id = ?", this.ecommerceProductId);

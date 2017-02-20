@@ -7,7 +7,6 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select
 import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.InsertQuery;
-import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionMultipleChoiceProvider;
@@ -267,7 +266,9 @@ public class ProductCreatePage extends MBaaSPage {
         insertQuery.addValue("main_image_high_res_platform_file_id = :main_image_high_res_platform_file_id", mainImageHighResFileId);
         insertQuery.addValue("quantity = :quantity", this.quantity);
         insertQuery.addValue("shipping_price = :shipping_price", 0);
-        insertQuery.addValue("ready = :ready", false);
+        boolean demo = Platform.getConfiguration("demo", false);
+        insertQuery.addValue("ready = :ready", demo);
+
 
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 
@@ -293,11 +294,6 @@ public class ProductCreatePage extends MBaaSPage {
         insertQuery.addValue("quantity = :quantity", this.quantity);
 
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
-
-        SelectQuery selectQuery = new SelectQuery("ecommerce_product_variant");
-        selectQuery.addField("sum(quantity)");
-        selectQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", productId);
-        Integer quantity = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), int.class);
 
         if (this.variantImage != null && !this.variantImage.isEmpty()) {
             for (FileUpload tmp : this.variantImage) {

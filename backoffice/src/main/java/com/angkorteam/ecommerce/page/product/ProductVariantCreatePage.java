@@ -156,7 +156,7 @@ public class ProductVariantCreatePage extends MBaaSPage {
 
         UpdateQuery updateQuery = new UpdateQuery("ecommerce_product");
         updateQuery.addValue("quantity = :quantity", quantity);
-        updateQuery.addValue("ready = :ready", false);
+        updateQuery.addValue("ready = :ready", Platform.getConfiguration("demo", false));
         updateQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

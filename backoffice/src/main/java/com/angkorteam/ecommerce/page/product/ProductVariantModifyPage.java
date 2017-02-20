@@ -8,6 +8,7 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
+import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import org.apache.wicket.markup.html.basic.Label;
@@ -119,7 +120,7 @@ public class ProductVariantModifyPage extends MBaaSPage {
 
         updateQuery = new UpdateQuery("ecommerce_product");
         updateQuery.addValue("quantity = :quantity", quantity);
-        updateQuery.addValue("ready = :ready", false);
+        updateQuery.addValue("ready = :ready", Platform.getConfiguration("demo", false));
         updateQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

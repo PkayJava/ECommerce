@@ -73,9 +73,9 @@ public class UserBrowsePage extends MBaaSPage {
         actionItems.add(new ActionItem("Reset PWD", Model.of("Reset PWD")));
         actionItems.add(new ActionItem("Edit", Model.of("Edit")));
         if (enabled != null && enabled) {
-            actionItems.add(new ActionItem("Disable", Model.of("Disable")));
+            actionItems.add(new ActionItem("Disable", Model.of("Disable"), ItemCss.WARNING));
         } else {
-            actionItems.add(new ActionItem("Enable", Model.of("Enable")));
+            actionItems.add(new ActionItem("Enable", Model.of("Enable"), ItemCss.WARNING));
         }
         actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;

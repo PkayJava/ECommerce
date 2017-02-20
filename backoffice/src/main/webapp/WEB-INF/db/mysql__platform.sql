@@ -546,7 +546,7 @@ CREATE TABLE `platform_setting` (
   `platform_setting_id` BIGINT(19)   NOT NULL,
   `key`                 VARCHAR(100) NOT NULL,
   `description`         VARCHAR(255),
-  `value`               VARCHAR(255) NOT NULL,
+  `value`               VARCHAR(255),
   `version`             INT(11)      NOT NULL DEFAULT 1,
 
   KEY (`version`),
@@ -594,9 +594,11 @@ CREATE TABLE `platform_user` (
   `gender`           VARCHAR(10),
   `country`          VARCHAR(100),
   `verified`         BIT(1),
+  `enabled`          BIT(1)       NOT NULL DEFAULT 1,
 
   KEY (`verified`),
   KEY (`street`),
+  KEY (`enabled`),
   KEY (`city`),
   KEY (`house_number`),
   KEY (`zip`),

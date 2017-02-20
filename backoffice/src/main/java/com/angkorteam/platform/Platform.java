@@ -165,7 +165,7 @@ public abstract class Platform {
         String accessToken = token.substring(0, delim);
 
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
-        PlatformUser userRecord = jdbcTemplate.queryForObject("select * from platform_user where access_token = ?", PlatformUser.class, accessToken);
+        PlatformUser userRecord = jdbcTemplate.queryForObject("select * from platform_user where enabled = true and access_token = ?", PlatformUser.class, accessToken);
         PlatformRole roleRecord = jdbcTemplate.queryForObject("select * from platform_role where platform_role_id = ?", PlatformRole.class, userRecord.getPlatformRoleId());
 
         SelectQuery selectQuery = new SelectQuery("platform_role");
@@ -213,11 +213,6 @@ public abstract class Platform {
         jdbcTemplate.update("update `platform_uuid` set value = ? where table_name = ?", value, tableName);
         return value.longValue();
     }
-
-//    public static Long randomUUIDLong() {
-//        JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);
-//        return jdbcTemplate.queryForObject("select uuid_short() from dual", Long.class);
-//    }
 
     public static String randomUUIDString() {
         JdbcTemplate jdbcTemplate = Platform.getBean(JdbcTemplate.class);

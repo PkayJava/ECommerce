@@ -32,6 +32,7 @@ public class Session extends AuthenticatedWebSession {
         SelectQuery selectQuery = null;
         selectQuery = new SelectQuery("platform_user");
         selectQuery.addWhere("login = :login", username);
+        selectQuery.addWhere("enabled = :enabled", true);
         selectQuery.addWhere("password = MD5(:password)", password);
         PlatformUser user = getNamed().queryForObject(selectQuery.toSQL(), selectQuery.getParam(), PlatformUser.class);
         if (user != null) {
@@ -56,4 +57,5 @@ public class Session extends AuthenticatedWebSession {
     protected JdbcTemplate getJdbcTemplate() {
         return Platform.getBean(JdbcTemplate.class);
     }
+
 }

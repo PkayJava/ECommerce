@@ -77,6 +77,7 @@ public class UserLoginFacebookServicePost {
 
             PlatformUser user = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), PlatformUser.class);
             Long userId = null;
+            Boolean enabled = true;
             if (user == null) {
                 selectQuery = new SelectQuery("platform_role");
                 selectQuery.addWhere("name = :name", "ecommerce_user");
@@ -94,7 +95,17 @@ public class UserLoginFacebookServicePost {
                 insertQuery.addValue("access_token = :access_token", Platform.randomUUIDString());
                 named.update(insertQuery.toSQL(), insertQuery.getParam());
             } else {
+                enabled = user.getEnabled();
+                if (enabled == null) {
+                    enabled = false;
+                }
                 userId = user.getPlatformUserId();
+            }
+
+            if (!enabled) {
+                Map<String, Object> error = Maps.newHashMap();
+                error.put("body", new String[]{"please try again"});
+                return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
             }
 
             InsertQuery insertQuery = null;

@@ -41,6 +41,7 @@ public class UserBrowsePage extends MBaaSPage {
         provider.boardField("platform_role.name", "roleName", String.class);
         provider.boardField("platform_user.status", "status", String.class);
         provider.boardField("platform_user.verified", "verified", Boolean.class);
+        provider.boardField("platform_user.enabled", "enabled", Boolean.class);
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", provider);
         layout.add(filterForm);
@@ -52,6 +53,7 @@ public class UserBrowsePage extends MBaaSPage {
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("roleName"), "roleName"));
         columns.add(new TextFilterColumn(provider, ItemClass.String, Model.of("status"), "status"));
         columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("verified"), "verified"));
+        columns.add(new TextFilterColumn(provider, ItemClass.Boolean, Model.of("enabled"), "enabled"));
         columns.add(new ActionFilterColumn(Model.of("action"), this::actions, this::itemClick));
 
         dataTable = new DefaultDataTable<>("table", columns, provider, 20);
@@ -67,8 +69,14 @@ public class UserBrowsePage extends MBaaSPage {
 
     private List<ActionItem> actions(String name, Map<String, Object> object) {
         List<ActionItem> actionItems = Lists.newArrayList();
+        Boolean enabled = (Boolean) object.get("enabled");
         actionItems.add(new ActionItem("Reset PWD", Model.of("Reset PWD")));
         actionItems.add(new ActionItem("Edit", Model.of("Edit")));
+        if (enabled != null && enabled) {
+            actionItems.add(new ActionItem("Disable", Model.of("Disable")));
+        } else {
+            actionItems.add(new ActionItem("Enable", Model.of("Enable")));
+        }
         actionItems.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actionItems;
     }
@@ -76,17 +84,24 @@ public class UserBrowsePage extends MBaaSPage {
 
     private void itemClick(String link, Map<String, Object> object, AjaxRequestTarget target) {
         Long userId = (Long) object.get("userId");
-        if ("Edit".equals(link)) {
+        if ("Edit".equalsIgnoreCase(link)) {
             PageParameters parameters = new PageParameters();
             parameters.add("userId", userId);
             setResponsePage(UserModifyPage.class, parameters);
-        } else if ("Delete".equals(link)) {
+        } else if ("Delete".equalsIgnoreCase(link)) {
             getJdbcTemplate().update("delete from platform_user where platform_user_id = ?", userId);
             target.add(this.dataTable);
-        } else if ("Reset PWD".equals(link)) {
+        } else if ("Reset PWD".equalsIgnoreCase(link)) {
             PageParameters parameters = new PageParameters();
             parameters.add("userId", userId);
             setResponsePage(UserPasswordPage.class, parameters);
+        } else if ("Enable".equalsIgnoreCase(link)) {
+            getJdbcTemplate().update("update platform_user set enabled = true where platform_user_id = ?", userId);
+            target.add(this.dataTable);
+        } else if ("Disable".equalsIgnoreCase(link)) {
+            getJdbcTemplate().update("update platform_user set enabled = false where platform_user_id = ?", userId);
+            target.add(this.dataTable);
         }
     }
+
 }

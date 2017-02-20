@@ -17,9 +17,11 @@ CREATE TABLE `platform_user` (
   `gender`           VARCHAR(10),
   `country`          VARCHAR(100),
   `verified`         BIT(1),
+  `enabled`          BIT(1)       NOT NULL DEFAULT 1,
 
   KEY (`verified`),
   KEY (`street`),
+  KEY (`enabled`),
   KEY (`city`),
   KEY (`house_number`),
   KEY (`zip`),

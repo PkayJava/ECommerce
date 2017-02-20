@@ -56,6 +56,7 @@ public class UserLoginEmailServicePost {
         selectQuery.addField("phone");
         selectQuery.addField("gender");
         selectQuery.addWhere("login = :login", requestBody.get("email"));
+        selectQuery.addWhere("enabled = :enabled", true);
         selectQuery.addWhere("password = MD5(:password)", "password", requestBody.get("password"));
 
         User data = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), User.class);

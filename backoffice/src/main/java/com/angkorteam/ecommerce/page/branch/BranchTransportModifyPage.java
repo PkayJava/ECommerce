@@ -64,7 +64,6 @@ public class BranchTransportModifyPage extends MBaaSPage {
         this.form.add(this.textFeedback);
 
         this.iconField = new FileUploadField("iconField", new PropertyModel<>(this, "icon"));
-        this.iconField.setRequired(true);
         this.form.add(this.iconField);
         this.iconFeedback = new TextFeedbackPanel("iconFeedback", this.iconField);
         this.form.add(this.iconFeedback);
@@ -93,7 +92,9 @@ public class BranchTransportModifyPage extends MBaaSPage {
 
         UpdateQuery updateQuery = new UpdateQuery("ecommerce_branch_transport");
         updateQuery.addValue("`text` = :text", this.text);
-        updateQuery.addValue("icon_platform_file_id = :icon_platform_file_id", iconFileId);
+        if (iconFileId != null) {
+            updateQuery.addValue("icon_platform_file_id = :icon_platform_file_id", iconFileId);
+        }
         updateQuery.addWhere("ecommerce_branch_transport_id = :ecommerce_branch_transport_id", iconFileId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

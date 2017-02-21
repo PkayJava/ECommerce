@@ -170,13 +170,11 @@ public class ProductModifyPage extends MBaaSPage {
         this.form.add(this.relatedProductFeedback);
 
         this.mainImageField = new FileUploadField("mainImageField", new PropertyModel<>(this, "mainImage"));
-        this.mainImageField.setRequired(true);
         this.form.add(this.mainImageField);
         this.mainImageFeedback = new TextFeedbackPanel("mainImageFeedback", this.mainImageField);
         this.form.add(this.mainImageFeedback);
 
         this.mainImageHighResField = new FileUploadField("mainImageHighResField", new PropertyModel<>(this, "mainImageHighRes"));
-        this.mainImageHighResField.setRequired(true);
         this.form.add(this.mainImageHighResField);
         this.mainImageHighResFeedback = new TextFeedbackPanel("mainImageHighResFeedback", this.mainImageHighResField);
         this.form.add(this.mainImageHighResFeedback);
@@ -236,8 +234,12 @@ public class ProductModifyPage extends MBaaSPage {
         updateQuery.addValue("description = :description", this.description);
         updateQuery.addValue("last_modified = :last_modified", new Date());
         updateQuery.addValue("discount_price = :discount_price", this.discountPrice);
-        updateQuery.addValue("main_image_platform_file_id = :main_image_platform_file_id", mainImageFileId);
-        updateQuery.addValue("main_image_high_res_platform_file_id = :main_image_high_res_platform_file_id", mainImageHighResFileId);
+        if (mainImageFileId != null) {
+            updateQuery.addValue("main_image_platform_file_id = :main_image_platform_file_id", mainImageFileId);
+        }
+        if (mainImageHighResFileId != null) {
+            updateQuery.addValue("main_image_high_res_platform_file_id = :main_image_high_res_platform_file_id", mainImageHighResFileId);
+        }
         updateQuery.addValue("ready = :ready", Platform.getConfiguration("demo", false));
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

@@ -34,36 +34,36 @@ public class BannerModifyPage extends MBaaSPage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BannerModifyPage.class);
 
-    String ecommerceBannerId;
+    private String ecommerceBannerId;
 
-    String name;
-    TextField<String> nameField;
-    TextFeedbackPanel nameFeedback;
+    private String name;
+    private TextField<String> nameField;
+    private TextFeedbackPanel nameFeedback;
 
-    List<String> types = Arrays.asList("Category", "Product");
-    String type;
-    DropDownChoice<String> typeField;
-    TextFeedbackPanel typeFeedback;
+    private List<String> types = Arrays.asList("Category", "Product");
+    private String type;
+    private DropDownChoice<String> typeField;
+    private TextFeedbackPanel typeFeedback;
 
-    Option product;
-    Select2SingleChoice<Option> productField;
-    TextFeedbackPanel productFeedback;
+    private Option product;
+    private Select2SingleChoice<Option> productField;
+    private TextFeedbackPanel productFeedback;
 
-    Option category;
-    Select2SingleChoice<Option> categoryField;
-    TextFeedbackPanel categoryFeedback;
+    private Option category;
+    private Select2SingleChoice<Option> categoryField;
+    private TextFeedbackPanel categoryFeedback;
 
-    List<FileUpload> image;
-    FileUploadField imageField;
-    TextFeedbackPanel imageFeedback;
+    private List<FileUpload> image;
+    private FileUploadField imageField;
+    private TextFeedbackPanel imageFeedback;
 
-    Integer order = 0;
-    TextField<Integer> orderField;
-    TextFeedbackPanel orderFeedback;
+    private Integer order = 0;
+    private TextField<Integer> orderField;
+    private TextFeedbackPanel orderFeedback;
 
-    Button saveButton;
-    BookmarkablePageLink<Void> closeButton;
-    Form<Void> form;
+    private Button saveButton;
+    private BookmarkablePageLink<Void> closeButton;
+    private Form<Void> form;
 
     @Override
     protected void doInitialize(Border layout) {
@@ -104,7 +104,6 @@ public class BannerModifyPage extends MBaaSPage {
         this.form.add(this.categoryFeedback);
 
         this.imageField = new FileUploadField("imageField", new PropertyModel<>(this, "image"));
-        this.imageField.setRequired(true);
         this.form.add(this.imageField);
         this.imageFeedback = new TextFeedbackPanel("imageFeedback", this.imageField);
         this.form.add(this.imageFeedback);
@@ -153,7 +152,9 @@ public class BannerModifyPage extends MBaaSPage {
         updateQuery.addValue("type = :type", this.type);
         updateQuery.addValue("ecommerce_product_id = :ecommerce_product_id", productId);
         updateQuery.addValue("ecommerce_category_id = :ecommerce_category_id", categoryId);
-        updateQuery.addValue("image_url_platform_file_id = :image_url_platform_file_id", imageUrlFileId);
+        if (imageUrlFileId != null) {
+            updateQuery.addValue("image_url_platform_file_id = :image_url_platform_file_id", imageUrlFileId);
+        }
         updateQuery.addWhere("ecommerce_banner_id = :ecommerce_banner_id", this.ecommerceBannerId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
         setResponsePage(BannerBrowsePage.class);

@@ -12,12 +12,14 @@ import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.model.PlatformRole;
 import com.angkorteam.platform.page.SettingPage;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
+import com.google.common.base.Strings;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -85,8 +87,13 @@ public class VendorRegisterPage extends AdminLTEPage {
         this.registerButton.setOnSubmit(this::registerButtonOnSubmit);
         this.form.add(this.registerButton);
 
-        this.dashboardLink = new BookmarkablePageLink<Void>("dashboardLink", ProductBrowsePage.class);
+        this.dashboardLink = new BookmarkablePageLink<>("dashboardLink", ProductBrowsePage.class);
         add(this.dashboardLink);
+
+        String link = Platform.getConfiguration("vendor_manual", "");
+        ExternalLink vendorManual = new ExternalLink("vendorManual", link);
+        vendorManual.setVisible(!Strings.isNullOrEmpty(link));
+        add(vendorManual);
     }
 
     private void registerButtonOnSubmit(Button button) {

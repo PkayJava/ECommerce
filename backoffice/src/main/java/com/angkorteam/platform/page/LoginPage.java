@@ -6,12 +6,14 @@ import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
 import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.Session;
+import com.google.common.base.Strings;
 import org.apache.wicket.NonResettingRestartException;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -64,6 +66,11 @@ public class LoginPage extends AdminLTEPage {
         this.loginButton = new Button("loginButton");
         this.loginButton.setOnSubmit(this::loginButtonOnSubmit);
         this.form.add(this.loginButton);
+
+        String link = Platform.getConfiguration("vendor_manual", "");
+        ExternalLink vendorManual = new ExternalLink("vendorManual", link);
+        vendorManual.setVisible(!Strings.isNullOrEmpty(link));
+        add(vendorManual);
 
         if (AbstractAuthenticatedWebSession.get().isSignedIn()) {
             setResponsePage(getApplication().getHomePage());

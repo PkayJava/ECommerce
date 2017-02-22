@@ -10,7 +10,9 @@ import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
+import com.angkorteam.platform.page.SettingPage;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
+import com.google.common.base.Strings;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.TextField;
@@ -120,7 +122,9 @@ public class ProductVariantModifyPage extends MBaaSPage {
 
         updateQuery = new UpdateQuery("ecommerce_product");
         updateQuery.addValue("quantity = :quantity", quantity);
-        updateQuery.addValue("ready = :ready", Platform.getConfiguration("demo", false));
+        String demoString = Platform.getSetting(SettingPage.DEMO);
+        boolean demo = Strings.isNullOrEmpty(demoString) ? false : Boolean.valueOf(demoString);
+        updateQuery.addValue("ready = :ready", demo);
         updateQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

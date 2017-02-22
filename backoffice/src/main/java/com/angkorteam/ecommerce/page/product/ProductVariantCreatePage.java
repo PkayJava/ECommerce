@@ -10,8 +10,10 @@ import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
+import com.angkorteam.platform.page.SettingPage;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
+import com.google.common.base.Strings;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -156,7 +158,10 @@ public class ProductVariantCreatePage extends MBaaSPage {
 
         UpdateQuery updateQuery = new UpdateQuery("ecommerce_product");
         updateQuery.addValue("quantity = :quantity", quantity);
-        updateQuery.addValue("ready = :ready", Platform.getConfiguration("demo", false));
+
+        String demoString = Platform.getSetting(SettingPage.DEMO);
+        boolean demo = Strings.isNullOrEmpty(demoString) ? false : Boolean.valueOf(demoString);
+        updateQuery.addValue("ready = :ready", demo);
         updateQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

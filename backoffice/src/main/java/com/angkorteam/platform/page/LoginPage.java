@@ -67,10 +67,25 @@ public class LoginPage extends AdminLTEPage {
         this.loginButton.setOnSubmit(this::loginButtonOnSubmit);
         this.form.add(this.loginButton);
 
-        String link = Platform.getConfiguration("vendor_manual", "");
-        ExternalLink vendorManual = new ExternalLink("vendorManual", link);
-        vendorManual.setVisible(!Strings.isNullOrEmpty(link));
-        add(vendorManual);
+        String vendorManual = Platform.getSetting(SettingPage.VENDOR_MANUAL);
+        ExternalLink vendorManualLink = new ExternalLink("vendorManualLink", vendorManual);
+        vendorManualLink.setVisible(!Strings.isNullOrEmpty(vendorManual));
+        add(vendorManualLink);
+
+        String androidApp = Platform.getSetting(SettingPage.ANDROID_APP);
+        ExternalLink androidAppLink = new ExternalLink("androidAppLink", androidApp);
+        androidAppLink.setVisible(!Strings.isNullOrEmpty(androidApp));
+        add(androidAppLink);
+
+        String iphoneApp = Platform.getSetting(SettingPage.IPHONE_APP);
+        ExternalLink iphoneAppLink = new ExternalLink("iphoneAppLink", iphoneApp);
+        iphoneAppLink.setVisible(!Strings.isNullOrEmpty(iphoneApp));
+        add(iphoneAppLink);
+
+        String html5App = Platform.getSetting(SettingPage.HTML5_APP);
+        ExternalLink html5AppLink = new ExternalLink("html5AppLink", html5App);
+        html5AppLink.setVisible(!Strings.isNullOrEmpty(html5App));
+        add(html5AppLink);
 
         if (AbstractAuthenticatedWebSession.get().isSignedIn()) {
             setResponsePage(getApplication().getHomePage());

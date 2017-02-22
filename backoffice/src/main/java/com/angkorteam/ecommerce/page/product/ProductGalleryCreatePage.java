@@ -7,6 +7,8 @@ import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
+import com.angkorteam.platform.page.SettingPage;
+import com.google.common.base.Strings;
 import org.apache.commons.io.FileUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.border.Border;
@@ -92,8 +94,11 @@ public class ProductGalleryCreatePage extends MBaaSPage {
         insertQuery.addValue("platform_file_id = :platform_file_id", imageFileId);
         getNamed().update(insertQuery.toSQL(), insertQuery.getParam());
 
+        String demoString = Platform.getSetting(SettingPage.DEMO);
+        boolean demo = Strings.isNullOrEmpty(demoString) ? false : Boolean.valueOf(demoString);
+
         UpdateQuery updateQuery = new UpdateQuery("ecommerce_product");
-        updateQuery.addValue("ready = :ready", false);
+        updateQuery.addValue("ready = :ready", demo);
         updateQuery.addWhere("ecommerce_product_id = :ecommerce_product_id", this.ecommerceProductId);
         getNamed().update(updateQuery.toSQL(), updateQuery.getParam());
 

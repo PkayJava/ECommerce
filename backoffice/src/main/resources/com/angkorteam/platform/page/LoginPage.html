@@ -35,7 +35,18 @@
             </div>
         </form>
 
-        <a wicket:id="vendorManual" target="_blank" class="text-center">Vendor Manual</a>
+        <wicket:enclosure child="vendorManualLink">
+            <br/><a wicket:id="vendorManualLink" target="_blank">Vendor Manual(PDF)</a>
+        </wicket:enclosure>
+        <wicket:enclosure child="androidAppLink">
+            <br/><a wicket:id="androidAppLink" target="_blank">Android App</a>
+        </wicket:enclosure>
+        <wicket:enclosure child="iphoneAppLink">
+            <br/><a wicket:id="iphoneAppLink" target="_blank">iPhone App</a>
+        </wicket:enclosure>
+        <wicket:enclosure child="html5AppLink">
+            <br/><a wicket:id="html5AppLink" target="_blank">HTML5 App</a>
+        </wicket:enclosure>
 
     </div>
 </div>

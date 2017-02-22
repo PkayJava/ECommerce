@@ -9,9 +9,11 @@ import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackP
 import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;
+import com.angkorteam.platform.page.SettingPage;
 import com.angkorteam.platform.provider.OptionMultipleChoiceProvider;
 import com.angkorteam.platform.provider.OptionSingleChoiceProvider;
 import com.angkorteam.platform.validator.UniqueRecordValidator;
+import com.google.common.base.Strings;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -266,7 +268,8 @@ public class ProductCreatePage extends MBaaSPage {
         insertQuery.addValue("main_image_high_res_platform_file_id = :main_image_high_res_platform_file_id", mainImageHighResFileId);
         insertQuery.addValue("quantity = :quantity", this.quantity);
         insertQuery.addValue("shipping_price = :shipping_price", 0);
-        boolean demo = Platform.getConfiguration("demo", false);
+        String demoString = Platform.getSetting(SettingPage.DEMO);
+        boolean demo = Strings.isNullOrEmpty(demoString) ? false : Boolean.valueOf(demoString);
         insertQuery.addValue("ready = :ready", demo);
 
 

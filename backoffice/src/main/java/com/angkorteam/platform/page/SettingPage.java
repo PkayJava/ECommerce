@@ -76,6 +76,26 @@ public class SettingPage extends MBaaSPage {
     private TextField<String> shortcutTextField;
     private TextFeedbackPanel shortcutTextFeedback;
 
+    private String demo;
+    private TextField<String> demoField;
+    private TextFeedbackPanel demoFeedback;
+
+    private String androidApp;
+    private TextField<String> androidAppField;
+    private TextFeedbackPanel androidAppFeedback;
+
+    private String iphoneApp;
+    private TextField<String> iphoneAppField;
+    private TextFeedbackPanel iphoneAppFeedback;
+
+    private String html5App;
+    private TextField<String> html5AppField;
+    private TextFeedbackPanel html5AppFeedback;
+
+    private String vendorManual;
+    private TextField<String> vendorManualField;
+    private TextFeedbackPanel vendorManualFeedback;
+
     private Button saveButton;
     private Form<Void> form;
 
@@ -92,6 +112,11 @@ public class SettingPage extends MBaaSPage {
     public static final String ENVIRONMENT_TEXT = "environment_text";
     public static final String DESCRIPTION_TEXT = "description_text";
     public static final String SHORTCUT_TEXT = "shortcut_text";
+    public static final String DEMO = "demo";
+    public static final String VENDOR_MANUAL = "vendor_manual";
+    public static final String ANDROID_APP = "android_app";
+    public static final String IPHONE_APP = "iphone_app";
+    public static final String HTML5_APP = "html5_app";
 
     @Override
     protected void doInitialize(Border layout) {
@@ -166,6 +191,31 @@ public class SettingPage extends MBaaSPage {
         this.shortcutTextFeedback = new TextFeedbackPanel("shortcutTextFeedback", this.shortcutTextField);
         this.form.add(this.shortcutTextFeedback);
 
+        this.demoField = new TextField<>("demoField", new PropertyModel<>(this, "demo"));
+        this.form.add(this.demoField);
+        this.demoFeedback = new TextFeedbackPanel("demoFeedback", this.demoField);
+        this.form.add(this.demoFeedback);
+
+        this.androidAppField = new TextField<>("androidAppField", new PropertyModel<>(this, "androidApp"));
+        this.form.add(this.androidAppField);
+        this.androidAppFeedback = new TextFeedbackPanel("androidAppFeedback", this.androidAppField);
+        this.form.add(this.androidAppFeedback);
+
+        this.iphoneAppField = new TextField<>("iphoneAppField", new PropertyModel<>(this, "iphoneApp"));
+        this.form.add(this.iphoneAppField);
+        this.iphoneAppFeedback = new TextFeedbackPanel("iphoneAppFeedback", this.iphoneAppField);
+        this.form.add(this.iphoneAppFeedback);
+
+        this.html5AppField = new TextField<>("html5AppField", new PropertyModel<>(this, "html5App"));
+        this.form.add(this.html5AppField);
+        this.html5AppFeedback = new TextFeedbackPanel("html5AppFeedback", this.html5AppField);
+        this.form.add(this.html5AppFeedback);
+
+        this.vendorManualField = new TextField<>("vendorManualField", new PropertyModel<>(this, "vendorManual"));
+        this.form.add(this.vendorManualField);
+        this.vendorManualFeedback = new TextFeedbackPanel("vendorManualFeedback", this.vendorManualField);
+        this.form.add(this.vendorManualFeedback);
+
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
@@ -187,6 +237,11 @@ public class SettingPage extends MBaaSPage {
         loadSetting(ENVIRONMENT_TEXT, new PropertyModel<>(this, "environmentText"));
         loadSetting(SHORTCUT_TEXT, new PropertyModel<>(this, "shortcutText"));
         loadSetting(DESCRIPTION_TEXT, new PropertyModel<>(this, "descriptionText"));
+        loadSetting(DEMO, new PropertyModel<>(this, "demo"));
+        loadSetting(ANDROID_APP, new PropertyModel<>(this, "androidApp"));
+        loadSetting(IPHONE_APP, new PropertyModel<>(this, "iphoneApp"));
+        loadSetting(HTML5_APP, new PropertyModel<>(this, "html5App"));
+        loadSetting(VENDOR_MANUAL, new PropertyModel<>(this, "vendorManual"));
     }
 
     void loadSetting(String key, PropertyModel<String> model) {
@@ -233,6 +288,11 @@ public class SettingPage extends MBaaSPage {
         saveSetting(DESCRIPTION_TEXT, this.descriptionText);
         saveSetting(SHORTCUT_TEXT, this.shortcutText);
         saveSetting(ENVIRONMENT_TEXT, this.environmentText);
+        saveSetting(DEMO, this.demo);
+        saveSetting(ANDROID_APP, this.androidApp);
+        saveSetting(IPHONE_APP, this.iphoneApp);
+        saveSetting(HTML5_APP, this.html5App);
+        saveSetting(VENDOR_MANUAL, this.vendorManual);
 
         setResponsePage(SettingPage.class);
     }

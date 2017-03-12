@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 /**
  * Created by socheatkhauv on 21/1/17.
  */
-public class OptionSingleChoiceProvider extends com.angkorteam.framework.extension.wicket.markup.html.form.select2.OptionSingleChoiceProvider {
+public class OptionSingleChoiceProvider extends com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider {
 
     public OptionSingleChoiceProvider(String table, String idField) {
         super(table, idField);

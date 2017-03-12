@@ -1,7 +1,7 @@
 package com.angkorteam.platform.page;
 
-import com.angkorteam.framework.extension.HttpFunction;
-import com.angkorteam.framework.extension.wicket.AdminLTEPage;
+import com.angkorteam.framework.HttpFunction;
+import com.angkorteam.framework.wicket.AdminLTEPage;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.spring.NamedParameterJdbcTemplate;
 import com.angkorteam.platform.Platform;

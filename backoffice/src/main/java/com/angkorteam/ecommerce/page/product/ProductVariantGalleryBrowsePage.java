@@ -1,8 +1,8 @@
 package com.angkorteam.ecommerce.page.product;
 
-import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
 import com.angkorteam.platform.page.MBaaSPage;
 import com.angkorteam.platform.provider.JdbcProvider;
 import com.google.common.collect.Lists;

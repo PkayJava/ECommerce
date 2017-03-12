@@ -1,6 +1,6 @@
 package com.angkorteam.platform.page;
 
-import com.angkorteam.framework.extension.wicket.AdminLTEPage;
+import com.angkorteam.framework.wicket.AdminLTEPage;
 import com.angkorteam.platform.Application;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 

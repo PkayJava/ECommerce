@@ -6,7 +6,7 @@ import com.angkorteam.platform.Platform;
 /**
  * Created by socheatkhauv on 21/1/17.
  */
-public class JdbcProvider extends com.angkorteam.framework.extension.share.provider.JdbcProvider {
+public class JdbcProvider extends com.angkorteam.framework.share.provider.JdbcProvider {
 
     public JdbcProvider(String from) {
         super(from);

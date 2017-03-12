@@ -2,7 +2,7 @@ package com.angkorteam.ecommerce.page.order;
 
 import com.angkorteam.ecommerce.model.EcommerceVendorOrder;
 import com.angkorteam.ecommerce.model.EcommerceVendorOrderItem;
-import com.angkorteam.framework.extension.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
 import com.angkorteam.platform.Platform;

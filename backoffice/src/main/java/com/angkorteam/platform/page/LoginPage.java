@@ -1,9 +1,9 @@
 package com.angkorteam.platform.page;
 
-import com.angkorteam.framework.extension.wicket.AdminLTEPage;
-import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
-import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
-import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
+import com.angkorteam.framework.wicket.AdminLTEPage;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.Session;
 import com.google.common.base.Strings;

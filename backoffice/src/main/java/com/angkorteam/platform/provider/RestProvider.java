@@ -1,6 +1,6 @@
 package com.angkorteam.platform.provider;
 
-import com.angkorteam.framework.extension.share.provider.JdbcProvider;
+import com.angkorteam.framework.share.provider.JdbcProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.platform.Platform;
 

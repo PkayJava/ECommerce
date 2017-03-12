@@ -1,8 +1,8 @@
 package com.angkorteam.platform.page.file;
 
-import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.extension.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.platform.Configuration;
 import com.angkorteam.platform.Platform;

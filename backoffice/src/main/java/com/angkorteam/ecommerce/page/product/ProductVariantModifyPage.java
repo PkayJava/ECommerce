@@ -1,11 +1,11 @@
 package com.angkorteam.ecommerce.page.product;
 
 import com.angkorteam.ecommerce.model.EcommerceProductVariant;
-import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
-import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
-import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.extension.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
 import com.angkorteam.platform.Platform;

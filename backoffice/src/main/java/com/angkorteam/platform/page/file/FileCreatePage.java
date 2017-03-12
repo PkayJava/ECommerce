@@ -1,7 +1,7 @@
 package com.angkorteam.platform.page.file;
 
-import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
-import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.platform.Configuration;
 import com.angkorteam.platform.Platform;
 import com.angkorteam.platform.page.MBaaSPage;

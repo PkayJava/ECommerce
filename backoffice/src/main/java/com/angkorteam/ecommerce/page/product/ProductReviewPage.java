@@ -1,10 +1,10 @@
 package com.angkorteam.ecommerce.page.product;
 
 import com.angkorteam.ecommerce.vo.ProductReviewVO;
-import com.angkorteam.framework.extension.wicket.ajax.markup.html.AjaxLink;
-import com.angkorteam.framework.extension.wicket.markup.html.form.Button;
-import com.angkorteam.framework.extension.wicket.markup.html.form.Form;
-import com.angkorteam.framework.extension.wicket.markup.html.panel.TextFeedbackPanel;
+import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.jdbc.UpdateQuery;
